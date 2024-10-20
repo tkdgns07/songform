@@ -1,0 +1,322 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #EEF5FF;
+    min-height: 850px;
+  }
+  img {
+    max-width: none !important;
+  }
+  .menutext{
+    align-items: center;
+    font-size: 20px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: bold;
+    color: #5f5f5f;
+  }
+  .alert {
+    z-index: 9999;
+    top: 0;
+    left: calc(50% - 100px);
+  }
+  .menubar{
+    position: fixed;
+    top: 0;
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    @apply bg-body bg-opacity-50
+  }
+  .bar{
+    background-color: #5f5f5f;
+  }
+  .custom-grid {
+    grid-template-columns: repeat(7, minmax(50px, 1fr));
+  }
+  .day-name {
+    @apply flex justify-center items-center text-lighttext
+  }
+  .calendarExp{
+    border: solid;
+    border-width: 1.5px;
+    background-color: #dfe8f9;
+    @apply border-cusblue-deep shadow-sm
+  }
+  .day {
+    padding: 5px;
+    border-top: solid 1px #EEEEEE;
+    border-right: solid 1px #EEEEEE;
+    @apply text-sm text-lighttext h-[75px] md:h-[100px]
+  }
+  .disable {
+    color: rgba(152, 160, 166, 0.6);
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f9f9fa' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+    cursor: not-allowed;
+  }
+  .booked{
+    box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
+    @apply bg-cusblue-normal w-[100%] h-[45px] md:h-[30px] rounded-md
+  }
+  .booked:hover{
+    transform: scale(1.08);
+    transition: transform 0.2s ease-out;
+  }
+  .clicked{
+    transform: scale(1);
+    transition: transform 0.2s ease-out;
+  }
+  .alert {
+    position: fixed;
+    top: 10px;
+    transition: top 0.5s ease-in-out;
+  }
+  .alert-hidden {
+    top: -100px; /* 알림 요소를 화면 밖으로 숨김 */
+  }
+  .inputcontainer{
+    position: relative;
+    overflow: hidden;
+    transition: border-radius 0.3s, height 0.3s, padding 0.3s;
+    height: 40px;
+  }
+  .inputcontainer:hover{
+    transition: 0.3s;
+  }
+  .inputcontainer:focus-within{
+    @apply shadow-md
+  }
+  .inputbig {
+    height: 80px;
+    border-radius: 10px;
+  }
+  .inputsmall {
+    height: 40px;
+    border-radius: 20px;
+  }
+  .hover-area {
+    position: absolute;
+    background-color: transparent;
+    right: 0;
+    width: 40px;
+    z-index: 999;
+  }
+  .moving-element {
+    position: absolute;
+    left: 100%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  .move-r{
+    transform: translateX(0px);
+  }
+  .move-l{
+    transform: translateX(-35px);
+  }
+  .scaleu { 
+    filter: brightness(100%)
+  }
+  .scaled { 
+    filter: brightness(75%)
+  }
+  .input{
+    width: calc(100% - 50px)
+  }
+  .musicscontainer{
+    display: grid;
+    width: 80%;
+  }
+  .musiccontainer{
+    position: relative;
+    width: 90%;
+    overflow: hidden;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .musiccontainer:hover .musictext{
+    opacity: 0; /* 투명도 변경 */
+    visibility: hidden; /* 요소를 완전히 숨김 */
+    transition: opacity 0.1s ease-in, visibility 0.1s ease-in;  }
+  .xicon{
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    width: 24px;
+    color: #EEEEEE;
+    transition: 0.1s;
+  }
+  .xicon:hover {
+    color: #979797;
+    cursor: pointer;
+  }
+  .thumbnailimg{
+    object-fit: cover !important;
+    height: 100%;
+  }
+
+  .musictext{
+    opacity: 1;
+    visibility: visible;
+    position : absolute;
+    width: 100%;
+    bottom: 0;
+    z-index: 99999;
+    backdrop-filter: blur(5px);
+    transition: hover 0.3s, opacity 0.1s ease-in, visibility 0.1s ease-in;
+    @apply bg-body bg-opacity-50
+  }
+
+  .deleting{
+    transform: scale(0.1);
+    opacity: 0;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  
+  .profileframe {
+    position: relative;
+    display: flex;
+    justify-content: end;
+  }
+  
+  .profileframe::before {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background-color: #8ca8de;
+    opacity: 0; /* 처음에는 보이지 않도록 */
+    transition: opacity 0.2s ease; /* 애니메이션 부드럽게 */
+    border-radius: 50%;
+  }
+
+  .profileframe:hover::before {
+    opacity: 1; /* hover 시 가시화 */
+  }
+
+  .dropout{
+    position: absolute;
+    border: solid 1px;
+    border-color: #EEEEEE;
+    top: 40px;
+  }
+
+  .switcher{
+    position: absolute;
+    width: 50px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s;
+    @apply rounded-lg bg-cusblue-normal
+  }
+  .switchtrue{
+    transform: translateX(0px);
+  }
+  .switchfalse{
+    transform: translateX(56px);
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loader {
+    border: 2px solid #e6e6e6;
+    border-bottom-color: #8f8f8f;
+    border-radius: 50%;
+    display: inline-block;
+    animation: rotation 1s linear infinite;
+  }
+  .loadcontain{
+    top: 0;
+    left: 0;
+  }
+  .ssss{
+    transition: 0.5s;
+  }
+  .goleft{
+    transform: translateX(-850px);
+  }
+  .goright{
+    transform: translateX(0);
+  }
+}
