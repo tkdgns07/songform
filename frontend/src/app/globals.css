@@ -65,16 +65,16 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-color: #EEF5FF;
+    background-color: #eef5ff;
     min-height: 850px;
   }
   img {
     max-width: none !important;
   }
-  .menutext{
+  .menutext {
     align-items: center;
     font-size: 20px;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-weight: bold;
     color: #5f5f5f;
   }
@@ -83,33 +83,33 @@
     top: 0;
     left: calc(50% - 100px);
   }
-  .menubar{
+  .menubar {
     position: fixed;
     top: 0;
     backdrop-filter: blur(5px);
     z-index: 9999;
-    @apply bg-body bg-opacity-50
+    @apply bg-body bg-opacity-50;
   }
-  .bar{
+  .bar {
     background-color: #5f5f5f;
   }
   .custom-grid {
     grid-template-columns: repeat(7, minmax(50px, 1fr));
   }
   .day-name {
-    @apply flex justify-center items-center text-lighttext
+    @apply flex justify-center items-center text-lighttext;
   }
-  .calendarExp{
+  .calendarExp {
     border: solid;
     border-width: 1.5px;
     background-color: #dfe8f9;
-    @apply border-cusblue-deep shadow-sm
+    @apply border-cusblue-deep shadow-sm;
   }
   .day {
     padding: 5px;
-    border-top: solid 1px #EEEEEE;
-    border-right: solid 1px #EEEEEE;
-    @apply text-sm text-lighttext h-[75px] md:h-[100px]
+    border-top: solid 1px #eeeeee;
+    border-right: solid 1px #eeeeee;
+    @apply text-sm text-lighttext h-[75px] md:h-[100px];
   }
   .disable {
     color: rgba(152, 160, 166, 0.6);
@@ -117,15 +117,15 @@
     background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f9f9fa' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
     cursor: not-allowed;
   }
-  .booked{
+  .booked {
     box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
-    @apply bg-cusblue-normal w-[100%] h-[45px] md:h-[30px] rounded-md
+    @apply bg-cusblue-normal w-[100%] h-[45px] md:h-[30px] rounded-md;
   }
-  .booked:hover{
+  .booked:hover {
     transform: scale(1.08);
     transition: transform 0.2s ease-out;
   }
-  .clicked{
+  .clicked {
     transform: scale(1);
     transition: transform 0.2s ease-out;
   }
@@ -137,17 +137,20 @@
   .alert-hidden {
     top: -100px; /* 알림 요소를 화면 밖으로 숨김 */
   }
-  .inputcontainer{
+  .inputcontainer {
     position: relative;
     overflow: hidden;
-    transition: border-radius 0.3s, height 0.3s, padding 0.3s;
+    transition:
+      border-radius 0.3s,
+      height 0.3s,
+      padding 0.3s;
     height: 40px;
   }
-  .inputcontainer:hover{
+  .inputcontainer:hover {
     transition: 0.3s;
   }
-  .inputcontainer:focus-within{
-    @apply shadow-md
+  .inputcontainer:focus-within {
+    @apply shadow-md;
   }
   .inputbig {
     height: 80px;
@@ -176,82 +179,94 @@
     transition: transform 0.3s ease;
     cursor: pointer;
   }
-  .move-r{
+  .move-r {
     transform: translateX(0px);
   }
-  .move-l{
+  .move-l {
     transform: translateX(-35px);
   }
-  .scaleu { 
-    filter: brightness(100%)
+  .scaleu {
+    filter: brightness(100%);
   }
-  .scaled { 
-    filter: brightness(75%)
+  .scaled {
+    filter: brightness(75%);
   }
-  .input{
-    width: calc(100% - 50px)
+  .input {
+    width: calc(100% - 50px);
   }
-  .musicscontainer{
+  .musicscontainer {
     display: grid;
-    width: 80%;
+    width: 100%;
+    padding: 10px;
   }
-  .musiccontainer{
+  .musicscontainer > div:nth-child(4n) {
+    margin-right: 0 !important;
+  }
+  .musiccontainer {
     position: relative;
-    width: 90%;
+    width: 100%;
     overflow: hidden;
-    height: 250px;
+    height: 280px;
     display: flex;
     justify-content: center;
   }
 
-  .musiccontainer:hover .musictext{
+  .musiccontainer:hover .musictext {
     opacity: 0; /* 투명도 변경 */
     visibility: hidden; /* 요소를 완전히 숨김 */
-    transition: opacity 0.1s ease-in, visibility 0.1s ease-in;  }
-  .xicon{
+    transition:
+      opacity 0.1s ease-in,
+      visibility 0.1s ease-in;
+  }
+  .xicon {
     position: absolute;
     top: 10px;
     right: 30px;
     width: 24px;
-    color: #EEEEEE;
+    color: #eeeeee;
     transition: 0.1s;
   }
   .xicon:hover {
     color: #979797;
     cursor: pointer;
   }
-  .thumbnailimg{
+  .thumbnailimg {
     object-fit: cover !important;
     height: 100%;
   }
 
-  .musictext{
+  .musictext {
     opacity: 1;
     visibility: visible;
-    position : absolute;
+    position: absolute;
     width: 100%;
     bottom: 0;
     z-index: 99999;
     backdrop-filter: blur(5px);
-    transition: hover 0.3s, opacity 0.1s ease-in, visibility 0.1s ease-in;
-    @apply bg-body bg-opacity-50
+    transition:
+      hover 0.3s,
+      opacity 0.1s ease-in,
+      visibility 0.1s ease-in;
+    @apply bg-body bg-opacity-50;
   }
 
-  .deleting{
+  .deleting {
     transform: scale(0.1);
     opacity: 0;
-    transition: transform 0.2s, opacity 0.2s;
+    transition:
+      transform 0.2s,
+      opacity 0.2s;
   }
-  
+
   .profileframe {
     position: relative;
     display: flex;
     justify-content: end;
   }
-  
+
   .profileframe::before {
     z-index: -1;
-    content: "";
+    content: '';
     position: absolute;
     top: -10%;
     left: -10%;
@@ -267,26 +282,26 @@
     opacity: 1; /* hover 시 가시화 */
   }
 
-  .dropout{
+  .dropout {
     position: absolute;
     border: solid 1px;
-    border-color: #EEEEEE;
+    border-color: #eeeeee;
     top: 40px;
   }
 
-  .switcher{
+  .switcher {
     position: absolute;
     width: 50px;
     height: 25px;
     display: flex;
     align-items: center;
     transition: transform 0.3s;
-    @apply rounded-lg bg-cusblue-normal
+    @apply rounded-lg bg-cusblue-normal;
   }
-  .switchtrue{
+  .switchtrue {
     transform: translateX(0px);
   }
-  .switchfalse{
+  .switchfalse {
     transform: translateX(56px);
   }
 
@@ -306,17 +321,17 @@
     display: inline-block;
     animation: rotation 1s linear infinite;
   }
-  .loadcontain{
+  .loadcontain {
     top: 0;
     left: 0;
   }
-  .ssss{
+  .ssss {
     transition: 0.5s;
   }
-  .goleft{
+  .goleft {
     transform: translateX(-850px);
   }
-  .goright{
+  .goright {
     transform: translateX(0);
   }
 }

@@ -25,7 +25,10 @@ async function refreshAccessToken(): Promise<string | null> {
   }
 }
 
-async function deletePlaylist(playlistId: string, accessToken: string): Promise<boolean> {
+async function deletePlaylist(
+  playlistId: string,
+  accessToken: string,
+): Promise<boolean> {
   try {
     const response = await axios.delete(`${YOUTUBE_API_URL}?id=${playlistId}`, {
       headers: {
@@ -37,7 +40,11 @@ async function deletePlaylist(playlistId: string, accessToken: string): Promise<
       console.log('Playlist deleted successfully');
       return true;
     } else {
-      console.error('Failed to delete playlist', response.status, response.data);
+      console.error(
+        'Failed to delete playlist',
+        response.status,
+        response.data,
+      );
       return false;
     }
   } catch (error) {
@@ -51,20 +58,32 @@ export async function DELETE(request: NextRequest) {
   const { playlistId } = await request.json(); // Expecting playlistId from the request body
 
   if (!playlistId) {
-    return NextResponse.json({ error: 'Playlist ID is required' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Playlist ID is required' },
+      { status: 400 },
+    );
   }
 
   // Step 1: Refresh access token
   const accessToken = await refreshAccessToken();
   if (!accessToken) {
-    return NextResponse.json({ error: 'Failed to refresh access token' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to refresh access token' },
+      { status: 500 },
+    );
   }
 
   // Step 2: Delete the playlist
   const isDeleted = await deletePlaylist(playlistId, accessToken);
   if (isDeleted) {
-    return NextResponse.json({ message: 'Playlist deleted successfully' }, { status: 200 });
+    return NextResponse.json(
+      { message: 'Playlist deleted successfully' },
+      { status: 200 },
+    );
   } else {
-    return NextResponse.json({ error: 'Failed to delete playlist' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to delete playlist' },
+      { status: 500 },
+    );
   }
 }

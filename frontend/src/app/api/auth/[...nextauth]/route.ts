@@ -1,5 +1,5 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -8,14 +8,15 @@ const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       authorization: {
         params: {
-          scope: "openid profile email https://www.googleapis.com/auth/youtube.force-ssl",
+          scope:
+            'openid profile email https://www.googleapis.com/auth/youtube.force-ssl',
         },
       },
     }),
   ],
   callbacks: {
     async signIn({ user }) {
-      const email = user.email ?? "";
+      const email = user.email ?? '';
 
       // 이메일이 h012s24xxx@gw1.kr 형식인지 확인
       const regex = /^h012s24\d{3}@gw1\.kr$/;
@@ -37,7 +38,7 @@ const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.name = token.name;
         session.user.image = token.picture;
-        session.accessToken = token.accessToken as string | undefined;  // 액세스 토큰 추가
+        session.accessToken = token.accessToken as string | undefined; // 액세스 토큰 추가
       }
       return session;
     },

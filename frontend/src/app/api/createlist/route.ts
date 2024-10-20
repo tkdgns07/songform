@@ -10,7 +10,7 @@ const REFRESH_URL = 'https://oauth2.googleapis.com/token';
 const MAX_DELAY = 30000; // 최대 지연 시간 30초
 
 // Delay function to introduce a delay between API calls
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function refreshAccessToken(): Promise<string | null> {
   try {
@@ -29,7 +29,11 @@ async function refreshAccessToken(): Promise<string | null> {
   }
 }
 
-async function createPlaylist(accessToken: string, title: string, description: string): Promise<string | null> {
+async function createPlaylist(
+  accessToken: string,
+  title: string,
+  description: string,
+): Promise<string | null> {
   try {
     const response = await axios.post(
       'https://www.googleapis.com/youtube/v3/playlists?part=snippet,status',
@@ -47,7 +51,7 @@ async function createPlaylist(accessToken: string, title: string, description: s
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
 
     return response.data.id;
@@ -57,7 +61,12 @@ async function createPlaylist(accessToken: string, title: string, description: s
   }
 }
 
-async function addVideoToPlaylist(accessToken: string, playlistId: string, videoId: string, delayMs: number): Promise<void> {
+async function addVideoToPlaylist(
+  accessToken: string,
+  playlistId: string,
+  videoId: string,
+  delayMs: number,
+): Promise<void> {
   try {
     // If delay is greater than MAX_DELAY, throw an error
     if (delayMs > MAX_DELAY) {
@@ -83,7 +92,7 @@ async function addVideoToPlaylist(accessToken: string, playlistId: string, video
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
   } catch (error) {
     console.error(`Failed to add video ${videoId} to playlist`, error);
@@ -94,17 +103,30 @@ export async function POST(req: NextRequest) {
   const { videoIds, playlistTitle, playlistDescription } = await req.json();
 
   if (!videoIds || !Array.isArray(videoIds) || videoIds.length === 0) {
-    return NextResponse.json({ message: 'No video IDs provided' }, { status: 400 });
+    return NextResponse.json(
+      { message: 'No video IDs provided' },
+      { status: 400 },
+    );
   }
 
   const accessToken = await refreshAccessToken();
   if (!accessToken) {
-    return NextResponse.json({ message: 'Failed to refresh access token' }, { status: 500 });
+    return NextResponse.json(
+      { message: 'Failed to refresh access token' },
+      { status: 500 },
+    );
   }
 
-  const playlistId = await createPlaylist(accessToken, playlistTitle, playlistDescription);
+  const playlistId = await createPlaylist(
+    accessToken,
+    playlistTitle,
+    playlistDescription,
+  );
   if (!playlistId) {
-    return NextResponse.json({ message: 'Failed to create playlist' }, { status: 500 });
+    return NextResponse.json(
+      { message: 'Failed to create playlist' },
+      { status: 500 },
+    );
   }
 
   let delayMs = 1000;
@@ -114,7 +136,7 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({
-    success: true, 
-    playlistId
+    success: true,
+    playlistId,
   });
 }

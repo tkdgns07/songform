@@ -27,15 +27,19 @@ export async function GET(req: NextRequest) {
   try {
     do {
       // YouTube API로 요청 보내기
-      const response: {data : YouTubeApiResponse} = await axios.get<YouTubeApiResponse>('https://www.googleapis.com/youtube/v3/playlistItems', {
-        params: {
-          part: 'contentDetails',
-          maxResults: 50,
-          playlistId: playlistId,
-          pageToken: nextPageToken,
-          key: apiKey,
-        },
-      });
+      const response: { data: YouTubeApiResponse } =
+        await axios.get<YouTubeApiResponse>(
+          'https://www.googleapis.com/youtube/v3/playlistItems',
+          {
+            params: {
+              part: 'contentDetails',
+              maxResults: 50,
+              playlistId: playlistId,
+              pageToken: nextPageToken,
+              key: apiKey,
+            },
+          },
+        );
 
       const items = response.data.items;
       items.forEach((item) => {
@@ -48,6 +52,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ videoIds });
   } catch (error) {
     console.error('Failed to fetch video IDs from playlist', error);
-    return NextResponse.json({ error: 'Failed to fetch video IDs from playlist' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to fetch video IDs from playlist' },
+      { status: 500 },
+    );
   }
 }
