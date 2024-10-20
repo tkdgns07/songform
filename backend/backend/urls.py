@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main.views import render4test
+from main.views import render4test_labor, render4test_wakeup
 from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('main.urls')),
-    path('render4test/', render4test, name = 'render4test'),
+    path('render4test-labor/', render4test_labor, name = 'render4test-labor'),
+    path('render4test-wakeup/', render4test_wakeup, name = 'render4test-labor'),
 ]

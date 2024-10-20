@@ -38,9 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'django_crontab',
     'rest_framework',
-    'corsheaders',
+    'django_crontab',
     
     'main',
 ]
@@ -130,10 +129,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CRONJOBS = [
-    ('0 0 1 * *', 'main.cron.calandersetup'),  # 매월 1일 00:00에 실행
-]
-
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+]
+
+CRONJOBS = [
+    ('* * * * *', "main.cron.MonthlyCalendarSetupJob", '>> BASE_DIR+/cron.log')
 ]

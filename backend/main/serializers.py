@@ -1,9 +1,14 @@
 # myapp/serializers.py
 
 from rest_framework import serializers
-from .models import calendar_value
+from .models import wakeup_calendar_value, labor_calendar_value
 
-class CalendarValueSerializer(serializers.ModelSerializer):
+class WakeUpCalendarValueSerializer(serializers.ModelSerializer):
     class Meta:
-        model = calendar_value
+        model = wakeup_calendar_value
+        fields = '__all__'
+
+class LaborCalendarValueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = labor_calendar_value
         fields = '__all__'
