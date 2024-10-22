@@ -134,5 +134,5 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CRONJOBS = [
-    ('* * * * *', "main.cron.MonthlyCalendarSetupJob", '>> BASE_DIR+/cron.log')
+    ('0 0 1 * *', "main.cron.calandersetup", '>> /tmp/log/ggbc_cron.log')
 ]

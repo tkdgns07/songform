@@ -35,13 +35,11 @@ def calandersetup(model):
 
 
 def makecalendar(current_year, current_month, model):
-    start_weekday1, vaild_day = calendar.monthrange(current_year, current_month)
+    start_weekday, vaild_day = calendar.monthrange(current_year, current_month)
+        
+    start_weekday += 1
     
-    weekdays = [1, 2, 3, 4, 5, 6, 0]
-    
-    start_weekday = weekdays[start_weekday1]
-    
-    days = start_weekday + vaild_day + 1
+    days = start_weekday + vaild_day
     
     while start_weekday != 0:
         day_record = model(year = current_year, month = current_month, day = 0)
@@ -52,11 +50,11 @@ def makecalendar(current_year, current_month, model):
         day_record = model(year = current_year, month = current_month, day = day)
         day_record.save()
         
-    if days >= 35:
+    if days > 35:
         for i in range(43-days):
             day_record = model(year = current_year, month = current_month, day = 0)
             day_record.save()
     else:
-        for i in range(36-days):
+        for i in range(35-days):
             day_record = model(year = current_year, month = current_month, day = 0)
             day_record.save()
