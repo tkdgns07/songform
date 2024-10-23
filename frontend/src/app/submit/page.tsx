@@ -43,6 +43,9 @@ function SubmitContent() {
 
   const songParams = useSearchParams().get('song')?.toString();
 
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1;
+
   useEffect(() => {
     if (!dateParams || (songParams !== 'labor' && songParams !== 'wakeup')) {
       router.push(`/error?error=no-data-rended`);
@@ -148,12 +151,12 @@ function SubmitContent() {
 
   let playlistId: string | null = null;
 
-  const handleCreatePlaylist = async () => {
+  const handleCreatePlaylist = async (type : boolean) => {
     setLoading(true);
     try {
-      const playlistTitle = `${date?.year}.${date?.month}.${date?.day} 기상송`; // 재생목록 제목
+      const playlistTitle = `${date?.year}/${date?.month}/${date?.day} ${type ? '기상송' : '노동요'}`; // 재생목록 제목
       const playlistDescription = session?.user?.name
-        ? `${session.user.name} 신청`
+        ? `${session.user.id} ${session.user.name} 신청`
         : 'Unknown user 신청';
       const response = await axios.post('/api/createlist', {
         videoIds,
@@ -175,18 +178,18 @@ function SubmitContent() {
 
   const submitmusic = async () => {
     if (videodetails.length >= 5 && songtype == 'wakeup') {
-      await handleCreatePlaylist();
+      await handleCreatePlaylist(true);
       try {
         const data = {
           year: date.year,
           month: date.month,
           day: date.day,
-          student: session?.user.name,
+          student: `${session?.user.id} ${session?.user.name}`,
           music_url: playlistId,
         };
         setLoading(true);
         const response = await axios.post(
-          'http://127.0.0.1:8000/api/calendar-values/update-wcalendar/',
+          `http://127.0.0.1:8000/api/wcalendar-values/update-${currentMonth < date.month ? 'n' : ''}calendar/`,
           data,
         );
         toast.success('신청에 성공했습니다');
@@ -197,18 +200,18 @@ function SubmitContent() {
     } else if (videodetails.length < 5 && songtype == 'wakeup') {
       toast.warning('기상송은 최소 5곡 이상 신청해야 합니다.');
     } else if (videodetails.length == 5 && songtype == 'labor') {
-      await handleCreatePlaylist();
+      await handleCreatePlaylist(false);
       try {
         const data = {
           year: date.year,
           month: date.month,
           day: date.day,
-          student: session?.user.name,
+          student: `${session?.user.id} ${session?.user.name}`,
           music_url: playlistId,
         };
         setLoading(true);
         const response = await axios.post(
-          'http://127.0.0.1:8000/api/calendar-values/update-lcalendar/',
+          `http://127.0.0.1:8000/api/lcalendar-values/update-${currentMonth < date.month ? 'n' : ''}calendar/`,
           data,
         );
         toast.success('신청에 성공했습니다');
@@ -291,7 +294,7 @@ function SubmitContent() {
           </div>
         </div>
       </div>
-      <div className={`flex justify-center ${videodetails.length >= 1 ? '' : 'items-center'} min-h-[450px] bg-white w-[80%] my-[30px] rounded-lg`}>
+      <div className={`flex justify-center ${videodetails.length >= 1 ? '' : 'items-center'} min-h-[450px] w-[90%] my-[30px] rounded-lg`}>
         {videodetails.length >= 1 ? (
             <div className="musicscontainer grid grid-cols-4 gap-5">
             {videodetails.map((items, index) => {
@@ -312,7 +315,7 @@ function SubmitContent() {
                     </div>
                   </a>
                   <div
-                    className={`absolute top-2 right-1 w-[24px] h-[24px] xicon z-10 ${remove === index ? 'deleting' : ''}`}
+                    className={`absolute top-2 right-0 w-[24px] h-[24px] xicon z-10 ${remove === index ? 'deleting' : ''}`}
                     onClick={() => removemusic(index)}
                   >
                     <Icon icon="mdi:remove" className="" />
@@ -322,7 +325,7 @@ function SubmitContent() {
             })}
           </div>
         ) : (
-          <div><p className='text-xl font-semibold'>여기에 노래가 표시됩니다</p></div>
+          <div><p className='text-xl font-semibold'>🎧 여기에 노래가 표시됩니다</p></div>
         )}
       </div>
     </main>

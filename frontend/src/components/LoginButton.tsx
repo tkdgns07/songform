@@ -3,7 +3,7 @@
 
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Icon } from '@iconify/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const LoginButton: React.FC = () => {
   const { data: session } = useSession();
@@ -35,7 +35,7 @@ const LoginButton: React.FC = () => {
                 className={`profileimg w-[35px] rounded-full absolute opacity-0 ${!hover ? 'opacity-100' : ''} duration-200`}
               />
               <div className={`w-[40px] h-[40px] flex justify-center items-center rounded-full bg-gray-300 -z-10 opacity-0 ${hover ? 'opacity-50' : ''} duration-200`}>
-                <Icon className="text-3xl text-text" icon="material-symbols:logout"/>
+                <Icon className="text-2xl text-black" icon="material-symbols:logout"/>
               </div>
           </button>
         </div>

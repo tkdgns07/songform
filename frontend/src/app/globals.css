@@ -325,9 +325,6 @@
     top: 0;
     left: 0;
   }
-  .ssss {
-    transition: 0.5s;
-  }
   .goleft {
     transform: translateX(-850px);
   }

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Icon } from '@iconify/react';
 import { useRouter } from 'next/navigation';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 interface Dayinfo {
@@ -43,11 +43,11 @@ export default function Home() {
   const year: number = now.getFullYear();
   const month: number = now.getMonth() + 1;
   const date: number = now.getDate();
-
+  
   const fetchCalendarData = async () => {
     try {
       const wresponse = await axios.get(
-        'http://127.0.0.1:8000/api/calendar-values/wakeup',
+        'http://127.0.0.1:8000/api/wcalendar-values/get',
       );
       const wdata: Dayinfo[] = wresponse.data;
 
@@ -58,7 +58,7 @@ export default function Home() {
       setnwCalendar(next_wdays);
 
       const lresponse = await axios.get(
-        'http://127.0.0.1:8000/api/calendar-values/labor',
+        'http://127.0.0.1:8000/api/lcalendar-values/get',
       );
       const ldata: Dayinfo[] = lresponse.data;
 
@@ -108,7 +108,9 @@ export default function Home() {
           },
         });
         const data = response.data;
-        setVideoinfo(data);
+        if (clickedSub !== -1) {
+          setVideoinfo(data)
+        }
       } catch (error) {
         toast.error('다시 시도해 보세요.');
       }
@@ -140,12 +142,14 @@ export default function Home() {
   };
 
   const hasSelectedClass = (id: number) => {
-    return id === clickedDay ? '!bg-cusblue-normal !text-frame' : (id === clickedSub ? '!bg-cusblue-deep !text-frame' : '');
+    return id === clickedDay ? '!bg-cusblue-normal !text-frame' : (id === clickedSub ? '!bg-cusblue-normal !text-frame' : '');
   };
 
   const submitClicked = async () => {
     let currentYear, currentMonth, currentDay;
-    if (clickedDay !== -1) {
+    const calendar : Dayinfo[] = curruntMonth ? (choosemusic ? wcalendarday : lcalendarday) : (choosemusic ? nwcalendarday : nlcalendarday)
+    const found = calendar.some(student => student.student === `${session?.user.id} ${session?.user.name}`);
+    if (clickedDay !== -1 && !found) {
       if (curruntMonth) {
         ({
           year: currentYear,
@@ -160,16 +164,18 @@ export default function Home() {
         } = nwcalendarday[clickedDay]);
       }
     }
-    if (clickedDay !== -1 && status === 'authenticated') {
+    if (clickedDay !== -1 && (status === 'authenticated'&& !found)) {
       router.push(
         `/submit?date=${currentYear}.${currentMonth}.${currentDay}&song=${choosemusic ? 'wakeup' : 'labor'}`,
       );
     } else if (status !== 'authenticated') {
       toast.error('로그인 해주세요');
-    } else if (!curruntMonth && date < 24) {
+    } else if (!curruntMonth && (date < 24 && !birthday)) {
       toast.warning('다음달 신청은 24일 부터 가능합니다.');
     } else if (clickedDay === -1) {
       toast.error('날짜를 선택해 주세요');
+    } else if (found){
+      toast.warning('이미 신청했습니다.');
     }
   };
 
@@ -204,6 +210,7 @@ export default function Home() {
 
   const setMonth = (status: boolean) => {
     if (status !== curruntMonth) {
+      console.log(status)
       setClickedDay(-1);
       setCurruntMonth(status);
     }
@@ -237,7 +244,7 @@ export default function Home() {
               day: currentDay,
             } = nwcalendarday[clickedSub]);
           }
-          const url = `http://127.0.0.1:8000/api/calendar-values/delete-${choosemusic ? 'w' : 'l'}calendar/`;
+          const url = `http://127.0.0.1:8000/api/${choosemusic ? 'w' : 'l'}calendar-values/delete-calendar/`;
           const response_deleting = await axios.delete(url, {
             data: {
               year: currentYear,
@@ -271,43 +278,66 @@ export default function Home() {
     }
     setLoading('');
   };
+  
+  let birthday : boolean = false;
+
+  if (session?.user.birthday){
+    const [firstPart, ...rest] = session?.user.birthday.split(' ')
+    const secondPart = rest.join(' ');
+    if (parseInt(secondPart) === (month + 1)){
+      birthday = true
+    }
+  }
 
   return (
     <main>
       <div className="flex flex-row mb-[40px]">
         <div>
-          <div className="w-[350px] md:w-[1060px] h-[80px] calendarExp mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-col justify-center">
-            <p className="text-xl font-bold text-cusblue-deep">
-              노래 신청 시스템
-            </p>
-            <p className="text-sm text-text">
-              기상송과 노동요를 다운로드 없이 편하게 신청해보세요
-            </p>
-            <div></div>
+          <div className="w-[350px] md:w-[1060px] h-[80px] calendarExp mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center">
+            <div>
+              <p className="text-xl font-bold text-cusblue-deep">
+                노래 신청 시스템
+              </p>
+              <p className="text-sm text-text">
+                기상송과 노동요를 다운로드 없이 편하게 신청해보세요
+              </p>
+            </div>
+            <div className={`flex flex-col justify-center items-end ${birthday ? '' : 'hidden'}`}>
+              <p className='text-lg font-bold'>
+                🥳 다음달엔 내 생일~
+              </p>
+              <p className='text-sm'>
+                다음달 곡 신청을 예정보다 일주일 빨리 신청할 수 있습니다!
+              </p>
+            </div>
           </div>
           <div className="flex flex-row">
             <div>
               <div className="flex justify-between">
                 <div className="flex flex-row justify-between w-[70px]">
-                  <button className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150">
+                  <button 
+                    className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
+                    onClick={() => setMonth(true)}
+                  >
                     <Icon
                       icon="ep:arrow-up-bold"
                       className="text-lg"
-                      onClick={() => setMonth(true)}
                     />
                   </button>
-                  <button className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150">
+                  <button 
+                    className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
+                    onClick={() => setMonth(false)}
+                  >
                     <Icon
                       icon="ep:arrow-down-bold"
                       className="text-lg"
-                      onClick={() => setMonth(false)}
                     />
                   </button>
                 </div>
                 <div className="w-full flex justify-end">
                   <button
                     type="button"
-                    className={`flex justify-center items-center w-[50px] h-[30px] bg-red-500 rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : (session?.user?.name ? (session.user.name === (choosemusic ? curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student'] : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : 'hidden') : 'hidden')} hover:bg-red-700 duration-150`}
+                    className={`flex justify-center items-center w-[50px] h-[30px] bg-red-500 rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : (session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student'] : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : 'hidden') : 'hidden')} hover:bg-red-700 duration-150`}
                     onClick={() => deletePlaylist()}
                   >
                     <span
@@ -342,7 +372,7 @@ export default function Home() {
               </div>
               <div className="flex w-[800px] relative overflow-hidden">
                 <div
-                  className={`absoulute ssss flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
+                  className={`absoulute duration-500 flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
                 >
                   <div className="left-0 w-[800px] shadow-sm overflow-hidden bg-white rounded-lg">
                     <div className="flex flex-row justify-between items-center p-[12px]">
@@ -390,7 +420,7 @@ export default function Home() {
                                     )
                                   ) : null}
                                   {item.student !== 'None' ? (
-                                    <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
+                                    <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
                                       {item.student}
                                     </div>
                                   ) : (
@@ -400,7 +430,7 @@ export default function Home() {
                               );
                             })
                           : nwcalendarday.map((item, index) => {
-                              if (date >= 24) {
+                              if (date >= 24 || (date >= 17 && birthday)) {
                                 return (
                                   <div
                                     id={item.day.toString()}
@@ -409,10 +439,10 @@ export default function Home() {
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
                                     {item.student !== 'None' ? (
-                                      <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
+                                      <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
                                         {item.student}
                                       </div>
-                                    ) : (
+                                  ) : (
                                       ''
                                     )}
                                   </div>
@@ -484,17 +514,17 @@ export default function Home() {
                                     )
                                   ) : null}
                                   {item.student !== 'None' ? (
-                                    <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
+                                    <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
                                       {item.student}
                                     </div>
-                                  ) : (
+                                ) : (
                                     ''
                                   )}
                                 </div>
                               );
                             })
                           : nlcalendarday.map((item, index) => {
-                              if (date >= 24) {
+                              if (date >= 24 || (date >= 17 && birthday)) {
                                 return (
                                   <div
                                     id={item.day.toString()}
@@ -503,10 +533,10 @@ export default function Home() {
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
                                     {item.student !== 'None' ? (
-                                      <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
+                                      <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
                                         {item.student}
                                       </div>
-                                    ) : (
+                                  ) : (
                                       ''
                                     )}
                                   </div>
@@ -571,8 +601,9 @@ export default function Home() {
                     );
                   })}
               </div>
+              <div className='w-full bg-gray-300 h-[1px]'></div>
               <div
-                className={`h-full w-full flex items-center justify-center border-2 rounded-lg p-[5px] ${submitstudent !== '' ? 'hidden' : ''}`}
+                className={`h-full w-full flex items-center justify-center p-[5px] ${submitstudent !== '' ? 'hidden' : ''}`}
               >
                 <p className="text-text">신청된 날짜를 클릭해보세요</p>
               </div>

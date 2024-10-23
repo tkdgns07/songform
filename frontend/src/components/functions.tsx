@@ -24,3 +24,5 @@ const idExtract = (email: string): string | null => {
 
   return null;
 };
+
+export {idExtract};

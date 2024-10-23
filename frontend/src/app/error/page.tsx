@@ -10,7 +10,7 @@ function ErrorContent() {
   const error = searchParams.get('error');
 
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex flex-col justify-center mt-[30px]">
       <p className="text-3xl text-center font-bold">{error}</p>
       <Image src={errorimg} alt="KSHS_logo" className="w-[300px]" />
     </div>

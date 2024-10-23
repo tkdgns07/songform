@@ -1,5 +1,40 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import axios from 'axios';
+
+interface StudentInfo {
+  id: string;
+  name: string;
+  grade: number;
+  birthday: string;
+}
+
+const idExtract = (email: string): string | null => {
+  const regex = /h012s24(\d)(\d{2})/;
+  const match = email.match(regex);
+
+  if (match && match[1]) {
+    const firstDigit = parseInt(match[1], 10);  // 첫 번째 캡처된 한 자리 숫자
+    const restDigits = match[2];
+
+    let result: string;
+
+    if (firstDigit >= 1 && firstDigit <= 3) {
+      result = `1${firstDigit}${restDigits}`;
+    } else if (firstDigit >= 4 && firstDigit <= 6) {
+      result = `2${firstDigit - 3}${restDigits}`;
+    } else if (firstDigit >= 7 && firstDigit <= 9) {
+      result = `3${firstDigit - 6}${restDigits}`;
+    } else {
+      return null;
+    }
+    return result;
+  }
+
+  return null;
+};
+
+let userInfo: StudentInfo | null = null;
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -18,38 +53,52 @@ const authOptions: NextAuthOptions = {
     async signIn({ user }) {
       const email = user.email ?? '';
 
-      // 이메일이 h012s24xxx@gw1.kr 형식인지 확인
-      const regex = /^h012s24\d{3}@gw1\.kr$/;
-      if (!regex.test(email)) {
-        // 이메일 형식이 맞지 않으면 오류 페이지로 리다이렉트
+      const id = idExtract(email);
+      try {
+        const data = { id: id };
+        const response = await axios.post(
+          'http://127.0.0.1:8000/api/student-values/get-student/',
+          data
+        );
+        userInfo = response.data;
+      } catch (error) {
+        console.error('Error fetching student data', error);
+      }
+
+      if (!userInfo) {
         return '/error';
       }
+
       return true;
     },
     async jwt({ token, account }) {
-      // 로그인 시 사용자 정보 저장 및 액세스 토큰 추가
       if (account) {
         token.accessToken = account.access_token;
+        if (userInfo) {
+          token.name = userInfo.name;
+          token.id = userInfo.id;
+          token.birthday = userInfo.birthday;
+        }
       }
       return token;
     },
     async session({ session, token }) {
-      // 세션에 사용자 이름과 프로필 사진, 액세스 토큰 추가
       if (session.user) {
         session.user.name = token.name;
         session.user.image = token.picture;
-        session.accessToken = token.accessToken as string | undefined; // 액세스 토큰 추가
+        session.accessToken = token.accessToken as string | undefined;
+        session.user.id = token.id as string | undefined;
+        session.user.birthday = token.birthday as string | undefined;
       }
       return session;
     },
     async redirect({ baseUrl }) {
-      // 로그인 후 홈페이지로 리다이렉트
       return baseUrl;
     },
   },
   pages: {
-    signIn: '/auth/signin', // 로그인 페이지 설정
-    error: '/error', // 오류 페이지 설정
+    signIn: '/auth/signin',
+    error: '/error',
   },
 };
 
