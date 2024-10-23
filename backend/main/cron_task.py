@@ -2,37 +2,21 @@ import datetime
 import calendar
 from .models import wakeup_calendar_value, labor_calendar_value
 
-def calandersetup(model):
+def calandersetup():
     today = datetime.datetime.now()
-    
+
     current_year = today.year
     current_month = today.month
     
+    last_year = current_year - 1 if current_month == 1 else current_year
+    last_month = 12 if current_month == 1 else current_month - 1
+
     next_year = current_year + 1 if current_month == 12 else current_year
     next_month = 1 if current_month == 12 else current_month + 1
     
-    if model == 'wakeup':
-        wakeup_calendar_value.objects.all().delete()
-        makecalendar(current_year, current_month, wakeup_calendar_value)
-        makecalendar(next_year, next_month, wakeup_calendar_value)
-
-    elif model == 'labor':
-        labor_calendar_value.objects.all().delete()
-        makecalendar(current_year, current_month, labor_calendar_value)
-        makecalendar(next_year, next_month,labor_calendar_value)
     
-    elif model == 'all':
-        wakeup_calendar_value.objects.all().delete()
-        makecalendar(current_year, current_month, wakeup_calendar_value)
-        makecalendar(next_year, next_month, wakeup_calendar_value)
-        
-        labor_calendar_value.objects.all().delete()
-        makecalendar(current_year, current_month, labor_calendar_value)
-        makecalendar(next_year, next_month,labor_calendar_value)
-
-
-
-
+    wakeup_calendar_value.objects.filter(year=last_year, month=last_month).delete()
+    makecalendar(next_year, next_month, wakeup_calendar_value)
 
 def makecalendar(current_year, current_month, model):
     start_weekday, vaild_day = calendar.monthrange(current_year, current_month)

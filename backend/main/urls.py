@@ -9,5 +9,5 @@ router.register(r'wcalendar-values', WakeUpCalendarValueViewSet, basename='wcale
 router.register(r'lcalendar-values', LaborCalendarValueViewSet, basename='lcalendar')
 
 urlpatterns = [
-    path('', include(router.urls)),  # 라우터가 모든 등록된 뷰셋의 URL을 자동으로 매핑
+    path('', include(router.urls)),
 ]
