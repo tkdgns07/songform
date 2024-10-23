@@ -287,19 +287,24 @@ class GetStudentInfo(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def render4test_wakeup(request):
-    calandersetup('wakeup')
-    render_value = wakeup_calendar_value.objects.all()
-    result = {'result': render_value}
-    return render(request, 'home.html', result)
-
-def render4test_labor(request):
-    calandersetup('labor')
-    render_value = labor_calendar_value.objects.all()
-    result = {'result': render_value}
-    return render(request, 'home.html', result)
-
 def delete_all(request):
     wakeup_calendar_value.objects.all().delete()
     labor_calendar_value.objects.all().delete()
     return render(request, 'home.html')
+
+def start_rendering(request):    
+    next_year = current_year + 1 if current_month == 12 else current_year
+    next_month = 1 if current_month == 12 else current_month + 1
+    
+    makecalendar(current_year, current_month, wakeup_calendar_value)
+    makecalendar(current_year, current_month, labor_calendar_value)
+    
+    makecalendar(next_year, next_month, wakeup_calendar_value)
+    makecalendar(next_year, next_month, labor_calendar_value)
+    
+    render_value_wakeup = labor_calendar_value.objects.all()
+    render_value_labor = labor_calendar_value.objects.all()
+    
+    result = {'result': render_value_wakeup | render_value_labor}
+    
+    return render(request, 'home.html', result)

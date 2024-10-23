@@ -16,13 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main.views import render4test_labor, render4test_wakeup, delete_all
+from main.views import start_rendering, delete_all
 from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('main.urls')),
-    path('render4test-labor/', render4test_labor, name = 'render4test-labor'),
-    path('render4test-wakeup/', render4test_wakeup, name = 'render4test-labor'),
+    path('start-rendering/', start_rendering, name = 'render4test-labor'),
     path('delete', delete_all, name = 'delete'),
 ]
