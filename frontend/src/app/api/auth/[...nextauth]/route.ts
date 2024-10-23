@@ -100,6 +100,7 @@ const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
     error: '/error',
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export const GET = NextAuth(authOptions);
