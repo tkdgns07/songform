@@ -186,7 +186,7 @@ function SubmitContent() {
         };
         setLoading(true);
         const response = await axios.post(
-          `http://127.0.0.1:8000/api/wcalendar-values/update-${currentMonth < date.month ? 'n' : ''}calendar/`,
+          `http://127.0.0.1:8000/api/wcalendar-values/update-calendar/`,
           data,
         );
         toast.success('신청에 성공했습니다');
@@ -208,7 +208,7 @@ function SubmitContent() {
         };
         setLoading(true);
         const response = await axios.post(
-          `http://127.0.0.1:8000/api/lcalendar-values/update-${currentMonth < date.month ? 'n' : ''}calendar/`,
+          `http://127.0.0.1:8000/api/lcalendar-values/update-calendar/`,
           data,
         );
         toast.success('신청에 성공했습니다');

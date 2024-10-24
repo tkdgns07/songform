@@ -577,6 +577,7 @@ export default function Home() {
                 </a>
                 <p className="text-lg font-bold text-text">노래 미리보기</p>
               </div>
+              <div className='w-full bg-gray-300 h-[1px]'></div>
               <div className="w-full max-h-full overflow-y-auto">
                 {Array.isArray(videoInfo) &&
                   videoInfo.map((item) => {
@@ -600,7 +601,6 @@ export default function Home() {
                     );
                   })}
               </div>
-              <div className='w-full bg-gray-300 h-[1px]'></div>
               <div
                 className={`h-full w-full flex items-center justify-center p-[5px] ${submitstudent !== '' ? 'hidden' : ''}`}
               >

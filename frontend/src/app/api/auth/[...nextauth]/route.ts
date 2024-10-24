@@ -1,7 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 
 interface StudentInfo {
   id: string;
@@ -31,13 +30,10 @@ const idExtract = (email: string): string | null => {
     }
     return result;
   }
-  router.push('/error&error=email-err');
   return null
 };
 
 let userInfo: StudentInfo | null = null;
-
-const router = useRouter();
 
 const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -58,6 +54,7 @@ const authOptions: NextAuthOptions = {
       const email = user.email ?? '';
 
       const id = idExtract(email);
+      if(!id){return '/error&error=email-err'}
       try {
         const data = { id: id };
         const response = await axios.post(
@@ -70,7 +67,7 @@ const authOptions: NextAuthOptions = {
       }
 
       if (!userInfo) {
-        router.push('/error&error=server-email');
+        return '/error&error=server-email';
       }
 
       return true;
