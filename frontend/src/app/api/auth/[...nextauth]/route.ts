@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 interface StudentInfo {
   id: string;
@@ -30,11 +31,13 @@ const idExtract = (email: string): string | null => {
     }
     return result;
   }
-
-  return null;
+  router.push('/error&error=email-err');
+  return null
 };
 
 let userInfo: StudentInfo | null = null;
+
+const router = useRouter();
 
 const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -67,7 +70,7 @@ const authOptions: NextAuthOptions = {
       }
 
       if (!userInfo) {
-        return '/error';
+        router.push('/error&error=server-email');
       }
 
       return true;
@@ -99,7 +102,7 @@ const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    error: '/error?error=email-err',
+    error: '/error?error=login',
   },
 };
 

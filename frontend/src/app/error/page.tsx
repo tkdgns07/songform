@@ -19,6 +19,10 @@ function ErrorContent() {
     error = '아무 날짜도 입력받지 못했습니다.'
   }else if (error === 'email-err'){
     error = '학교 구글 계정으로 로그인 해주세요.'
+  }else if (error === 'server-email'){
+    error = '서버와 정보 통신에 실패했습니다.'
+  }else if (error === 'login'){
+    error = '구글 로그인 중 에러가 발생했습니다.'
   }
 
   return (
