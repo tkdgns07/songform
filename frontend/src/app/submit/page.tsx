@@ -166,12 +166,9 @@ function SubmitContent() {
 
       if (response.data.success) {
         playlistId = response.data.playlistId;
-      } else {
-        console.log('Failed to create playlist.');
       }
     } catch (error) {
-      console.error('Error creating playlist:', error);
-      router.push('/error?error=playlist-error');
+      router.push('/error?error=playlist-make-error');
     }
     setLoading(false);
   };

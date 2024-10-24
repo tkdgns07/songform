@@ -37,6 +37,7 @@ const idExtract = (email: string): string | null => {
 let userInfo: StudentInfo | null = null;
 
 const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -98,9 +99,8 @@ const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    error: '/error',
+    error: '/error?error=email-err',
   },
-  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export const GET = NextAuth(authOptions);

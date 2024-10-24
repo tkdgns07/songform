@@ -37,7 +37,6 @@ async function deletePlaylist(
     });
 
     if (response.status === 204) {
-      console.log('Playlist deleted successfully');
       return true;
     } else {
       console.error(

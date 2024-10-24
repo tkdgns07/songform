@@ -210,7 +210,6 @@ export default function Home() {
 
   const setMonth = (status: boolean) => {
     if (status !== curruntMonth) {
-      console.log(status)
       setClickedDay(-1);
       setCurruntMonth(status);
     }

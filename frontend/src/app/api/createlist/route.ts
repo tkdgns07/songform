@@ -53,7 +53,6 @@ async function createPlaylist(
         },
       },
     );
-
     return response.data.id;
   } catch (error) {
     console.error('Failed to create playlist', error);
