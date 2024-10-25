@@ -23,7 +23,10 @@ function ErrorContent() {
     error = '서버와 정보 통신에 실패했습니다.'
   }else if (error === 'login'){
     error = '구글 로그인 중 에러가 발생했습니다.'
+  }else if (error === 'already-submit'){
+    error = '이미 신청했습니다.'
   }
+  
 
   return (
     <div className="flex flex-col justify-center items-center m-[120px]">

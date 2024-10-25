@@ -336,7 +336,7 @@ export default function Home() {
                 <div className="w-full flex justify-end">
                   <button
                     type="button"
-                    className={`flex justify-center items-center w-[50px] h-[30px] bg-red-500 rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : (session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student'] : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : 'hidden') : 'hidden')} hover:bg-red-700 duration-150`}
+                    className={`flex justify-center items-center w-[50px] h-[30px] bg-red-500 rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : (session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student'] : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : (session.user.admin ? '' : 'hidden')) : 'hidden')} hover:bg-red-700 duration-150`}
                     onClick={() => deletePlaylist()}
                   >
                     <span

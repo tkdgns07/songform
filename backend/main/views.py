@@ -43,6 +43,20 @@ class WakeUpCalendarValueViewSet(viewsets.ModelViewSet):
     queryset = wakeup_calendar_value.objects.all()
     serializer_class = WakeUpCalendarValueSerializer
     
+    @action(detail=False, methods=['post'], url_path='check')
+    def check_student_w(self, request):
+        year = request.data.get('year')
+        month = request.data.get('month')
+        student = request.data.get('student')
+        
+        calendar_entries = wakeup_calendar_value.objects.filter(year=year, month=month, student=student)
+
+        if calendar_entries.exists():  # QuerySet이 존재하는지 명시적으로 확인
+            return Response({'error': 'Already exists in calendar.', 'request_data': request.data}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'message': 'Student can submit'}, status=status.HTTP_200_OK)
+
+    
     @action(detail=False, methods=['get'], url_path='get')
     def render_wabor(self, request):
         all_entries = wakeup_calendar_value.objects.all()
@@ -61,7 +75,7 @@ class WakeUpCalendarValueViewSet(viewsets.ModelViewSet):
             calendar_entry = wakeup_calendar_value.objects.get(year=year, month=month, day=day)
         except wakeup_calendar_value.DoesNotExist:
             return Response({'error': 'Calendar entry not found.', 'request_data': request.data}, status=status.HTTP_404_NOT_FOUND)
-
+        
         serializer = WakeUpCalendarValueSerializer(calendar_entry, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -110,6 +124,19 @@ class LaborCalendarValueViewSet(viewsets.ModelViewSet):
     queryset = labor_calendar_value.objects.all()  # 기본 쿼리셋 정의
     serializer_class = LaborCalendarValueSerializer
 
+    @action(detail=False, methods=['post'], url_path='check')
+    def check_student_l(self, request):
+        year = request.data.get('year')
+        month = request.data.get('month')
+        student = request.data.get('student')
+        
+        calendar_entries = labor_calendar_value.objects.filter(year=year, month=month, student=student)
+
+        if calendar_entries.exists():  # QuerySet이 존재하는지 명시적으로 확인
+            return Response({'error': 'Already exists in calendar.', 'request_data': request.data}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'message': 'Student can submit'}, status=status.HTTP_200_OK)
+
     @action(detail=False, methods=['get'], url_path='get')
     def render_labor(self, request):
         all_entries = labor_calendar_value.objects.all()
@@ -128,7 +155,7 @@ class LaborCalendarValueViewSet(viewsets.ModelViewSet):
             calendar_entry = labor_calendar_value.objects.get(year=year, month=month, day=day)
         except labor_calendar_value.DoesNotExist:
             return Response({'error': 'Calendar entry not found.', 'request_data': request.data}, status=status.HTTP_404_NOT_FOUND)
-
+        
         serializer = LaborCalendarValueSerializer(calendar_entry, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()

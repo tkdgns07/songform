@@ -7,11 +7,6 @@ const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN as string;
 
 const REFRESH_URL = 'https://oauth2.googleapis.com/token';
 
-const MAX_DELAY = 30000; // 최대 지연 시간 30초
-
-// Delay function to introduce a delay between API calls
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 async function refreshAccessToken(): Promise<string | null> {
   try {
     const response = await axios.post(REFRESH_URL, {
@@ -60,41 +55,34 @@ async function createPlaylist(
   }
 }
 
-async function addVideoToPlaylist(
+async function addVideosToPlaylist(
   accessToken: string,
   playlistId: string,
-  videoId: string,
-  delayMs: number,
+  videoIds: string[],
 ): Promise<void> {
   try {
-    // If delay is greater than MAX_DELAY, throw an error
-    if (delayMs > MAX_DELAY) {
-      throw new Error(`Delay time exceeded 30 seconds. Delay was ${delayMs}ms`);
-    }
-
-    // Wait for the delay time before making the API call
-    await delay(delayMs);
-
-    await axios.post(
-      'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet',
-      {
-        snippet: {
-          playlistId: playlistId,
-          resourceId: {
-            kind: 'youtube#video',
-            videoId: videoId,
+    for (const videoId of videoIds) {
+      await axios.post(
+        'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet',
+        {
+          snippet: {
+            playlistId: playlistId,
+            resourceId: {
+              kind: 'youtube#video',
+              videoId: videoId,
+            },
           },
         },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
         },
-      },
-    );
+      );
+    }
   } catch (error) {
-    console.error(`Failed to add video ${videoId} to playlist`, error);
+    console.error('Failed to add videos to playlist', error);
   }
 }
 
@@ -128,11 +116,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let delayMs = 1000;
-  for (const videoId of videoIds) {
-    await addVideoToPlaylist(accessToken, playlistId, videoId, delayMs);
-    delayMs += 2; // 지연 시간을 두 배로 늘림 (Exponential Backoff)
-  }
+  await addVideosToPlaylist(accessToken, playlistId, videoIds);
 
   return NextResponse.json({
     success: true,

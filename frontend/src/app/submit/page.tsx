@@ -44,7 +44,6 @@ function SubmitContent() {
   const songParams = useSearchParams().get('song')?.toString();
 
   const currentDate = new Date();
-  const currentMonth = currentDate.getMonth() + 1;
 
   useEffect(() => {
     if (!dateParams || (songParams !== 'labor' && songParams !== 'wakeup')) {
@@ -174,6 +173,17 @@ function SubmitContent() {
   };
 
   const submitmusic = async () => {
+    try{
+      const data = {
+        year: date.year,
+        month: date.month,
+        student: `${session?.user.id} ${session?.user.name}`,
+      };
+      const response = await axios.post(`http://127.0.0.1:8000/api/${songParams === 'wakeup' ? 'w' : 'l'}calendar-values/check/`, data)
+    } catch (error){
+      router.push('/error?error=already-submit');
+      return null
+    }
     if (videodetails.length >= 5 && songtype == 'wakeup') {
       await handleCreatePlaylist(true);
       try {
