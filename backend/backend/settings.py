@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'rest_framework',
-    'django_crontab',
     
     'main',
 ]
@@ -131,8 +130,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-]
-
-CRONJOBS = [
-    ('0 0 1 * *', "main.cron.calandersetup", '>> /tmp/log/ggbc_cron.log')
+    "songchan.vercel.app"
 ]
