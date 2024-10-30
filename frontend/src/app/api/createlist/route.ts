@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
   );
   if (!playlistId) {
     return NextResponse.json(
-      { message: 'Failed to create playlist' },
+      { message: 'Failed to refresh access token' },
       { status: 500 },
     );
   }

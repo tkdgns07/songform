@@ -56,7 +56,7 @@ const authOptions: NextAuthOptions = {
       const email = user.email ?? '';
 
       const id = idExtract(email);
-      if(!id){return '/error&error=email-err'}
+      if(!id){return '/error?error=email-err'}
       if(id === "admin"){return true}
       try {
         const data = { id: id };
@@ -70,7 +70,7 @@ const authOptions: NextAuthOptions = {
       }
 
       if (!userInfo) {
-        return '/error&error=server-email';
+        return '/error?error=server-email';
       }
 
       return true;

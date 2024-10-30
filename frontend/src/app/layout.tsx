@@ -28,7 +28,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <SessionProvider>
-          <div className="px-[20px] w-[100%] h-[55px] flex items-center justify-between mb-[10px] menubar">
+          <div className="p-[10px] w-[100%] h-[55px] flex items-center justify-between mb-[10px] menubar">
             <Link
               href={{ pathname: '/' }}
               className="ml-[0px] h-[90%] flex direction-col items-center"
@@ -38,7 +38,7 @@ export default function RootLayout({
               <div className="w-[1.5px] h-[1.3em] bar m-[5px]"></div>
               <p className="menutext text-base">KSHS</p>
             </Link>
-            <LoginButton />
+            <LoginButton/>
           </div>
           <div className="mt-[65px] w-full flex justify-center">{children}</div>
           <Toaster />
