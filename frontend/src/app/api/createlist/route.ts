@@ -19,7 +19,7 @@ async function refreshAccessToken(): Promise<string | null> {
     const newAccessToken = response.data.access_token;
     return newAccessToken;
   } catch (error) {
-    console.error('Failed to refresh access token', error);
+    console.error('Failed to refreㅇㅇㅇsh access token', error);
     return null;
   }
 }
