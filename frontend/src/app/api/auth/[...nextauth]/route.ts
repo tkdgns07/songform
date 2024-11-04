@@ -61,7 +61,7 @@ const authOptions: NextAuthOptions = {
       try {
         const data = { id: id };
         const response = await axios.post(
-          'http://127.0.0.1:8000/api/student-values/get-student/',
+          'api/data/student/get',
           data
         );
         userInfo = response.data;
