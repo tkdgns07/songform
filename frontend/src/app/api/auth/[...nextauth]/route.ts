@@ -62,7 +62,12 @@ const authOptions: NextAuthOptions = {
         const data = { id: id };
         const response = await axios.post(
           'api/data/student/get',
-          data
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.CRON_SECRET}`,
+            },    
+          }
         );
         userInfo = response.data;
       } catch (error) {

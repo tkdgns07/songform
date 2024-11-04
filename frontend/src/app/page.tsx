@@ -48,6 +48,11 @@ export default function Home() {
     try {
       const wresponse = await axios.get(
         'api/data/wake/get',
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.CRON_SECRET}`,
+          }
+        }
       );
       const wdata: Dayinfo[] = wresponse.data;
 
@@ -59,6 +64,11 @@ export default function Home() {
 
       const lresponse = await axios.get(
         'api/data/labor/get',
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.CRON_SECRET}`,
+          }
+        }
       );
       const ldata: Dayinfo[] = lresponse.data;
 
@@ -86,6 +96,9 @@ export default function Home() {
           params: {
             playlistId: playlistId,
           },
+          headers: {
+            Authorization: `Bearer ${process.env.CRON_SECRET}`,
+          }
         });
 
         setVideoIds(response.data.videoIds);
@@ -106,6 +119,9 @@ export default function Home() {
           params: {
             videoUrl: videoIds, // 여러 URL을 배열로 전달할 수 있습니다.
           },
+          headers: {
+            Authorization: `Bearer ${process.env.CRON_SECRET}`,
+          }
         });
         const data = response.data;
         if (clickedSub !== -1) {
@@ -224,6 +240,7 @@ export default function Home() {
         },
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
         },
       });
 
@@ -254,6 +271,7 @@ export default function Home() {
             {
               headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${process.env.CRON_SECRET}`,
               },
             }
           );

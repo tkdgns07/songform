@@ -2,7 +2,11 @@ import axios from 'axios';
 
 export async function GET() {
   try {
-    await axios.get('api/data/reset');
+    await axios.get('api/data/reset', {
+      headers: {
+        Authorization: `Bearer ${process.env.CRON_SECRET}`,
+      },
+    });
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,

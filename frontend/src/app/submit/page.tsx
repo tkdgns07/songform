@@ -113,6 +113,9 @@ function SubmitContent() {
           params: {
             videoUrl: inputvalue,
           },
+          headers: {
+            Authorization: `Bearer ${process.env.CRON_SECRET}`,
+          },    
         });
 
         const videoDetails: Youtbeinfo = response.data;
@@ -161,6 +164,9 @@ function SubmitContent() {
         videoIds,
         playlistTitle,
         playlistDescription,
+        headers: {
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
+        },      
       });
 
       if (response.data.success) {
@@ -179,7 +185,14 @@ function SubmitContent() {
         month: date.month,
         student: `${session?.user.id} ${session?.user.name}`,
       };
-      const response = await axios.post(`api/${songParams === 'wakeup' ? 'wakeup' : 'labor'}/student/check/`, data)
+      const response = await axios.post(`api/${songParams === 'wakeup' ? 'wakeup' : 'labor'}/student/check/`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.CRON_SECRET}`,
+          },    
+        }
+      )
     } catch (error){
       router.push('/error?error=already-submit');
       return null
@@ -198,6 +211,11 @@ function SubmitContent() {
         const response = await axios.post(
           `api/data/wakeup/add`,
           data,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.CRON_SECRET}`,
+            },      
+          }
         );
         toast.success('신청에 성공했습니다');
         router.push('/');
@@ -220,6 +238,11 @@ function SubmitContent() {
         const response = await axios.post(
           `api/data/labor/add`,
           data,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.CRON_SECRET}`,
+            },      
+          }
         );
         toast.success('신청에 성공했습니다');
         router.push('/');
