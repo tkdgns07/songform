@@ -18,7 +18,7 @@ async function createRecord(model : string, year : number, month : number, day :
                 month: month,
                 day: day,
                 student: student,
-                song : song,
+                music_url : song,
             },
         });    
     }else if (model === 'labor'){
@@ -28,7 +28,7 @@ async function createRecord(model : string, year : number, month : number, day :
                 month: month,
                 day: day,
                 student: student,
-                song : song,
+                music_url : song,
             },
         });    
     }
@@ -46,18 +46,21 @@ async function makeCalendar(model : string, year : number, month : number){
     const loopLimit = (all_day <= 35 ? 36 : 43) - daysInMonth - startWeekday;
 
     for (let i = 1; i < startWeekday+1; i++) {
-        createRecord(model, year, month, 0, 'None', 'None')
+        await createRecord(model, year, month, 0, 'None', 'None')
     }
-    for (let i = 1; i < daysInMonth+1; i++) {
-        createRecord(model, year, month, i, 'None', 'None')
+    for (let j = 1; j < daysInMonth+1; j++) {
+        await createRecord(model, year, month, j, 'None', 'None')
     }
-    for (let i = 1; i < loopLimit-daysInMonth-startWeekday; i++) {
-        createRecord(model, year, month, 0, 'None', 'None')
+    for (let k = 1; k < loopLimit-daysInMonth-startWeekday; k++) {
+        await createRecord(model, year, month, 0, 'None', 'None')
     }
 }
 
 
 export async function GET(request: NextRequest) {    
+    await prisma.wakeupCalendar.deleteMany({});
+    await prisma.laborCalendar.deleteMany({});
+
     try {
         const wakeupdeleteResult = await prisma.wakeupCalendar.deleteMany({
             where: {
@@ -78,8 +81,8 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ status: 404, error: 'No records found to delete' });
         }
 
-        makeCalendar('wakeup', currentYear, currentMonth)
-        makeCalendar('labor', currentYear, currentMonth)   
+        await makeCalendar('wakeup', currentYear, currentMonth)
+        await makeCalendar('labor', currentYear, currentMonth)   
 
         return NextResponse.json({ status: 200, message: "cron handled" });
     } catch (error) {

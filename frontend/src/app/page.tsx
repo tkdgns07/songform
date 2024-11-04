@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 interface Dayinfo {
+  id: number
   year: number;
   month: number;
   day: number;
@@ -47,14 +48,17 @@ export default function Home() {
   const fetchCalendarData = async () => {
     try {
       const wresponse = await axios.get(
-        'api/data/wake/get',
+        'api/data/wakeup/get',
         {
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
           }
         }
       );
-      const wdata: Dayinfo[] = wresponse.data;
+      const wdata: Dayinfo[] = wresponse.data.data;
+
+      console.log(wresponse);
+      console.log(wdata)
 
       const currunt_wdays = wdata.filter((item) => item.month === month);
       const next_wdays = wdata.filter((item) => item.month !== month);
@@ -70,7 +74,7 @@ export default function Home() {
           }
         }
       );
-      const ldata: Dayinfo[] = lresponse.data;
+      const ldata: Dayinfo[] = lresponse.data.data;
 
       const currunt_ldays = ldata.filter((item) => item.month === month);
       const next_ldays = ldata.filter((item) => item.month !== month);

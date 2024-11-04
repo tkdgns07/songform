@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
     try {
-        const { year, month, day, student, song } = await request.json();
+        const { year, month, day, student, music_url } = await request.json();
 
         const existingRecord = await prisma.laborCalendar.findFirst({
             where: {
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
             where: { id: existingRecord.id },
             data: { 
                 student: student,
-                song: song,
+                music_url: song,
             }
         });
 

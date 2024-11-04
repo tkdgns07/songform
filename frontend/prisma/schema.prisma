@@ -14,7 +14,7 @@ model WakeupCalendar {
   month   Int
   day     Int
   student String 
-  song    String
+  music_url    String  @default("None")
 }
 
 model LaborCalendar {
@@ -23,7 +23,7 @@ model LaborCalendar {
   month   Int
   day     Int
   student String 
-  song    String
+  music_url    String  @default("None")
 }
 
 model Students {
