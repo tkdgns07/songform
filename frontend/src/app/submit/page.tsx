@@ -179,7 +179,7 @@ function SubmitContent() {
         month: date.month,
         student: `${session?.user.id} ${session?.user.name}`,
       };
-      const response = await axios.post(`http://127.0.0.1:8000/api/${songParams === 'wakeup' ? 'w' : 'l'}calendar-values/check/`, data)
+      const response = await axios.post(`api/${songParams === 'wakeup' ? 'wakeup' : 'labor'}/student/check/`, data)
     } catch (error){
       router.push('/error?error=already-submit');
       return null
@@ -196,7 +196,7 @@ function SubmitContent() {
         };
         setLoading(true);
         const response = await axios.post(
-          `http://127.0.0.1:8000/api/wcalendar-values/update-calendar/`,
+          `api/data/wakeup/add`,
           data,
         );
         toast.success('신청에 성공했습니다');
@@ -218,7 +218,7 @@ function SubmitContent() {
         };
         setLoading(true);
         const response = await axios.post(
-          `http://127.0.0.1:8000/api/lcalendar-values/update-calendar/`,
+          `api/data/labor/add`,
           data,
         );
         toast.success('신청에 성공했습니다');

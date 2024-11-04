@@ -47,7 +47,7 @@ export default function Home() {
   const fetchCalendarData = async () => {
     try {
       const wresponse = await axios.get(
-        'http://127.0.0.1:8000/api/wcalendar-values/get',
+        'api/data/wake/get',
       );
       const wdata: Dayinfo[] = wresponse.data;
 
@@ -58,7 +58,7 @@ export default function Home() {
       setnwCalendar(next_wdays);
 
       const lresponse = await axios.get(
-        'http://127.0.0.1:8000/api/lcalendar-values/get',
+        'api/data/labor/get',
       );
       const ldata: Dayinfo[] = lresponse.data;
 
@@ -243,17 +243,20 @@ export default function Home() {
               day: currentDay,
             } = nwcalendarday[clickedSub]);
           }
-          const url = `http://127.0.0.1:8000/api/${choosemusic ? 'w' : 'l'}calendar-values/delete-calendar/`;
-          const response_deleting = await axios.delete(url, {
-            data: {
+          const url = `api/${choosemusic ? 'wakeup' : 'labor'}/delete`;
+          const response_deleting = await axios.post(
+            url,
+            {
               year: currentYear,
               month: currentMonth,
               day: currentDay,
             },
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
 
           if (
             response_deleting.status === 200 ||
