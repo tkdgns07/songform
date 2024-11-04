@@ -13,7 +13,7 @@ model WakeupCalendar {
   year    Int
   month   Int
   day     Int
-  student String @unique
+  student String 
   song    String
 }
 
@@ -22,12 +22,12 @@ model LaborCalendar {
   year    Int
   month   Int
   day     Int
-  student String @unique
+  student String 
   song    String
 }
 
 model Students {
-  id        Int    @id
+  id        Int    @id @unique
   name      String
   grade     Int
   birthday  String
