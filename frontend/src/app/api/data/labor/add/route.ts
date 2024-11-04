@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
             where: { id: existingRecord.id },
             data: { 
                 student: student,
-                music_url: song,
+                music_url: music_url,
             }
         });
 
