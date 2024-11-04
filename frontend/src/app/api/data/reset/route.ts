@@ -3,109 +3,83 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient();
 
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth() + 1;
 
-export async function GET(request: NextRequest) {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth() + 1;
+const previousYear = currentMonth === 1 ? currentYear-1 : currentYear;
+const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
 
-    const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
-    const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+async function createRecord(model : string, year : number, month : number, day : number, student : string, song : string) {
+    if (model === 'wakeup'){
+        await prisma.wakeupCalendar.create({
+            data: {
+                year: year,
+                month: month,
+                day: day,
+                student: student,
+                song : song,
+            },
+        });    
+    }else if (model === 'labor'){
+        await prisma.laborCalendar.create({
+            data: {
+                year: year,
+                month: month,
+                day: day,
+                student: student,
+                song : song,
+            },
+        });    
+    }
+}
 
-    const nextYear = currentMonth === 12 ? 1 : currentMonth + 1;
-    const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
-
-    const firstDay = new Date(currentYear, currentMonth - 1, 1);
-    const lastDay = new Date(currentYear, currentMonth, 0);
+async function makeCalendar(model : string, year : number, month : number){
+    const firstDay = new Date(year, month - 1, 1);
+    const lastDay = new Date(year, month, 0);
 
     const startWeekday = firstDay.getDay();
     const daysInMonth = lastDay.getDate();
 
-    
+    const all_day = startWeekday + daysInMonth
+
+    const loopLimit = (all_day <= 35 ? 36 : 43) - daysInMonth - startWeekday;
+
+    for (let i = 1; i < startWeekday+1; i++) {
+        createRecord(model, year, month, 0, 'None', 'None')
+    }
+    for (let i = 1; i < daysInMonth+1; i++) {
+        createRecord(model, year, month, i, 'None', 'None')
+    }
+    for (let i = 1; i < loopLimit-daysInMonth-startWeekday; i++) {
+        createRecord(model, year, month, 0, 'None', 'None')
+    }
+}
+
+
+export async function GET(request: NextRequest) {    
     try {
-        const deleteResult = await prisma.wakeupCalendar.deleteMany({
+        const wakeupdeleteResult = await prisma.wakeupCalendar.deleteMany({
             where: {
                 year : previousYear,
                 month : previousMonth,
             }
         });
 
-        if (deleteResult.count === 0) {
+        const laborupdeleteResult = await prisma.laborCalendar.deleteMany({
+            where: {
+                year : previousYear,
+                month : previousMonth,
+            }
+        });
+
+
+        if (wakeupdeleteResult.count === 0 || laborupdeleteResult.count === 0) {
             return NextResponse.json({ status: 404, error: 'No records found to delete' });
         }
 
-        const all_day = startWeekday + daysInMonth
-        if (all_day <= 35) {
-            for (let i = 1; i < startWeekday+1; i++) {
-                const createdRecords = await prisma.wakeupCalendar.create({
-                    data: {
-                        year: nextYear,
-                        month: nextMonth,
-                        day: 0,
-                        student: 'None',
-                        song : 'None'
-                    },
-                });
-            }
-            for (let i = 1; i < daysInMonth+1; i++) {
-                const createdRecords = await prisma.wakeupCalendar.create({
-                    data: {
-                        year: nextYear,
-                        month: nextMonth,
-                        day: i,
-                        student: 'None',
-                        song : 'None'
-                    },
-                });
-            }
-            for (let i = 1; i < 36-daysInMonth-startWeekday; i++) {
-                const createdRecords = await prisma.wakeupCalendar.create({
-                    data: {
-                        year: nextYear,
-                        month: nextMonth,
-                        day: 0,
-                        student: 'None',
-                        song : 'None'
-                    },
-                });
-            }
-        }else if(all_day > 35){
-            for (let i = 1; i < startWeekday+1; i++) {
-                const createdRecords = await prisma.wakeupCalendar.create({
-                    data: {
-                        year: nextYear,
-                        month: nextMonth,
-                        day: 0,
-                        student: 'None',
-                        song : 'None'
-                    },
-                });
-            }
-            for (let i = 1; i < daysInMonth+1; i++) {
-                const createdRecords = await prisma.wakeupCalendar.create({
-                    data: {
-                        year: nextYear,
-                        month: nextMonth,
-                        day: i,
-                        student: 'None',
-                        song : 'None'
-                    },
-                });
-            }
-            for (let i = 1; i < 43-daysInMonth-startWeekday; i++) {
-                const createdRecords = await prisma.wakeupCalendar.create({
-                    data: {
-                        year: nextYear,
-                        month: nextMonth,
-                        day: 0,
-                        student: 'None',
-                        song : 'None'
-                    },
-                });
-            }
-        }
-        
-        
+        makeCalendar('wakeup', currentYear, currentMonth)
+        makeCalendar('labor', currentYear, currentMonth)   
 
         return NextResponse.json({ status: 200, message: "cron handled" });
     } catch (error) {
