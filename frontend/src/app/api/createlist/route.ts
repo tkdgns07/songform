@@ -4,6 +4,7 @@ import axios from 'axios';
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET as string;
 const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN as string;
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const REFRESH_URL = 'https://oauth2.googleapis.com/token';
 

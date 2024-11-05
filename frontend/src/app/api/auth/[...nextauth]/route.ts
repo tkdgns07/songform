@@ -9,6 +9,8 @@ interface StudentInfo {
   birthday: string;
 }
 
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const idExtract = (email: string): string | null => {
   const regex = /h012s24(\d)(\d{2})/;
   const match = email.match(regex);
@@ -61,7 +63,7 @@ const authOptions: NextAuthOptions = {
       try {
         const data = { id: id };
         const response = await axios.post(
-          'api/data/student/get',
+          `${baseURL}/api/data/student/get`,
           data,
           {
             headers: {

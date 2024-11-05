@@ -23,6 +23,8 @@ interface Youtbeinfo {
   link: string;
 }
 
+const baseURL = process.env.NEXTAUTH_URL;
+
 export default function Home() {
   const [wcalendarday, setwCalendar] = useState<Dayinfo[]>([]);
   const [nwcalendarday, setnwCalendar] = useState<Dayinfo[]>([]);
@@ -50,7 +52,7 @@ export default function Home() {
     setLoading('data')
     try {
       const wresponse = await axios.get(
-        'api/data/wakeup/get',
+        `${baseURL}/api/data/wakeup/get`,
         {
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
@@ -66,7 +68,7 @@ export default function Home() {
       setnwCalendar(next_wdays);
 
       const lresponse = await axios.get(
-        'api/data/labor/get',
+        `${baseURL}/api/data/labor/get`,
         {
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
@@ -97,7 +99,7 @@ export default function Home() {
     const fetchVideoIds = async () => {
       try {
         setLoading('listloading');
-        const response = await axios.get('/api/getlist', {
+        const response = await axios.get(`${baseURL}/api/getlist`, {
           params: {
             playlistId: playlistId,
           },
@@ -120,7 +122,7 @@ export default function Home() {
     if (!videoIds) return;
     const fetchVideoinfo = async () => {
       try {
-        const response = await axios.get('/api/youtubeinfo', {
+        const response = await axios.get(`${baseURL}/api/youtubeinfo`, {
           params: {
             videoUrl: videoIds, // 여러 URL을 배열로 전달할 수 있습니다.
           },
@@ -239,7 +241,7 @@ export default function Home() {
   const deletePlaylist = async () => {
     setLoading('deleting');
     try {
-      const response = await axios.delete('/api/deletelist', {
+      const response = await axios.delete(`${baseURL}/api/deletelist`, {
         data: {
           playlistId: playlistId,
         },
@@ -265,7 +267,7 @@ export default function Home() {
               day: currentDay,
             } = nwcalendarday[clickedSub]);
           }
-          const url = `api/${choosemusic ? 'wakeup' : 'labor'}/delete`;
+          const url = `${baseURL}/api/${choosemusic ? 'wakeup' : 'labor'}/delete`;
           const response_deleting = await axios.post(
             url,
             {

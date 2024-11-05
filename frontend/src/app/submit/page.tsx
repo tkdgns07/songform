@@ -7,7 +7,6 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-
 import { toast } from 'sonner';
 
 interface inputdate {
@@ -21,6 +20,8 @@ interface Youtbeinfo {
   title: string;
   link: string;
 }
+
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 function SubmitContent() {
   const [inputhover, setInputhover] = useState<boolean>(false);
@@ -109,7 +110,7 @@ function SubmitContent() {
 
       try {
         // API 요청을 통해 YouTube 비디오 정보를 가져옴
-        const response = await axios.get('/api/youtubeinfo', {
+        const response = await axios.get(`${baseURL}/api/youtubeinfo`, {
           params: {
             videoUrl: inputvalue,
           },
@@ -160,7 +161,7 @@ function SubmitContent() {
       const playlistDescription = session?.user?.name
         ? `${session.user.id} ${session.user.name} 신청`
         : 'Unknown user 신청';
-      const response = await axios.post('/api/createlist', {
+      const response = await axios.post(`${baseURL}/api/createlist`, {
         videoIds,
         playlistTitle,
         playlistDescription,
@@ -185,7 +186,7 @@ function SubmitContent() {
         month: date.month,
         student: `${session?.user.id} ${session?.user.name}`,
       };
-      const response = await axios.post(`api/${songParams === 'wakeup' ? 'wakeup' : 'labor'}/student/check/`,
+      const response = await axios.post(`${baseURL}api/${songParams === 'wakeup' ? 'wakeup' : 'labor'}/student/check/`,
         data,
         {
           headers: {
@@ -209,7 +210,7 @@ function SubmitContent() {
         };
         setLoading(true);
         const response = await axios.post(
-          `api/data/wakeup/add`,
+          `${baseURL}api/data/wakeup/add`,
           data,
           {
             headers: {
@@ -236,7 +237,7 @@ function SubmitContent() {
         };
         setLoading(true);
         const response = await axios.post(
-          `api/data/labor/add`,
+        `${baseURL}api/data/labor/add`,
           data,
           {
             headers: {
