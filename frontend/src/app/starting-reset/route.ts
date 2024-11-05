@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from "@prisma/client"
+import { NextResponse } from 'next/server';
+import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient();
 
@@ -20,7 +20,7 @@ async function createRecord(model : string, year : number, month : number, day :
                 student: student,
                 music_url : song,
             },
-        });    
+        });
     }else if (model === 'labor'){
         await prisma.laborCalendar.create({
             data: {
@@ -56,7 +56,7 @@ async function makeCalendar(model : string, year : number, month : number){
     }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     await prisma.wakeupCalendar.deleteMany({});
     await prisma.laborCalendar.deleteMany({});
 
