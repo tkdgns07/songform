@@ -6,6 +6,7 @@ import { Icon } from '@iconify/react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Dayinfo {
   id: number
@@ -46,6 +47,7 @@ export default function Home() {
   const date: number = now.getDate();
   
   const fetchCalendarData = async () => {
+    setLoading('data')
     try {
       const wresponse = await axios.get(
         'api/data/wakeup/get',
@@ -84,6 +86,7 @@ export default function Home() {
     } catch (error) {
       router.push('error?error=cant-cfetch-calendar');
     }
+    setLoading('')
   };
 
   useEffect(() => {
@@ -425,7 +428,7 @@ export default function Home() {
                         <span className="day-name">F</span>
                         <span className="day-name text-blue-600">S</span>
                       </div>
-                      <div className="grid grid-cols-7">
+                      <div className={`grid grid-cols-7 ${loading === 'data' ? 'hidden' : ''}`}>
                         {curruntMonth
                           ? wcalendarday.map((item, index) => {
                               return (
@@ -490,6 +493,7 @@ export default function Home() {
                               }
                             })}
                       </div>
+                      <Skeleton className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}/>
                     </div>
                   </div>
                   <div className="right-0 ml-[50px] w-[350px] md:w-[800px] shadow-sm overflow-hidden bg-white rounded-lg">
