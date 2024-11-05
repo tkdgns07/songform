@@ -23,8 +23,6 @@ interface Youtbeinfo {
   link: string;
 }
 
-const baseURL = process.env.NEXTAUTH_URL;
-
 export default function Home() {
   const [wcalendarday, setwCalendar] = useState<Dayinfo[]>([]);
   const [nwcalendarday, setnwCalendar] = useState<Dayinfo[]>([]);
@@ -52,7 +50,7 @@ export default function Home() {
     setLoading('data')
     try {
       const wresponse = await axios.get(
-        `${baseURL}/api/data/wakeup/get`,
+        `/api/data/wakeup/get`,
         {
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
@@ -68,7 +66,7 @@ export default function Home() {
       setnwCalendar(next_wdays);
 
       const lresponse = await axios.get(
-        `${baseURL}/api/data/labor/get`,
+        `/api/data/labor/get`,
         {
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
@@ -83,7 +81,6 @@ export default function Home() {
       setlCalendar(currunt_ldays);
       setnlCalendar(next_ldays);
     } catch (error) {
-      console.log(error)
       router.push('error?error=cant-cfetch-calendar');
     }
     setLoading('')
@@ -99,7 +96,7 @@ export default function Home() {
     const fetchVideoIds = async () => {
       try {
         setLoading('listloading');
-        const response = await axios.get(`${baseURL}/api/getlist`, {
+        const response = await axios.get(`/api/getlist`, {
           params: {
             playlistId: playlistId,
           },
@@ -122,7 +119,7 @@ export default function Home() {
     if (!videoIds) return;
     const fetchVideoinfo = async () => {
       try {
-        const response = await axios.get(`${baseURL}/api/youtubeinfo`, {
+        const response = await axios.get(`/api/youtubeinfo`, {
           params: {
             videoUrl: videoIds, // 여러 URL을 배열로 전달할 수 있습니다.
           },
@@ -241,7 +238,7 @@ export default function Home() {
   const deletePlaylist = async () => {
     setLoading('deleting');
     try {
-      const response = await axios.delete(`${baseURL}/api/deletelist`, {
+      const response = await axios.delete(`/api/deletelist`, {
         data: {
           playlistId: playlistId,
         },
@@ -267,7 +264,7 @@ export default function Home() {
               day: currentDay,
             } = nwcalendarday[clickedSub]);
           }
-          const url = `${baseURL}/api/${choosemusic ? 'wakeup' : 'labor'}/delete`;
+          const url = `/api/data/${choosemusic ? 'wakeup' : 'labor'}/delete`;
           const response_deleting = await axios.post(
             url,
             {
@@ -300,7 +297,6 @@ export default function Home() {
         toast.error('삭제중 오류가 발생했습니다.');
       }
     } catch (error) {
-      console.error('Error while deleting playlist:', error);
       toast.error('삭제중 오류가 발생했습니다.');
     }
     setLoading('');

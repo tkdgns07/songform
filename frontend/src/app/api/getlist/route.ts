@@ -51,7 +51,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ videoIds });
   } catch (error) {
-    console.error('Failed to fetch video IDs from playlist', error);
     return NextResponse.json(
       { error: 'Failed to fetch video IDs from playlist' },
       { status: 500 },

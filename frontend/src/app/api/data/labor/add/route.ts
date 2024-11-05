@@ -29,7 +29,6 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({ status: 200, data: updatedRecord });
     } catch (error) {
-        console.error(error);
         return NextResponse.json({ status: 500, error: 'Internal Server Error' });
     } finally {
         await prisma.$disconnect();

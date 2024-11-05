@@ -25,7 +25,10 @@ function ErrorContent() {
     error = '구글 로그인 중 에러가 발생했습니다.'
   }else if (error === 'already-submit'){
     error = '이미 신청했습니다.'
+  }else if (error === 'student-error'){
+    error = '학생 정보 통신에 실패했습니다.'
   }
+  
   
 
   return (

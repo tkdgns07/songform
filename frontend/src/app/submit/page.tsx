@@ -21,8 +21,6 @@ interface Youtbeinfo {
   link: string;
 }
 
-const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 function SubmitContent() {
   const [inputhover, setInputhover] = useState<boolean>(false);
   const [inputclicked, setInputclicked] = useState<boolean>(false);
@@ -110,7 +108,7 @@ function SubmitContent() {
 
       try {
         // API 요청을 통해 YouTube 비디오 정보를 가져옴
-        const response = await axios.get(`${baseURL}/api/youtubeinfo`, {
+        const response = await axios.get(`/api/youtubeinfo`, {
           params: {
             videoUrl: inputvalue,
           },
@@ -132,7 +130,6 @@ function SubmitContent() {
           toast.error('유효한 유튜브를 입력하세요');
         }
       } catch (error) {
-        console.error('Error fetching video details:', error);
         toast.error('유효한 유튜브를 입력하세요');
       }
     }
@@ -161,7 +158,7 @@ function SubmitContent() {
       const playlistDescription = session?.user?.name
         ? `${session.user.id} ${session.user.name} 신청`
         : 'Unknown user 신청';
-      const response = await axios.post(`${baseURL}/api/createlist`, {
+      const response = await axios.post(`/api/createlist`, {
         videoIds,
         playlistTitle,
         playlistDescription,
@@ -179,14 +176,14 @@ function SubmitContent() {
     setLoading(false);
   };
 
-  const submitmusic = async () => {
+  const checkStudent = async () => {
     try{
       const data = {
         year: date.year,
         month: date.month,
         student: `${session?.user.id} ${session?.user.name}`,
       };
-      const response = await axios.post(`${baseURL}api/${songParams === 'wakeup' ? 'wakeup' : 'labor'}/student/check/`,
+      const response = await axios.post(`api/data/${songParams === 'wakeup' ? 'wakeup' : 'labor'}/check/`,
         data,
         {
           headers: {
@@ -194,7 +191,22 @@ function SubmitContent() {
           },    
         }
       )
+      
+      const serverMessage = response.data;
+
+      if (serverMessage === 'true') {
+        router.push('/error?error=already-submit');
+        return null
+      }
     } catch (error){
+      router.push('/error?error=student-error');
+      return null
+    }
+  }
+
+  const submitmusic = async () => {
+    const check = await checkStudent()
+    if (check) {
       router.push('/error?error=already-submit');
       return null
     }
@@ -210,7 +222,7 @@ function SubmitContent() {
         };
         setLoading(true);
         const response = await axios.post(
-          `${baseURL}api/data/wakeup/add`,
+          `api/data/wakeup/add`,
           data,
           {
             headers: {
@@ -237,7 +249,7 @@ function SubmitContent() {
         };
         setLoading(true);
         const response = await axios.post(
-        `${baseURL}api/data/labor/add`,
+        `api/data/labor/add`,
           data,
           {
             headers: {

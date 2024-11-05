@@ -3,13 +3,11 @@ import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
 
 interface StudentInfo {
-  id: string;
+  id: number;
   name: string;
   grade: number;
   birthday: string;
 }
-
-const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const idExtract = (email: string): string | null => {
   const regex = /h012s24(\d)(\d{2})/;
@@ -37,7 +35,7 @@ const idExtract = (email: string): string | null => {
   return null
 };
 
-let userInfo: StudentInfo | null = null;
+let userInfo : StudentInfo | null = null;
 
 const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -63,7 +61,7 @@ const authOptions: NextAuthOptions = {
       try {
         const data = { id: id };
         const response = await axios.post(
-          `${baseURL}/api/data/student/get`,
+          `${process.env.NEXTAUTH_URL}/api/data/student/get`,
           data,
           {
             headers: {
@@ -71,9 +69,8 @@ const authOptions: NextAuthOptions = {
             },    
           }
         );
-        userInfo = response.data;
+        userInfo = response.data.data;
       } catch (error) {
-        console.error('Error fetching student data', error);
       }
 
       if (!userInfo) {

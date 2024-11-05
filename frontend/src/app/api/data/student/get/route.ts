@@ -7,17 +7,16 @@ export async function POST(request: NextRequest) {
     try {
         const { id } = await request.json();
 
-        const student = await prisma.wakeupCalendar.findUnique({
-            where: { id: id },
+        const student = await prisma.students.findUnique({
+            where: { id: parseInt(id) },
         });
 
         if (!student) {
             return NextResponse.json({ status: 404, error: 'Record not found' });
         }
 
-        return NextResponse.json({ status: 200, message : student ? false : true });
+        return NextResponse.json({ status: 200, data : student });
     } catch (error) {
-        console.error(error);
         return NextResponse.json({ status: 500, error: 'Internal Server Error' });
     } finally {
         await prisma.$disconnect();

@@ -101,7 +101,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(videoDetailsList); // 배열 반환
   } catch (error) {
-    console.error('Error fetching video details:', error);
     return NextResponse.json(
       { message: 'Failed to fetch video details' },
       { status: 500 },

@@ -9,7 +9,7 @@ const currentMonth = now.getMonth() + 1;
 const nextYear = currentMonth === 12 ? 1 : currentMonth + 1;
 const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
 
-async function createRecord(model : string, year : number, month : number, day : number, student : string, song : string) {
+async function createcalRecord(model : string, year : number, month : number, day : number, student : string, song : string) {
     if (model === 'wakeup'){
         await prisma.wakeupCalendar.create({
             data: {
@@ -45,15 +45,17 @@ async function makeCalendar(model : string, year : number, month : number){
     const loopLimit = (all_day <= 35 ? 36 : 43) - daysInMonth - startWeekday;
 
     for (let i = 1; i < startWeekday+1; i++) {
-        await createRecord(model, year, month, 0, 'None', 'None')
+        await createcalRecord(model, year, month, 0, 'None', 'None')
     };
     for (let i = 1; i < daysInMonth+1; i++) {
-        await createRecord(model, year, month, i, 'None', 'None')
+        await createcalRecord(model, year, month, i, 'None', 'None')
     };
     for (let i = 1; i < loopLimit; i++) {
-        await createRecord(model, year, month, 0, 'None', 'None')
+        await createcalRecord(model, year, month, 0, 'None', 'None')
     };
 };
+
+
 
 async function main() {
     await prisma.wakeupCalendar.deleteMany({});
@@ -67,7 +69,6 @@ async function main() {
         await makeCalendar('labor', nextYear, nextMonth)
         
     } catch (error) {
-        console.error(error);
         process.exit(1);
     } finally {
         await prisma.$disconnect();

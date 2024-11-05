@@ -20,7 +20,6 @@ async function refreshAccessToken(): Promise<string | null> {
     const newAccessToken = response.data.access_token;
     return newAccessToken;
   } catch (error) {
-    console.error('Failed to refresh access token', error);
     return null;
   }
 }
@@ -39,15 +38,9 @@ async function deletePlaylist(
     if (response.status === 204) {
       return true;
     } else {
-      console.error(
-        'Failed to delete playlist',
-        response.status,
-        response.data,
-      );
       return false;
     }
   } catch (error) {
-    console.error('Error deleting playlist', error);
     return false;
   }
 }

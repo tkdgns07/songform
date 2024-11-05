@@ -5,23 +5,18 @@ const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
     try {
-        const { year, month, day } = await request.json();
+        const { year, month, student } = await request.json();
 
         const existingRecord = await prisma.laborCalendar.findFirst({
             where: {
                 year : year,
                 month : month,
-                day : day,
+                student : student,
             }
         });
 
-        if (!existingRecord) {
-            return NextResponse.json({ status: 404, error: 'Record not found' });
-        }
-
-        return NextResponse.json({ status: 200, message : existingRecord.student ? false : true });
+        return NextResponse.json({ status: 200, data : existingRecord ? 'true' : 'false' });
     } catch (error) {
-        console.error(error);
         return NextResponse.json({ status: 500, error: 'Internal Server Error' });
     } finally {
         await prisma.$disconnect();
