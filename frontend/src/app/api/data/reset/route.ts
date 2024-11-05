@@ -51,7 +51,7 @@ async function makeCalendar(model : string, year : number, month : number){
     for (let j = 1; j < daysInMonth+1; j++) {
         await createRecord(model, year, month, j, 'None', 'None')
     }
-    for (let k = 1; k < loopLimit-daysInMonth-startWeekday; k++) {
+    for (let k = 1; k < loopLimit; k++) {
         await createRecord(model, year, month, 0, 'None', 'None')
     }
 }
