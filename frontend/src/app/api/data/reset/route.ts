@@ -57,7 +57,7 @@ async function makeCalendar(model : string, year : number, month : number){
 }
 
 
-export async function GET(request: NextRequest) {    
+export async function GET() {    
     await prisma.wakeupCalendar.deleteMany({});
     await prisma.laborCalendar.deleteMany({});
 
