@@ -37,6 +37,8 @@ const idExtract = (email: string): string | null => {
 
 let userInfo: StudentInfo | null = null;
 
+let baseUrl = process.env.NEXTAUTH_URL as string;
+
 const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -61,7 +63,7 @@ const authOptions: NextAuthOptions = {
       try {
         const data = { id: id };
         const response = await axios.post(
-          'api/data/student/get',
+          `${baseUrl}/api/data/student/get`,
           data,
           {
             headers: {

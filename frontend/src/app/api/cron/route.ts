@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const baseUrl = process.env.NEXTAUTH_URL as string;
+
 export async function GET() {
   try {
-    await axios.get('api/data/reset', {
+    await axios.get(`${baseUrl}api/data/reset`, {
       headers: {
         Authorization: `Bearer ${process.env.CRON_SECRET}`,
       },
