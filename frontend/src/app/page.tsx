@@ -57,7 +57,7 @@ export default function Home() {
           }
         }
       );
-      const wdata: Dayinfo[] = wresponse.data.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
+      const wdata: Dayinfo[] = wresponse.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
 
       const currunt_wdays = wdata.filter((item) => item.month === month);
       const next_wdays = wdata.filter((item) => item.month !== month);
@@ -73,7 +73,7 @@ export default function Home() {
           }
         }
       );
-      const ldata: Dayinfo[] = lresponse.data.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
+      const ldata: Dayinfo[] = lresponse.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
 
       const currunt_ldays = ldata.filter((item) => item.month === month);
       const next_ldays = ldata.filter((item) => item.month !== month);
