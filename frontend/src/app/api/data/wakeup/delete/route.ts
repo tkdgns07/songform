@@ -7,8 +7,6 @@ export async function POST(request: NextRequest) {
     try {
         const { year, month, day } = await request.json();
 
-        console.log(year, month, day);
-
         const existingRecord = await prisma.wakeupCalendar.findFirst({
             where: {
                 year: year,
@@ -16,8 +14,6 @@ export async function POST(request: NextRequest) {
                 day: day,
             },
         });
-
-        console.log(existingRecord);
 
         if (!existingRecord) {
             return NextResponse.json({ status: 404, error: 'Record not found', data: existingRecord });
@@ -30,7 +26,6 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({ status: 200, data: deletedRecord });
     } catch (error) {
-        console.error('Error updating record:', error); // 에러 로그 추가
         return NextResponse.json({ status: 500, error: 'Internal Server Error' }); // 명시적으로 반환
     } finally {
         await prisma.$disconnect();
