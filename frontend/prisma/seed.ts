@@ -6,7 +6,7 @@ const now = new Date();
 const currentYear = now.getFullYear();
 const currentMonth = now.getMonth() + 1;
 
-const nextYear = currentMonth === 12 ? 1 : currentMonth + 1;
+const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
 const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
 
 async function createcalRecord(model : string, year : number, month : number, day : number, student : string, song : string) {
