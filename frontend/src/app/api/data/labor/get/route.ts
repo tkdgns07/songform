@@ -5,8 +5,11 @@ import prisma from "../../../../../../prisma/client";;
 export async function GET(request: NextRequest) {
     try {
         const data = await prisma.laborCalendar.findMany();
-        
-        return NextResponse.json({ status: 200, message : 'Render success', data: data }).headers.set('Cache-Control', 'no-store');
+
+        const response = NextResponse.json({ status: 200, message : 'Render success', data: data })
+        response.headers.set('Cache-Control', 'no-store');
+
+        return response
     } catch (error) {
         return NextResponse.json({ status: 500, error: 'Internal Server Error' });
     } finally {
