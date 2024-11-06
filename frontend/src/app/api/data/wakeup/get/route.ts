@@ -5,7 +5,6 @@ export async function GET(request: NextRequest) {
     try {
         for (let i = 1; i < 5; i++) {
             const data = await prisma.wakeupCalendar.findMany();
-            console.log(data);
             
             if (data && data.length > 0) {
                 return NextResponse.json({ status: 200, message: 'Render success', data: data });
