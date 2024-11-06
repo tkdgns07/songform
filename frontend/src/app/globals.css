@@ -109,7 +109,7 @@
     padding: 5px;
     border-top: solid 1px #eeeeee;
     border-right: solid 1px #eeeeee;
-    @apply text-sm text-lighttext h-[75px] md:h-[100px];
+    @apply text-sm text-lighttext h-[100px];
   }
   .disable {
     color: rgba(152, 160, 166, 0.6);
@@ -119,7 +119,7 @@
   }
   .booked {
     box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
-    @apply bg-cusblue-normal w-[100%] h-[45px] md:h-[30px] rounded-md;
+    @apply bg-cusblue-normal w-[100%] h-[30px] rounded-md;
   }
   .booked:hover {
     transform: scale(1.08);

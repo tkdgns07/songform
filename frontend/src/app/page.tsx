@@ -492,7 +492,7 @@ export default function Home() {
                       <Skeleton className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}/>
                     </div>
                   </div>
-                  <div className="right-0 ml-[50px] w-[350px] md:w-[800px] shadow-sm overflow-hidden bg-white rounded-lg">
+                  <div className="right-0 ml-[50px] w-[800px] shadow-sm overflow-hidden bg-white rounded-lg">
                     <div className="flex flex-row justify-between items-center p-[12px]">
                       <div className="flex flex-row items-center">
                         <span className="text-lighttext text-sm fontsemibold mr-[5px]">
@@ -589,7 +589,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="w-[350px] md:w-[250px] h-[620px] bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative">
+            <div className="w-[250px] h-[620px] bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative">
               <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
                 <a
                   href={`https://www.youtube.com/playlist?list=${playlistId}`}
