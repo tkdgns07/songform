@@ -3,12 +3,13 @@ import prisma from "../../../../../../prisma/client"
 
 export async function GET(request: NextRequest) {
     try {
-        const data = await prisma.wakeupCalendar.findMany();
-
-        const response = NextResponse.json({ status: 200, message : 'Render success', data: data })
-        response.headers.set('Cache-Control', 'no-store');
-
-        return response
+        for (let i = 1; i < 5; i++){
+            const data = await prisma.wakeupCalendar.findMany();
+            if (data){
+                return NextResponse.json({ status: 200, message : 'Render success', data: data });
+            }
+        }
+        return NextResponse.json({ status: 500, error: 'Internal Server Error' });
     } catch (error) {
         return NextResponse.json({ status: 500, error: 'Internal Server Error' });
     } finally {
