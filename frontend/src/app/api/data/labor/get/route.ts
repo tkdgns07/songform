@@ -10,6 +10,8 @@ export async function GET(request: NextRequest) {
             if (data && data.length > 0) {
                 return NextResponse.json({ status: 200, message: 'Render success', data: data });
             }
+
+            await new Promise((resolve) => setTimeout(resolve, 1000));
         }
         return NextResponse.json({ status: 404, error: 'No data found' });
     } catch (error) {
