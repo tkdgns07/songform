@@ -43,7 +43,6 @@ export default function RootLayout({
           </div>
           <div className="mt-[65px] w-full flex justify-center">{children}<Analytics /></div>
           <Toaster />
-          <div className="w-full h-[50px] bg-lighttext footbar"></div>
         </SessionProvider>
       </body>
     </html>

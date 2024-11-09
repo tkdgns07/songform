@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from "../../../../../../prisma/client";
 
 export async function GET(request: NextRequest) {
+
     try {
         for (let i = 1; i < 5; i++) {
             const data = await prisma.wakeupCalendar.findMany();

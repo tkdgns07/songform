@@ -27,6 +27,8 @@ function ErrorContent() {
     error = '이미 신청했습니다.'
   }else if (error === 'student-error'){
     error = '학생 정보 통신에 실패했습니다.'
+  }else if (error === 'preparing'){
+    error = '모바일은 아직 준비중입니다.'
   }
   
   
