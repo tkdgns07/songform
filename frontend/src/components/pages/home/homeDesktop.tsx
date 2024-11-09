@@ -26,6 +26,10 @@ interface Youtbeinfo {
   link: string;
 }
 
+async function connectPrisma() {
+  await axios.get(`${process.env.NEXTAUTH_URL}/api/data/test`)
+}
+
 const DesktopPage = () => {
   const [wcalendarday, setwCalendar] = useState<Dayinfo[]>([]);
   const [nwcalendarday, setnwCalendar] = useState<Dayinfo[]>([]);
@@ -48,6 +52,8 @@ const DesktopPage = () => {
   const year: number = now.getFullYear();
   const month: number = now.getMonth() + 1;
   const date: number = now.getDate();
+
+  connectPrisma()
   
   const fetchCalendarData = async () => {
     setLoading('data')

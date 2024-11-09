@@ -3,7 +3,6 @@ import prisma from "../../../../../../prisma/client";
 import axios from 'axios';
 
 export async function GET(request: NextRequest) {
-    await axios.get(`${process.env.NEXTAUTH_URL}/api/data/test`)
     try {
         for (let i = 1; i < 5; i++) {
             const data = await prisma.wakeupCalendar.findMany();
