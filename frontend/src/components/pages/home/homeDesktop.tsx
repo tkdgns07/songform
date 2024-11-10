@@ -27,7 +27,7 @@ interface Youtbeinfo {
 }
 
 async function connectPrisma() {
-  await axios.get(`${process.env.NEXTAUTH_URL}/api/data/test`)
+  const response = await axios.get(`/api/data/test`)
 }
 
 const DesktopPage = () => {
@@ -325,12 +325,12 @@ const DesktopPage = () => {
     <main>
       <div className="flex flex-row mb-[40px]">
         <div>
-          <div className="w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 overflow-hidden shadow-lg">
+          <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 overflow-hidden shadow-sm shadow-cusblue-light">
             <div>
-              <p className="text-xl font-bold text-body">
+              <p className="text-xl font-bold text-cusblue-deep">
                 노래 신청 시스템
               </p>
-              <p className="text-sm text-body">
+              <p className="text-sm text-cusblue-deep">
                 기상송과 노동요를 다운로드 없이 편하게 신청해보세요
               </p>
             </div>
@@ -342,10 +342,10 @@ const DesktopPage = () => {
                 다음달 곡 신청을 예정보다 일주일 빨리 신청할 수 있습니다!
               </p>
             </div>
-            <Image src={barimg} alt='img'
+            {/* <Image src={barimg} alt='img'
             className='fill absolute w-full top-0 left-0 -z-20'
             objectFit="cover"
-          />
+          /> */}
           </div>
           <div className="flex flex-row">
             <div>
@@ -385,7 +385,7 @@ const DesktopPage = () => {
                       삭제
                     </p>
                   </button>
-                  <div className="w-[120px] h-[30px] bg-white flex justify-between items-center p-[8px] rounded-lg relative mb-[10px] shadow-lg">
+                  <div className="w-[120px] h-[30px] bg-white flex justify-between items-center p-[8px] rounded-lg relative mb-[10px] shadow-sm">
                     <button
                       type="button"
                       className={`text-xs z-10 ml-[8px] ${choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
@@ -406,7 +406,7 @@ const DesktopPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex w-[800px] relative overflow-hidden shadow-lg rounded-lg">
+              <div className="flex w-[800px] relative overflow-hidden shadow-sm rounded-lg">
                 <div
                   className={`absoulute duration-500 flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
                 >
@@ -515,7 +515,7 @@ const DesktopPage = () => {
                       </div>
                       <button
                         type="button"
-                        className="bg-button-noacti text-white px-3 py-1.5 rounded hover:bg-button-acti transition duration-200 text-xs font-semibold !m-[0]"
+                        className="bg-cusblue-normal text-white px-3 py-1.5 rounded hover:bg-cusblue-deep transition duration-200 text-xs font-semibold !m-[0]"
                         onClick={() => submitClicked()}
                       >
                         신청하기
@@ -602,7 +602,7 @@ const DesktopPage = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[250px] h-[620px] bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-lg">
+            <div className="w-[250px] h-[620px] bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-sm">
               <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
                 <a
                   href={`https://www.youtube.com/playlist?list=${playlistId}`}

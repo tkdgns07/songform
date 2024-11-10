@@ -287,7 +287,7 @@ function SubmitContent() {
           </div>
           <div className="flex flex-row mb-[7px] w-full justify-end">
             <div className="px-[8px] h-[18px] text-xs text-white bg-cusblue-normal rounded-full text-center mr-[1px]">
-              {date.year}&nbsp;{date.month}&nbsp;{date.day}
+              {date.year}년&nbsp;{date.month}월&nbsp;{date.day}일
             </div>
           </div>
           <div
