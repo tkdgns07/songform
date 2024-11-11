@@ -58,22 +58,6 @@ const DesktopPage = () => {
   const fetchCalendarData = async () => {
     setLoading('data')
     try {
-      const wresponse = await axios.get(
-        `/api/data/wakeup/get`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          }
-        }
-      );
-      const wdata: Dayinfo[] = wresponse.data.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
-
-      const currunt_wdays = wdata.filter((item) => item.month === month);
-      const next_wdays = wdata.filter((item) => item.month !== month);
-
-      setwCalendar(currunt_wdays);
-      setnwCalendar(next_wdays);
-
       const lresponse = await axios.get(
         `/api/data/labor/get`,
         {
@@ -89,6 +73,22 @@ const DesktopPage = () => {
 
       setlCalendar(currunt_ldays);
       setnlCalendar(next_ldays);
+
+      const wresponse = await axios.get(
+        `/api/data/wakeup/get`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.CRON_SECRET}`,
+          }
+        }
+      );
+      const wdata: Dayinfo[] = wresponse.data.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
+
+      const currunt_wdays = wdata.filter((item) => item.month === month);
+      const next_wdays = wdata.filter((item) => item.month !== month);
+
+      setwCalendar(currunt_wdays);
+      setnwCalendar(next_wdays);
     } catch (error) {
       router.push('error?error=cant-cfetch-calendar');
     }
