@@ -8,9 +8,6 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import barimg from '@/app/img/Bar img.jpeg'
-import Image from 'next/image';
-
 interface Dayinfo {
   id: number
   year: number;

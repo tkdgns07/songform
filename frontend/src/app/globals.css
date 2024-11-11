@@ -86,10 +86,8 @@
   .menubar {
     position: fixed;
     top: 0;
-    backdrop-filter: blur(5px);
     z-index: 9999;
     background-color: #f7faff;
-    --tw-bg-opacity: 0.5;
   }
 
   .bar {
@@ -273,8 +271,8 @@
     width: 120%;
     height: 120%;
     background-color: #8ca8de;
-    opacity: 0; /* 처음에는 보이지 않도록 */
-    transition: opacity 0.2s ease; /* 애니메이션 부드럽게 */
+    opacity: 0;
+    transition: opacity 0.2s ease;
     border-radius: 50%;
   }
 
