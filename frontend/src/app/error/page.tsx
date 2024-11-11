@@ -34,14 +34,14 @@ function ErrorContent() {
   
 
   return (
-    <div className="flex flex-col justify-center items-center m-[120px]">
+    <main className="flex flex-col justify-center items-center h-screen">
       <Image src={errorimg} alt="KSHS_logo" className="w-[300px]"/>
       <div className='flex items-center'>
         <p className='text-xl mr-[5px]'>404</p>
         <div className='w-[1px] h-full bg-text'></div>
         <p className="text-xl text-center ml-[5px]">{error}</p>
       </div>
-    </div>
+    </main>
   );
 }
 

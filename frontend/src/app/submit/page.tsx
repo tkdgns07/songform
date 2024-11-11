@@ -205,6 +205,7 @@ function SubmitContent() {
   }
 
   const submitmusic = async () => {
+    setLoading(true);
     const check = await checkStudent()
     if (check) {
       router.push('/error?error=already-submit');
@@ -220,7 +221,6 @@ function SubmitContent() {
           student: `${session?.user.id} ${session?.user.name}`,
           music_url: playlistId,
         };
-        setLoading(true);
         const response = await axios.post(
           `api/data/wakeup/add`,
           data,
@@ -271,11 +271,11 @@ function SubmitContent() {
   };
 
   return (
-    <main className="flex flex-col items-center w-full">
+    <main className="flex flex-col items-center w-full mt-[65px]">
       <div className="flex flex-row justify-center w-full">
         <div>
-          <div className="w-[350px] md:w-[500px] h-[80px] calendarExp mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-col justify-center">
-            <p className="text-xl font-bold text-cusblue-deep">
+          <div className="w-[350px] md:w-[500px] h-[80px] calendarExp mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-col justify-center bg-body">
+            <p className="text-xl font-bold text-cusblue-normal">
               원하는 노래의 주소 입력
             </p>
             <div className="flex">
@@ -286,12 +286,12 @@ function SubmitContent() {
             <div></div>
           </div>
           <div className="flex flex-row mb-[7px] w-full justify-end">
-            <div className="px-[8px] h-[18px] text-xs text-white bg-cusblue-normal rounded-full text-center mr-[1px]">
+            <div className="px-[8px] h-[18px] text-xs text-white bg-cusblue-normal rounded-full text-center mr-[1px] shadow-2xl shadow-shadowc">
               {date.year}년&nbsp;{date.month}월&nbsp;{date.day}일
             </div>
           </div>
           <div
-            className={`${inputhover ? 'inputbig pl-[5px]' : 'inputsmall pl-[10px]'} inputcontainer flex flex-col justify-start w-[500px] border border-input bg-background ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-cusblue-normal focus-within:ring-offset-0`}
+            className={`${inputhover ? 'inputbig pl-[5px]' : 'inputsmall pl-[10px]'} inputcontainer flex flex-col justify-start w-[500px] border border-input bg-background ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-cusblue-normal focus-within:ring-offset-0 shadow-2xl shadow-shadowc`}
           >
             <div className="flex flex-col justify-center h-[40px]">
               <input
@@ -324,7 +324,7 @@ function SubmitContent() {
               <button
                 type="button"
                 className="bg-cusblue-normal w-[60px] h-[25px] flex justify-center items-center rounded hover:bg-cusblue-deep transition duration-200 text-2xs font-semibold mr-[5px]"
-                onClick={() => submitmusic()}
+                onClick={loading !== true ? () => submitmusic() : undefined}
               >
                 <p className={`text-white ${!loading ? '' : 'hidden'}`}>
                   신청하기

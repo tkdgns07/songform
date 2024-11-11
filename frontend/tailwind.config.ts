@@ -36,6 +36,7 @@ const config = {
     },
     extend: {
       colors: {
+        shadowc: '#e7f0ff',
         body: '#EEF5FF',
         text: '#2a2a2a',
         lighttext: '#9DB2BF',

@@ -41,7 +41,7 @@ export default function RootLayout({
             </Link>
             <LoginButton/>
           </div>
-          <div className="mt-[65px] w-full flex justify-center">{children}<Analytics /></div>
+          <div className="w-full flex justify-center">{children}<Analytics /></div>
           <Toaster />
         </SessionProvider>
       </body>

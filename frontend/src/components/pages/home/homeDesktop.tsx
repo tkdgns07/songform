@@ -171,7 +171,7 @@ const DesktopPage = () => {
   };
 
   const hasSelectedClass = (id: number) => {
-    return id === clickedDay ? '!bg-cusblue-normal !text-frame' : (id === clickedSub ? '!bg-cusblue-normal !text-frame' : '');
+    return id === clickedDay ? 'border-none !bg-cusblue-normal !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded-sm' : (id === clickedSub ? '!bg-cusblue-normal !text-frame' : '');
   };
 
   const submitClicked = async () => {
@@ -322,10 +322,10 @@ const DesktopPage = () => {
   }
 
   return (
-    <main>
-      <div className="flex flex-row mb-[40px]">
+    <main className='h-screen flex items-center'>
+      <div className="flex flex-row">
         <div>
-          <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 overflow-hidden shadow-sm shadow-cusblue-light">
+          <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 overflow-hidden shadow-2xl shadow-shadowc">
             <div>
               <p className="text-xl font-bold text-cusblue-deep">
                 노래 신청 시스템
@@ -385,7 +385,7 @@ const DesktopPage = () => {
                       삭제
                     </p>
                   </button>
-                  <div className="w-[120px] h-[30px] bg-white flex justify-between items-center p-[8px] rounded-lg relative mb-[10px] shadow-sm">
+                  <div className="w-[120px] h-[30px] bg-white flex justify-between items-center p-[8px] rounded-lg relative mb-[10px] shadow-2xl shadow-shadowc">
                     <button
                       type="button"
                       className={`text-xs z-10 ml-[8px] ${choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
@@ -401,12 +401,12 @@ const DesktopPage = () => {
                       노동요
                     </button>
                     <div
-                      className={`switcher ${choosemusic ? 'switchtrue' : 'switchfalse'}`}
+                      className={`switcher shadow-sm shadow-cusblue-normal ${choosemusic ? 'switchtrue' : 'switchfalse'}`}
                     ></div>
                   </div>
                 </div>
               </div>
-              <div className="flex w-[800px] relative overflow-hidden shadow-sm rounded-lg">
+              <div className="flex w-[800px] relative overflow-hidden shadow-2xl rounded-lg shadow-shadowc">
                 <div
                   className={`absoulute duration-500 flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
                 >
@@ -505,7 +505,7 @@ const DesktopPage = () => {
                       <Skeleton className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}/>
                     </div>
                   </div>
-                  <div className="right-0 ml-[50px] w-[800px] shadow-sm overflow-hidden bg-white rounded-lg">
+                  <div className="right-0 ml-[50px] w-[800px] shadow-2xl overflow-hidden bg-white rounded-lg">
                     <div className="flex flex-row justify-between items-center p-[12px]">
                       <div className="flex flex-row items-center">
                         <span className="text-lighttext text-sm fontsemibold mr-[5px]">
@@ -602,7 +602,7 @@ const DesktopPage = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[250px] h-[620px] bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-sm">
+            <div className="w-[250px] h-[620px] bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc">
               <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
                 <a
                   href={`https://www.youtube.com/playlist?list=${playlistId}`}
