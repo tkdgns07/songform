@@ -331,4 +331,7 @@
   .goright {
     transform: translateX(0);
   }
+  .mainpage{
+    height: calc(100vh - 55px);
+  }
 }
