@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from "../../../../../../prisma/client";
 
+export const dynamic: 'force-dynamic' = 'force-dynamic';
+
 export async function GET() {
     try {
         for (let i = 1; i <= 4; i++) {
