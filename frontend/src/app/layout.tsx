@@ -8,6 +8,7 @@ import SessionProvider from '@/components/SessionProvider';
 import LoginButton from '@/components/LoginButton';
 import { Toaster } from '@/components/ui/sonner';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -41,7 +42,11 @@ export default function RootLayout({
             </Link>
             <LoginButton/>
           </div>
-          <div className="w-full flex justify-center">{children}<Analytics /></div>
+          <div className="w-full flex justify-center">
+            {children}
+            <Analytics />
+            <SpeedInsights />
+          </div>
           <Toaster />
         </SessionProvider>
       </body>
