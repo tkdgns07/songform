@@ -150,19 +150,16 @@ const DesktopPage = () => {
       if (id === clickedDay) {
         setClickedDay(-1);
       } else if (wcalendarday[id]['day'] >= date || !curruntMonth) {
-        setClickedDay(id);
-      }
-    } else if (day !== 0 && student !== 'None') {
-      if (id !== clickedSub) {
-        selectedclick(id);
-      }else {
         selectedclick(0);
+        setClickedDay(id);
       }
     }
   };
 
   const hasSelectedClass = (id: number) => {
-    return id === clickedDay ? 'border-none !bg-cusblue-normal !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded-sm' : (id === clickedSub ? '!bg-cusblue-normal !text-frame' : '');
+    if(id === clickedDay || id === clickedSub){
+      return 'border-none !bg-cusblue-normal !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded'
+    }
   };
 
   const submitClicked = async () => {
@@ -209,7 +206,7 @@ const DesktopPage = () => {
   };
 
   const selectedclick = (id: number) => {
-    if (id !== 0) {
+    if (id !== clickedSub && id !== 0) {
       const { student, music_url } = choosemusic
       ? curruntMonth
         ? wcalendarday[id]
@@ -220,6 +217,7 @@ const DesktopPage = () => {
       setPlaylistId(music_url);
       setSubmitstudent(student);
       setClickedSub(id);
+      setClickedDay(-1)
     }else {
       setPlaylistId('');
       setSubmitstudent('');
@@ -364,14 +362,15 @@ const DesktopPage = () => {
                 <div className="w-full flex justify-end">
                   <button
                     type="button"
-                    className={`flex justify-center items-center w-[50px] h-[30px] bg-red-500 rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : (session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student'] : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : (session.user.admin ? '' : 'hidden')) : 'hidden')} hover:bg-red-700 duration-150`}
+                    className={`flex justify-center items-center pl-[5px] pr-[8px] h-[30px] bg-black rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : (session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student'] : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : (session.user.admin ? '' : 'hidden')) : 'hidden')} duration-150 shadow-2xl shadow-shadowc`}
                     onClick={() => deletePlaylist()}
                   >
                     <span
                       className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}
                     ></span>
+                    <Icon icon="mdi:remove" className="text-body mr-[2px m-0 p-0"/>
                     <p
-                      className={`text-white text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
+                      className={`text-body text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
                     >
                       삭제
                     </p>
@@ -392,7 +391,7 @@ const DesktopPage = () => {
                       노동요
                     </button>
                     <div
-                      className={`switcher shadow-sm shadow-cusblue-normal ${choosemusic ? 'switchtrue' : 'switchfalse'}`}
+                      className={`switcher ${choosemusic ? 'switchtrue' : 'switchfalse'}`}
                     ></div>
                   </div>
                 </div>
@@ -435,7 +434,7 @@ const DesktopPage = () => {
                                 <div
                                   id={item.day.toString()}
                                   className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''} ${hasSelectedClass(index)}`}
-                                  onClick={() => dayClicked(index)}
+                                  onClick={(item.student !== 'None' ? () => selectedclick(index) : () => dayClicked(index))}
                                 >
                                   {item.day !== 0 ? (
                                     item.day === date ? (
