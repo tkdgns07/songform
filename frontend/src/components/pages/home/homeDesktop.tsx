@@ -331,10 +331,6 @@ const DesktopPage = () => {
                 다음달 곡 신청을 예정보다 일주일 빨리 신청할 수 있습니다!
               </p>
             </div>
-            {/* <Image src={barimg} alt='img'
-            className='fill absolute w-full top-0 left-0 -z-20'
-            objectFit="cover"
-          /> */}
           </div>
           <div className="flex flex-row">
             <div>
@@ -368,7 +364,7 @@ const DesktopPage = () => {
                     <span
                       className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}
                     ></span>
-                    <Icon icon="mdi:remove" className="text-body mr-[2px m-0 p-0"/>
+                    <Icon icon="mdi:remove" className={`text-body mr-[2px m-0 p-0 ${loading !== 'deleting' ? '' : 'hidden'}`}/>
                     <p
                       className={`text-body text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
                     >
@@ -587,6 +583,7 @@ const DesktopPage = () => {
                               }
                             })}
                       </div>
+                      <Skeleton className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}/>
                     </div>
                   </div>
                 </div>
