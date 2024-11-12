@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from "../../../../../../prisma/client";;
+import axios from 'axios';
 
 
 
 export async function POST(request: NextRequest) {
+    const response = await axios.post(`${process.env.NEXTAUTH_URL}/api/data/labor/check`, {
+        request
+    })
+    if (response.data.data){ return NextResponse.json({ status: 404, error: 'already-submit' }); }
     try {
         const { year, month, day, student, music_url } = await request.json();
 
@@ -14,9 +19,8 @@ export async function POST(request: NextRequest) {
                 day : day,
             }
         });
-
         if (!existingRecord) {
-            return NextResponse.json({ status: 404, error: 'Record not found' });
+            return NextResponse.json({ status: 404, error: 'lplaylist-error' });
         }
 
         const updatedRecord = await prisma.laborCalendar.update({
@@ -26,10 +30,9 @@ export async function POST(request: NextRequest) {
                 music_url: music_url,
             }
         });
-
         return NextResponse.json({ status: 200, data: updatedRecord });
     } catch (error) {
-        return NextResponse.json({ status: 500, error: 'Internal Server Error' });
+        return NextResponse.json({ status: 500, error: 'lplaylist-error' });
     } finally {
         await prisma.$disconnect();
     }

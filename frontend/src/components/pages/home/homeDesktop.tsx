@@ -359,7 +359,7 @@ const DesktopPage = () => {
                   <button
                     type="button"
                     className={`flex justify-center items-center pl-[5px] pr-[8px] h-[30px] bg-black rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : (session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student'] : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : (session.user.admin ? '' : 'hidden')) : 'hidden')} duration-150 shadow-2xl shadow-shadowc`}
-                    onClick={() => deletePlaylist()}
+                    onClick={loading !== 'deleting' ? () => deletePlaylist() : undefined}
                   >
                     <span
                       className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}

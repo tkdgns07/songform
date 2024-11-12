@@ -194,7 +194,7 @@ function SubmitContent() {
       
       const serverMessage = response.data;
 
-      if (serverMessage === 'true') {
+      if (serverMessage) {
         router.push('/error?error=already-submit');
         return null
       }
