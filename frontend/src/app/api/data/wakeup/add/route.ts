@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
                 music_url: music_url,
             }
         });
-        return NextResponse.json({ status: 200, data: updatedRecord });
+        return NextResponse.json({ status: 200, message : 'Update success', data: updatedRecord });
     } catch (error) {
         return NextResponse.json({ status: 500, error: 'lplaylist-error' });
     } finally {
