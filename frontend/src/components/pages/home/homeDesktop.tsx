@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface Dayinfo {
-  id: number
+  id: number;
   year: number;
   month: number;
   day: number;
@@ -45,19 +45,18 @@ const DesktopPage = () => {
   const year: number = now.getFullYear();
   const month: number = now.getMonth() + 1;
   const date: number = now.getDate();
-  
+
   const fetchCalendarData = async () => {
-    setLoading('data')
+    setLoading('data');
     try {
-      const lresponse = await axios.get(
-        `/api/data/labor/get`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          }
-        }
+      const lresponse = await axios.get(`/api/data/labor/get`, {
+        headers: {
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
+        },
+      });
+      const ldata: Dayinfo[] = lresponse.data.data.sort(
+        (a: Dayinfo, b: Dayinfo) => a.id - b.id,
       );
-      const ldata: Dayinfo[] = lresponse.data.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
 
       const currunt_ldays = ldata.filter((item) => item.month === month);
       const next_ldays = ldata.filter((item) => item.month !== month);
@@ -65,15 +64,14 @@ const DesktopPage = () => {
       setlCalendar(currunt_ldays);
       setnlCalendar(next_ldays);
 
-      const wresponse = await axios.get(
-        `/api/data/wakeup/get`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          }
-        }
+      const wresponse = await axios.get(`/api/data/wakeup/get`, {
+        headers: {
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
+        },
+      });
+      const wdata: Dayinfo[] = wresponse.data.data.sort(
+        (a: Dayinfo, b: Dayinfo) => a.id - b.id,
       );
-      const wdata: Dayinfo[] = wresponse.data.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
 
       const currunt_wdays = wdata.filter((item) => item.month === month);
       const next_wdays = wdata.filter((item) => item.month !== month);
@@ -83,7 +81,7 @@ const DesktopPage = () => {
     } catch (error) {
       router.push('error?error=cant-cfetch-calendar');
     }
-    setLoading('')
+    setLoading('');
   };
 
   useEffect(() => {
@@ -102,7 +100,7 @@ const DesktopPage = () => {
           },
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          }
+          },
         });
 
         setVideoIds(response.data.videoIds);
@@ -125,11 +123,11 @@ const DesktopPage = () => {
           },
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          }
+          },
         });
         const data = response.data;
         if (clickedSub !== -1) {
-          setVideoinfo(data)
+          setVideoinfo(data);
         }
       } catch (error) {
         toast.error('다시 시도해 보세요.');
@@ -157,15 +155,24 @@ const DesktopPage = () => {
   };
 
   const hasSelectedClass = (id: number) => {
-    if(id === clickedDay || id === clickedSub){
-      return 'border-none !bg-cusblue-normal !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded'
+    if (id === clickedDay || id === clickedSub) {
+      return 'border-none !bg-cusblue-normal !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded';
     }
   };
 
   const submitClicked = async () => {
     let currentYear, currentMonth, currentDay;
-    const calendar : Dayinfo[] = curruntMonth ? (choosemusic ? wcalendarday : lcalendarday) : (choosemusic ? nwcalendarday : nlcalendarday)
-    const found = calendar.some(student => student.student === `${session?.user.id} ${session?.user.name}`);
+    const calendar: Dayinfo[] = curruntMonth
+      ? choosemusic
+        ? wcalendarday
+        : lcalendarday
+      : choosemusic
+        ? nwcalendarday
+        : nlcalendarday;
+    const found = calendar.some(
+      (student) =>
+        student.student === `${session?.user.id} ${session?.user.name}`,
+    );
     if (clickedDay !== -1 && !found) {
       if (curruntMonth) {
         ({
@@ -181,17 +188,17 @@ const DesktopPage = () => {
         } = nwcalendarday[clickedDay]);
       }
     }
-    if (clickedDay !== -1 && (status === 'authenticated'&& !found)) {
+    if (clickedDay !== -1 && status === 'authenticated' && !found) {
       router.push(
         `/submit?date=${currentYear}.${currentMonth}.${currentDay}&song=${choosemusic ? 'wakeup' : 'labor'}`,
       );
     } else if (status !== 'authenticated') {
       toast.error('로그인 해주세요');
-    } else if (!curruntMonth && (date < 24 && !birthday)) {
+    } else if (!curruntMonth && date < 24 && !birthday) {
       toast.warning('다음달 신청은 24일 부터 가능합니다.');
     } else if (clickedDay === -1) {
       toast.error('날짜를 선택해 주세요');
-    } else if (found){
+    } else if (found) {
       toast.warning('이미 신청했습니다.');
     }
   };
@@ -208,17 +215,17 @@ const DesktopPage = () => {
   const selectedclick = (id: number) => {
     if (id !== clickedSub && id !== 0) {
       const { student, music_url } = choosemusic
-      ? curruntMonth
-        ? wcalendarday[id]
-        : nwcalendarday[id]
-      : curruntMonth
-        ? lcalendarday[id]
-        : nlcalendarday[id];
+        ? curruntMonth
+          ? wcalendarday[id]
+          : nwcalendarday[id]
+        : curruntMonth
+          ? lcalendarday[id]
+          : nlcalendarday[id];
       setPlaylistId(music_url);
       setSubmitstudent(student);
       setClickedSub(id);
-      setClickedDay(-1)
-    }else {
+      setClickedDay(-1);
+    } else {
       setPlaylistId('');
       setSubmitstudent('');
       setClickedSub(-1);
@@ -275,7 +282,7 @@ const DesktopPage = () => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${process.env.CRON_SECRET}`,
               },
-            }
+            },
           );
 
           if (
@@ -299,19 +306,22 @@ const DesktopPage = () => {
     }
     setLoading('');
   };
-  
-  let birthday : boolean = false;
 
-  if (session?.user.birthday){
-    const [firstPart, ...rest] = session?.user.birthday.split(' ')
+  let birthday: boolean = false;
+
+  if (session?.user.birthday) {
+    if (session?.user.birthday == 'NaN') {
+    }
+
+    const [firstPart, ...rest] = session?.user.birthday.split(' ');
     const secondPart = rest.join(' ');
-    if (parseInt(secondPart) === (month + 1)){
-      birthday = true
+    if (parseInt(secondPart) === month + 1) {
+      birthday = true;
     }
   }
 
   return (
-    <main className='mt-[65px]'>
+    <main className="mt-[65px]">
       <div className="flex flex-row">
         <div>
           <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 overflow-hidden shadow-2xl shadow-shadowc">
@@ -323,11 +333,11 @@ const DesktopPage = () => {
                 기상송과 노동요를 다운로드 없이 편하게 신청해보세요
               </p>
             </div>
-            <div className={`flex flex-col justify-center items-end ${birthday ? '' : 'hidden'}`}>
-              <p className='text-lg font-bold'>
-                🥳 다음달엔 내 생일~
-              </p>
-              <p className='text-sm'>
+            <div
+              className={`flex flex-col justify-center items-end ${birthday ? '' : 'hidden'}`}
+            >
+              <p className="text-lg font-bold">🥳 다음달엔 내 생일~</p>
+              <p className="text-sm">
                 다음달 곡 신청을 예정보다 일주일 빨리 신청할 수 있습니다!
               </p>
             </div>
@@ -336,35 +346,36 @@ const DesktopPage = () => {
             <div>
               <div className="flex justify-between">
                 <div className="flex flex-row justify-between w-[70px]">
-                  <button 
+                  <button
                     className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
                     onClick={() => setMonth(true)}
                   >
-                    <Icon
-                      icon="ep:arrow-up-bold"
-                      className="text-lg"
-                    />
+                    <Icon icon="ep:arrow-up-bold" className="text-lg" />
                   </button>
-                  <button 
+                  <button
                     className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
                     onClick={() => setMonth(false)}
                   >
-                    <Icon
-                      icon="ep:arrow-down-bold"
-                      className="text-lg"
-                    />
+                    <Icon icon="ep:arrow-down-bold" className="text-lg" />
                   </button>
                 </div>
                 <div className="w-full flex justify-end">
                   <button
                     type="button"
-                    className={`flex justify-center items-center pl-[5px] pr-[8px] h-[30px] bg-black rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : (session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student'] : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : (session.user.admin ? '' : 'hidden')) : 'hidden')} duration-150 shadow-2xl shadow-shadowc`}
-                    onClick={loading !== 'deleting' ? () => deletePlaylist() : undefined}
+                    className={`flex justify-center items-center pl-[5px] pr-[8px] h-[30px] bg-black rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} duration-150 shadow-2xl shadow-shadowc`}
+                    onClick={
+                      loading !== 'deleting'
+                        ? () => deletePlaylist()
+                        : undefined
+                    }
                   >
                     <span
                       className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}
                     ></span>
-                    <Icon icon="mdi:remove" className={`text-body mr-[2px m-0 p-0 ${loading !== 'deleting' ? '' : 'hidden'}`}/>
+                    <Icon
+                      icon="mdi:remove"
+                      className={`text-body mr-[2px m-0 p-0 ${loading !== 'deleting' ? '' : 'hidden'}`}
+                    />
                     <p
                       className={`text-body text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
                     >
@@ -423,14 +434,20 @@ const DesktopPage = () => {
                         <span className="day-name">F</span>
                         <span className="day-name text-blue-600">S</span>
                       </div>
-                      <div className={`grid grid-cols-7 ${loading === 'data' ? 'hidden' : ''}`}>
+                      <div
+                        className={`grid grid-cols-7 ${loading === 'data' ? 'hidden' : ''}`}
+                      >
                         {curruntMonth
                           ? wcalendarday.map((item, index) => {
                               return (
                                 <div
                                   id={item.day.toString()}
                                   className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''} ${hasSelectedClass(index)}`}
-                                  onClick={(item.student !== 'None' ? () => selectedclick(index) : () => dayClicked(index))}
+                                  onClick={
+                                    item.student !== 'None'
+                                      ? () => selectedclick(index)
+                                      : () => dayClicked(index)
+                                  }
                                 >
                                   {item.day !== 0 ? (
                                     item.day === date ? (
@@ -442,7 +459,9 @@ const DesktopPage = () => {
                                     )
                                   ) : null}
                                   {item.student !== 'None' ? (
-                                    <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
+                                    <div
+                                      className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
+                                    >
                                       {item.student}
                                     </div>
                                   ) : (
@@ -461,10 +480,12 @@ const DesktopPage = () => {
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
                                     {item.student !== 'None' ? (
-                                      <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
+                                      <div
+                                        className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
+                                      >
                                         {item.student}
                                       </div>
-                                  ) : (
+                                    ) : (
                                       ''
                                     )}
                                   </div>
@@ -488,7 +509,9 @@ const DesktopPage = () => {
                               }
                             })}
                       </div>
-                      <Skeleton className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}/>
+                      <Skeleton
+                        className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}
+                      />
                     </div>
                   </div>
                   <div className="right-0 ml-[50px] w-[800px] shadow-2xl overflow-hidden bg-white rounded-lg">
@@ -537,10 +560,12 @@ const DesktopPage = () => {
                                     )
                                   ) : null}
                                   {item.student !== 'None' ? (
-                                    <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
+                                    <div
+                                      className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
+                                    >
                                       {item.student}
                                     </div>
-                                ) : (
+                                  ) : (
                                     ''
                                   )}
                                 </div>
@@ -556,10 +581,12 @@ const DesktopPage = () => {
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
                                     {item.student !== 'None' ? (
-                                      <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
+                                      <div
+                                        className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
+                                      >
                                         {item.student}
                                       </div>
-                                  ) : (
+                                    ) : (
                                       ''
                                     )}
                                   </div>
@@ -583,7 +610,9 @@ const DesktopPage = () => {
                               }
                             })}
                       </div>
-                      <Skeleton className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}/>
+                      <Skeleton
+                        className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}
+                      />
                     </div>
                   </div>
                 </div>
@@ -602,7 +631,7 @@ const DesktopPage = () => {
                 </a>
                 <p className="text-lg font-bold text-text">노래 미리보기</p>
               </div>
-              <div className='w-full bg-gray-300 h-[1px]'></div>
+              <div className="w-full bg-gray-300 h-[1px]"></div>
               <div className="w-full max-h-full overflow-y-auto">
                 {Array.isArray(videoInfo) &&
                   videoInfo.map((item) => {
@@ -642,6 +671,6 @@ const DesktopPage = () => {
       </div>
     </main>
   );
-}
+};
 
 export default DesktopPage;

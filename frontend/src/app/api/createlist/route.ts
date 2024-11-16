@@ -80,8 +80,7 @@ async function addVideosToPlaylist(
         },
       );
     }
-  } catch (error) {
-  }
+  } catch (error) {}
 }
 
 export async function POST(req: NextRequest) {

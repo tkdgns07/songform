@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface Dayinfo {
-  id: number
+  id: number;
   year: number;
   month: number;
   day: number;
@@ -24,7 +24,7 @@ interface Youtbeinfo {
 }
 
 interface MobilePageProps {
-    width: number;
+  width: number;
 }
 
 const MobilePage = ({ width }: MobilePageProps) => {
@@ -47,13 +47,13 @@ const MobilePage = ({ width }: MobilePageProps) => {
 
   const [windowWidth, setWindowWidth] = useState<number>(450);
 
-  router.push('error?error=preparing')
+  router.push('error?error=preparing');
 
   useEffect(() => {
-    console.log(width)
-    if(width !== 0){
-        setWindowWidth(width);
-        console.log(windowWidth)
+    console.log(width);
+    if (width !== 0) {
+      setWindowWidth(width);
+      console.log(windowWidth);
     }
   }, [width]);
 
@@ -61,19 +61,18 @@ const MobilePage = ({ width }: MobilePageProps) => {
   const year: number = now.getFullYear();
   const month: number = now.getMonth() + 1;
   const date: number = now.getDate();
-  
+
   const fetchCalendarData = async () => {
-    setLoading('data')
+    setLoading('data');
     try {
-      const wresponse = await axios.get(
-        `/api/data/wakeup/get`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          }
-        }
+      const wresponse = await axios.get(`/api/data/wakeup/get`, {
+        headers: {
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
+        },
+      });
+      const wdata: Dayinfo[] = wresponse.data.data.sort(
+        (a: Dayinfo, b: Dayinfo) => a.id - b.id,
       );
-      const wdata: Dayinfo[] = wresponse.data.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
 
       const currunt_wdays = wdata.filter((item) => item.month === month);
       const next_wdays = wdata.filter((item) => item.month !== month);
@@ -81,15 +80,14 @@ const MobilePage = ({ width }: MobilePageProps) => {
       setwCalendar(currunt_wdays);
       setnwCalendar(next_wdays);
 
-      const lresponse = await axios.get(
-        `/api/data/labor/get`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          }
-        }
+      const lresponse = await axios.get(`/api/data/labor/get`, {
+        headers: {
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
+        },
+      });
+      const ldata: Dayinfo[] = lresponse.data.data.sort(
+        (a: Dayinfo, b: Dayinfo) => a.id - b.id,
       );
-      const ldata: Dayinfo[] = lresponse.data.data.sort((a: Dayinfo, b: Dayinfo) => a.id - b.id);
 
       const currunt_ldays = ldata.filter((item) => item.month === month);
       const next_ldays = ldata.filter((item) => item.month !== month);
@@ -99,7 +97,7 @@ const MobilePage = ({ width }: MobilePageProps) => {
     } catch (error) {
       router.push('error?error=cant-cfetch-calendar');
     }
-    setLoading('')
+    setLoading('');
   };
 
   useEffect(() => {
@@ -118,7 +116,7 @@ const MobilePage = ({ width }: MobilePageProps) => {
           },
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          }
+          },
         });
 
         setVideoIds(response.data.videoIds);
@@ -141,11 +139,11 @@ const MobilePage = ({ width }: MobilePageProps) => {
           },
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          }
+          },
         });
         const data = response.data;
         if (clickedSub !== -1) {
-          setVideoinfo(data)
+          setVideoinfo(data);
         }
       } catch (error) {
         toast.error('다시 시도해 보세요.');
@@ -171,7 +169,7 @@ const MobilePage = ({ width }: MobilePageProps) => {
     } else if (day !== 0 && student !== 'None') {
       if (id !== clickedSub) {
         selectedclick(id);
-      }else {
+      } else {
         selectedclick(0);
       }
     }
@@ -183,8 +181,17 @@ const MobilePage = ({ width }: MobilePageProps) => {
 
   const submitClicked = async () => {
     let currentYear, currentMonth, currentDay;
-    const calendar : Dayinfo[] = curruntMonth ? (choosemusic ? wcalendarday : lcalendarday) : (choosemusic ? nwcalendarday : nlcalendarday)
-    const found = calendar.some(student => student.student === `${session?.user.id} ${session?.user.name}`);
+    const calendar: Dayinfo[] = curruntMonth
+      ? choosemusic
+        ? wcalendarday
+        : lcalendarday
+      : choosemusic
+        ? nwcalendarday
+        : nlcalendarday;
+    const found = calendar.some(
+      (student) =>
+        student.student === `${session?.user.id} ${session?.user.name}`,
+    );
     if (clickedDay !== -1 && !found) {
       if (curruntMonth) {
         ({
@@ -200,17 +207,17 @@ const MobilePage = ({ width }: MobilePageProps) => {
         } = nwcalendarday[clickedDay]);
       }
     }
-    if (clickedDay !== -1 && (status === 'authenticated'&& !found)) {
+    if (clickedDay !== -1 && status === 'authenticated' && !found) {
       router.push(
         `/submit?date=${currentYear}.${currentMonth}.${currentDay}&song=${choosemusic ? 'wakeup' : 'labor'}`,
       );
     } else if (status !== 'authenticated') {
       toast.error('로그인 해주세요');
-    } else if (!curruntMonth && (date < 24 && !birthday)) {
+    } else if (!curruntMonth && date < 24 && !birthday) {
       toast.warning('다음달 신청은 24일 부터 가능합니다.');
     } else if (clickedDay === -1) {
       toast.error('날짜를 선택해 주세요');
-    } else if (found){
+    } else if (found) {
       toast.warning('이미 신청했습니다.');
     }
   };
@@ -227,16 +234,16 @@ const MobilePage = ({ width }: MobilePageProps) => {
   const selectedclick = (id: number) => {
     if (id !== 0) {
       const { student, music_url } = choosemusic
-      ? curruntMonth
-        ? wcalendarday[id]
-        : nwcalendarday[id]
-      : curruntMonth
-        ? lcalendarday[id]
-        : nlcalendarday[id];
+        ? curruntMonth
+          ? wcalendarday[id]
+          : nwcalendarday[id]
+        : curruntMonth
+          ? lcalendarday[id]
+          : nlcalendarday[id];
       setPlaylistId(music_url);
       setSubmitstudent(student);
       setClickedSub(id);
-    }else {
+    } else {
       setPlaylistId('');
       setSubmitstudent('');
       setClickedSub(-1);
@@ -293,7 +300,7 @@ const MobilePage = ({ width }: MobilePageProps) => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${process.env.CRON_SECRET}`,
               },
-            }
+            },
           );
 
           if (
@@ -317,21 +324,24 @@ const MobilePage = ({ width }: MobilePageProps) => {
     }
     setLoading('');
   };
-  
-  let birthday : boolean = false;
 
-  if (session?.user.birthday){
-    const [firstPart, ...rest] = session?.user.birthday.split(' ')
+  let birthday: boolean = false;
+
+  if (session?.user.birthday) {
+    const [firstPart, ...rest] = session?.user.birthday.split(' ');
     const secondPart = rest.join(' ');
-    if (parseInt(secondPart) === (month + 1)){
-      birthday = true
+    if (parseInt(secondPart) === month + 1) {
+      birthday = true;
     }
   }
 
   return (
-    <main className=''>
+    <main className="">
       <div className="flex flex-row mb-[40px] p-[10px]">
-        <div className='flex flex-col item-center'  style={{ width : `${windowWidth - 20}px`}}>
+        <div
+          className="flex flex-col item-center"
+          style={{ width: `${windowWidth - 20}px` }}
+        >
           <div className="h-[80px] calendarExp mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center">
             <div>
               <p className="text-xl font-bold text-cusblue-deep">
@@ -341,42 +351,39 @@ const MobilePage = ({ width }: MobilePageProps) => {
                 기상송과 노동요를 다운로드 없이 편하게 신청해보세요
               </p>
             </div>
-            <div className={`flex flex-col justify-center items-end ${birthday ? '' : 'hidden'}`}>
-              <p className='text-lg font-bold'>
-                🥳 다음달엔 내 생일~
-              </p>
-              <p className='text-sm'>
+            <div
+              className={`flex flex-col justify-center items-end ${birthday ? '' : 'hidden'}`}
+            >
+              <p className="text-lg font-bold">🥳 다음달엔 내 생일~</p>
+              <p className="text-sm">
                 다음달 곡 신청을 예정보다 일주일 빨리 신청할 수 있습니다!
               </p>
             </div>
           </div>
           <div className="flex flex-row items-center">
             <div>
-              <div className="flex justify-between" style={{ width : `${windowWidth - 20}px`}}>
+              <div
+                className="flex justify-between"
+                style={{ width: `${windowWidth - 20}px` }}
+              >
                 <div className="flex flex-row justify-between w-[70px]">
-                  <button 
+                  <button
                     className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
                     onClick={() => setMonth(true)}
                   >
-                    <Icon
-                      icon="ep:arrow-up-bold"
-                      className="text-lg"
-                    />
+                    <Icon icon="ep:arrow-up-bold" className="text-lg" />
                   </button>
-                  <button 
+                  <button
                     className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
                     onClick={() => setMonth(false)}
                   >
-                    <Icon
-                      icon="ep:arrow-down-bold"
-                      className="text-lg"
-                    />
+                    <Icon icon="ep:arrow-down-bold" className="text-lg" />
                   </button>
                 </div>
                 <div className="w-full flex justify-end">
                   <button
                     type="button"
-                    className={`flex justify-center items-center w-[50px] h-[30px] bg-red-500 rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : (session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student'] : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : (session.user.admin ? '' : 'hidden')) : 'hidden')} hover:bg-red-700 duration-150`}
+                    className={`flex justify-center items-center w-[50px] h-[30px] bg-red-500 rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} hover:bg-red-700 duration-150`}
                     onClick={() => deletePlaylist()}
                   >
                     <span
@@ -412,7 +419,7 @@ const MobilePage = ({ width }: MobilePageProps) => {
               <div
                 className="flex relative overflow-hidden"
                 style={{ width: `${windowWidth}px` }}
-                >
+              >
                 <div
                   className={`absoulute duration-500 flex ${choosemusic ? 'goright' : 'goleft'}`}
                   style={{ width: `${windowWidth * 2 + 50}px` }}
@@ -444,32 +451,44 @@ const MobilePage = ({ width }: MobilePageProps) => {
                         <span className="day-name">F</span>
                         <span className="day-name text-blue-600">S</span>
                       </div>
-                      <div className={`grid grid-cols-7 ${loading === 'data' ? 'hidden' : ''}`} style={{ width: `${windowWidth - 20}px` }}>
+                      <div
+                        className={`grid grid-cols-7 ${loading === 'data' ? 'hidden' : ''}`}
+                        style={{ width: `${windowWidth - 20}px` }}
+                      >
                         {curruntMonth
                           ? wcalendarday.map((item, index) => {
                               return (
                                 <div
                                   id={item.day.toString()}
                                   className={`day !border-none !h-[70px] flex justify-center items-center text-xs trasition duration-200 cursor-pointer`}
-                                  onClick={item.student !== 'None' ? () => dayClicked(index) : undefined}
+                                  onClick={
+                                    item.student !== 'None'
+                                      ? () => dayClicked(index)
+                                      : undefined
+                                  }
                                 >
-                                <div className={`${hasSelectedClass(index)} rounded-full w-[25px] h-[25px] bg-gray-400 -z-50`}>
-                                {item.student === 'None' ? (
-                                    <p className={`${item.day !== 0 ? (item.day == date ? 'text-text font-bold}' : '') : 'hidden'} z-10`}>
-                                    {item.day}
-                                    </p>
-                                ) : (
-                                    <div className='rounded-full bg-cusblue-normal w-[15px] h-[15px] flex justify-center items-center z-10'>
-                                    <p className={`${item.day !== 0 ? (item.day == date ? 'text-text font-bold}' : '') : 'hidden'} text-white`}>
-                                    {item.day}
-                                    </p>
-                                    </div>
-                                )
-                            }
-                            </div>
+                                  <div
+                                    className={`${hasSelectedClass(index)} rounded-full w-[25px] h-[25px] bg-gray-400 -z-50`}
+                                  >
+                                    {item.student === 'None' ? (
+                                      <p
+                                        className={`${item.day !== 0 ? (item.day == date ? 'text-text font-bold}' : '') : 'hidden'} z-10`}
+                                      >
+                                        {item.day}
+                                      </p>
+                                    ) : (
+                                      <div className="rounded-full bg-cusblue-normal w-[15px] h-[15px] flex justify-center items-center z-10">
+                                        <p
+                                          className={`${item.day !== 0 ? (item.day == date ? 'text-text font-bold}' : '') : 'hidden'} text-white`}
+                                        >
+                                          {item.day}
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
-                              );  
-                        })
+                              );
+                            })
                           : nwcalendarday.map((item, index) => {
                               if (date >= 24 || (date >= 17 && birthday)) {
                                 return (
@@ -493,7 +512,9 @@ const MobilePage = ({ width }: MobilePageProps) => {
                               }
                             })}
                       </div>
-                      <Skeleton className={`w-[10px] h-[500px] ${loading === 'data' ? '' : 'hidden'}`}/>
+                      <Skeleton
+                        className={`w-[10px] h-[500px] ${loading === 'data' ? '' : 'hidden'}`}
+                      />
                     </div>
                   </div>
                   <div className="right-0 ml-[50px] w-full shadow-sm overflow-hidden bg-white rounded-lg">
@@ -523,7 +544,10 @@ const MobilePage = ({ width }: MobilePageProps) => {
                         <span className="day-name">F</span>
                         <span className="day-name text-blue-600">S</span>
                       </div>
-                      <div className="grid grid-cols-7" style={{ width: `${windowWidth - 20}px` }}>
+                      <div
+                        className="grid grid-cols-7"
+                        style={{ width: `${windowWidth - 20}px` }}
+                      >
                         {curruntMonth
                           ? lcalendarday.map((item, index) => {
                               return (
@@ -542,10 +566,12 @@ const MobilePage = ({ width }: MobilePageProps) => {
                                     )
                                   ) : null}
                                   {item.student !== 'None' ? (
-                                    <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
+                                    <div
+                                      className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
+                                    >
                                       {item.student}
                                     </div>
-                                ) : (
+                                  ) : (
                                     ''
                                   )}
                                 </div>
@@ -561,10 +587,12 @@ const MobilePage = ({ width }: MobilePageProps) => {
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
                                     {item.student !== 'None' ? (
-                                      <div className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}>
+                                      <div
+                                        className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
+                                      >
                                         {item.student}
                                       </div>
-                                  ) : (
+                                    ) : (
                                       ''
                                     )}
                                   </div>
@@ -593,12 +621,11 @@ const MobilePage = ({ width }: MobilePageProps) => {
                 </div>
               </div>
             </div>
-           </div>
+          </div>
         </div>
       </div>
     </main>
   );
-}
-
+};
 
 export default MobilePage;

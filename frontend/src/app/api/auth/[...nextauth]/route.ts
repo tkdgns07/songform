@@ -14,7 +14,7 @@ const idExtract = (email: string): string | null => {
   const match = email.match(regex);
 
   if (match && match[1]) {
-    const firstDigit = parseInt(match[1], 10);  // 첫 번째 캡처된 한 자리 숫자
+    const firstDigit = parseInt(match[1], 10); // 첫 번째 캡처된 한 자리 숫자
     const restDigits = match[2];
 
     let result: string;
@@ -29,13 +29,13 @@ const idExtract = (email: string): string | null => {
       return null;
     }
     return result;
-  }else if (email === "jtfmkshs@gmail.com"){
-    return "admin"
+  } else if (email === 'jtfmkshs@gmail.com') {
+    return 'admin';
   }
-  return null
+  return null;
 };
 
-let userInfo : StudentInfo | null = null;
+let userInfo: StudentInfo | null = null;
 
 const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -56,8 +56,12 @@ const authOptions: NextAuthOptions = {
       const email = user.email ?? '';
 
       const id = idExtract(email);
-      if(!id){return '/error?error=email-err'}
-      if(id === "admin"){return true}
+      if (!id) {
+        return '/error?error=email-err';
+      }
+      if (id === 'admin') {
+        return true;
+      }
       try {
         const data = { id: id };
         const response = await axios.post(
@@ -66,12 +70,11 @@ const authOptions: NextAuthOptions = {
           {
             headers: {
               Authorization: `Bearer ${process.env.CRON_SECRET}`,
-            },    
-          }
+            },
+          },
         );
         userInfo = response.data.data;
-      } catch (error) {
-      }
+      } catch (error) {}
 
       if (!userInfo) {
         return '/error?error=server-email';
@@ -86,9 +89,9 @@ const authOptions: NextAuthOptions = {
           token.name = userInfo.name;
           token.id = userInfo.id;
           token.birthday = userInfo.birthday;
-          token.admin = false
-        }else{
-          token.admin = true
+          token.admin = false;
+        } else {
+          token.admin = true;
         }
       }
       return token;
@@ -100,7 +103,7 @@ const authOptions: NextAuthOptions = {
         session.accessToken = token.accessToken as string | undefined;
         session.user.id = token.id as string | null;
         session.user.birthday = token.birthday as string | null;
-        session.user.admin = token.admin as boolean
+        session.user.admin = token.admin as boolean;
       }
       return session;
     },

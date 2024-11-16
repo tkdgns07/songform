@@ -86,7 +86,7 @@
   .menubar {
     position: fixed;
     top: 0;
-    z-index: 9999;
+    z-index: 9;
     background-color: #f7faff;
   }
 
@@ -329,7 +329,7 @@
   .goright {
     transform: translateX(0);
   }
-  .mainpage{
+  .mainpage {
     height: calc(100vh - 55px);
   }
 }

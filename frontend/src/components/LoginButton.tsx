@@ -21,17 +21,24 @@ const LoginButton: React.FC = () => {
         </button>
       ) : (
         <div className="w-[35px] h-[35px] rounded-full">
-          <button className="relative flex justify-center items-center" onClick={()=>signOut()}>
-            {session.user?.image ?
+          <button
+            className="relative flex justify-center items-center"
+            onClick={() => signOut()}
+          >
+            {session.user?.image ? (
               <img
                 src={session.user?.image}
                 alt="profile img"
                 className="w-[35px] rounded-full absolute opacity-100 hover:opacity-0 duration-200"
-              /> :
-              <Skeleton className="w-[35px] h-[35px] rounded-full absolute bg-gray-200"/>
-            }
+              />
+            ) : (
+              <Skeleton className="w-[35px] h-[35px] rounded-full absolute bg-gray-200" />
+            )}
             <div className="w-[35px] h-[35px] flex justify-center items-center rounded-full bg-gray-300 -z-10 opacity-50 duration-200">
-              <Icon className="text-2xl text-black" icon="material-symbols:logout"/>
+              <Icon
+                className="text-2xl text-black"
+                icon="material-symbols:logout"
+              />
             </div>
           </button>
         </div>

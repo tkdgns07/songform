@@ -114,7 +114,7 @@ function SubmitContent() {
           },
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          },    
+          },
         });
 
         const videoDetails: Youtbeinfo = response.data;
@@ -151,7 +151,7 @@ function SubmitContent() {
 
   let playlistId: string | null = null;
 
-  const handleCreatePlaylist = async (type : boolean) => {
+  const handleCreatePlaylist = async (type: boolean) => {
     setLoading(true);
     try {
       const playlistTitle = `${date?.year}/${date?.month}/${date?.day} ${type ? '기상송' : '노동요'}`; // 재생목록 제목
@@ -177,38 +177,39 @@ function SubmitContent() {
   };
 
   const checkStudent = async () => {
-    try{
+    try {
       const data = {
         year: date.year,
         month: date.month,
         student: `${session?.user.id} ${session?.user.name}`,
       };
-      const response = await axios.post(`api/data/${songParams === 'wakeup' ? 'wakeup' : 'labor'}/check/`,
+      const response = await axios.post(
+        `api/data/${songParams === 'wakeup' ? 'wakeup' : 'labor'}/check/`,
         data,
         {
           headers: {
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          },    
-        }
-      )
-      
+          },
+        },
+      );
+
       const serverMessage = response.data;
 
-      return serverMessage
-    } catch (error){
+      return serverMessage;
+    } catch (error) {
       router.push('/error?error=${error}');
-      return null
+      return null;
     }
-  }
+  };
 
   const submitmusic = async () => {
     setLoading(true);
-    const check = await checkStudent()  
-    if (check) {
+    const check = await checkStudent();
+    if (check == true) {
       router.push('/error?error=already-submit');
-      return null
+      return null;
     }
-    if (!check){
+    if (check == false) {
       if (videodetails.length >= 5 && songtype == 'wakeup') {
         await handleCreatePlaylist(true);
         try {
@@ -219,15 +220,11 @@ function SubmitContent() {
             student: `${session?.user.id} ${session?.user.name}`,
             music_url: playlistId,
           };
-          const response = await axios.post(
-            `api/data/wakeup/add`,
-            data,
-            {
-              headers: {
-                Authorization: `Bearer ${process.env.CRON_SECRET}`,
-              },      
-            }
-          );
+          const response = await axios.post(`api/data/wakeup/add`, data, {
+            headers: {
+              Authorization: `Bearer ${process.env.CRON_SECRET}`,
+            },
+          });
           toast.success('신청에 성공했습니다');
           router.push('/');
         } catch (error) {
@@ -246,15 +243,11 @@ function SubmitContent() {
             music_url: playlistId,
           };
           setLoading(true);
-          const response = await axios.post(
-          `api/data/labor/add`,
-            data,
-            {
-              headers: {
-                Authorization: `Bearer ${process.env.CRON_SECRET}`,
-              },      
-            }
-          );
+          const response = await axios.post(`api/data/labor/add`, data, {
+            headers: {
+              Authorization: `Bearer ${process.env.CRON_SECRET}`,
+            },
+          });
           toast.success('신청에 성공했습니다');
           router.push('/');
         } catch (error) {
@@ -336,9 +329,11 @@ function SubmitContent() {
           </div>
         </div>
       </div>
-      <div className={`flex justify-center ${videodetails.length >= 1 ? '' : 'items-center'} min-h-[450px] w-[90%] my-[30px] rounded-lg`}>
+      <div
+        className={`flex justify-center ${videodetails.length >= 1 ? '' : 'items-center'} min-h-[450px] w-[90%] my-[30px] rounded-lg`}
+      >
         {videodetails.length >= 1 ? (
-            <div className="musicscontainer grid grid-cols-4 gap-5">
+          <div className="musicscontainer grid grid-cols-4 gap-5">
             {videodetails.map((items, index) => {
               return (
                 <div className="relative">
@@ -367,7 +362,9 @@ function SubmitContent() {
             })}
           </div>
         ) : (
-          <div><p className='text-xl font-semibold'>🎧 여기에 노래가 표시됩니다</p></div>
+          <div>
+            <p className="text-xl font-semibold">🎧 여기에 노래가 표시됩니다</p>
+          </div>
         )}
       </div>
     </main>
