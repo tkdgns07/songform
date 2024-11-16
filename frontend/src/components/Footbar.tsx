@@ -1,7 +1,7 @@
 const Footbar = () => {
     return (
         <>
-					<div className="mt-[90px] flex items-center w-full h-[60px] px-10 py-3 gradation border-t border-gray-200 justify-between">
+					<div className="flex items-center w-full h-[60px] px-10 py-3 gradation border-t border-gray-200 justify-between sticky bottom-0">
 						<div className="flex items-center">
 							<p className="text-md text-text font-bold mr-[3px]">
 								강원과학고등학교

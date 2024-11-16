@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../../../prisma/client';
+import prisma from '@/../prisma/client';
+import axios from 'axios';
 
 const now = new Date();
 const currentYear = now.getFullYear();
@@ -61,7 +62,37 @@ async function makeCalendar(model: string, year: number, month: number) {
   }
 }
 
+async function deletePlaylists () {
+  const playlists = await prisma.laborCalendar.findMany({
+    where : {
+      month : currentMonth -1,
+    },
+    select : {
+      music_url : true,
+    },
+  })
+  try {
+    (async () => {
+      for (const item of playlists) {
+        const response = await axios.delete(`${process.env.NEXTAUTH_URL}/api/deletelist`, {
+          data: {
+            playlistId: item.music_url,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.CRON_SECRET}`,
+          },
+        });
+      }
+    })();
+  }catch(error){
+    return NextResponse.json({status : 500, error : 'Youtube API error on deleting PlayList'})
+  }
+}
+
 export async function GET() {
+  await deletePlaylists()
+
   await prisma.wakeupCalendar.deleteMany({});
   await prisma.laborCalendar.deleteMany({});
 
