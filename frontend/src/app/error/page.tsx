@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import errorimg from '../img/error404.png';
+import errorimg from '@/img/error404.png';
 import Image from 'next/image';
 
 function ErrorContent() {
@@ -29,6 +29,8 @@ function ErrorContent() {
     error = '학생 정보 통신에 실패했습니다.';
   } else if (error === 'preparing') {
     error = '모바일은 아직 준비중입니다.';
+  } else if (error === 'student-add-error'){
+    error = '학생 생일 추가 중 문제가 발생했습니다.'
   }
 
   return (

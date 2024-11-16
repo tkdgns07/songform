@@ -95,7 +95,6 @@ function SubmitContent() {
 
       return 'error';
     } catch (e) {
-      // URL 형식이 아닌 경우, url을 그대로 비디오 ID로 사용
       return url;
     }
   };
@@ -107,7 +106,6 @@ function SubmitContent() {
       setInputclicked(false);
 
       try {
-        // API 요청을 통해 YouTube 비디오 정보를 가져옴
         const response = await axios.get(`/api/youtubeinfo`, {
           params: {
             videoUrl: inputvalue,
@@ -172,6 +170,7 @@ function SubmitContent() {
       }
     } catch (error) {
       router.push('/error?error=playlist-make-error');
+      return 'error'
     }
     setLoading(false);
   };
@@ -193,7 +192,9 @@ function SubmitContent() {
         },
       );
 
-      const serverMessage = response.data;
+      const serverMessage = response.data.data;
+
+      console.log(serverMessage)
 
       return serverMessage;
     } catch (error) {
@@ -205,13 +206,16 @@ function SubmitContent() {
   const submitmusic = async () => {
     setLoading(true);
     const check = await checkStudent();
-    if (check == true) {
+    if (check) {
       router.push('/error?error=already-submit');
       return null;
     }
-    if (check == false) {
+    if (!check) {
       if (videodetails.length >= 5 && songtype == 'wakeup') {
-        await handleCreatePlaylist(true);
+        const responese = await handleCreatePlaylist(true);
+        if (responese == 'error'){
+          return null
+        }
         try {
           const data = {
             year: date.year,

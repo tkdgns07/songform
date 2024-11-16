@@ -86,8 +86,10 @@
   .menubar {
     position: fixed;
     top: 0;
-    z-index: 9;
-    background-color: #f7faff;
+    z-index: 11;
+    background-color: rgba(247, 250, 255, 0);
+    backdrop-filter: blur(10px); /* 블러 효과 적용 */
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .bar {
@@ -331,5 +333,8 @@
   }
   .mainpage {
     height: calc(100vh - 55px);
+  }
+  .gradation{
+    background: linear-gradient(to top, #f2f7ff, #ffffff);
   }
 }

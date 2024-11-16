@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       },
     });
     if (!existingRecord) {
-      return NextResponse.json({ status: 404, error: 'lplaylist-error' });
+      return NextResponse.json({ status: 404, error: 'wplaylist-error' });
     }
 
     const updatedRecord = await prisma.wakeupCalendar.update({
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       data: updatedRecord,
     });
   } catch (error) {
-    return NextResponse.json({ status: 500, error: 'lplaylist-error' });
+    return NextResponse.json({ status: 500, error: 'wplaylist-error' });
   } finally {
     await prisma.$disconnect();
   }
