@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         status: 404,
         error: 'Record not found',
-        data: existingRecord,
       });
     }
 
