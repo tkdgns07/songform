@@ -37,9 +37,9 @@ function ErrorContent() {
     <main className="flex flex-col justify-center items-center h-screen">
       <Image src={errorimg} alt="KSHS_logo" className="w-[300px]" />
       <div className="flex items-center">
-        <p className="text-xl mr-[5px]">404</p>
-        <div className="w-[1px] h-full bg-text"></div>
-        <p className="text-xl text-center ml-[5px]">{error}</p>
+        <p className="text-xl mr-[5px] font-bold">404</p>
+        <div className="w-[2px] h-full bg-text"></div>
+        <p className="text-xl text-center ml-[5px] font-semibold">{error}</p>
       </div>
     </main>
   );

@@ -42,8 +42,6 @@ function SubmitContent() {
 
   const songParams = useSearchParams().get('song')?.toString();
 
-  const currentDate = new Date();
-
   useEffect(() => {
     if (!dateParams || (songParams !== 'labor' && songParams !== 'wakeup')) {
       router.push(`/error?error=no-data-rended`);
@@ -313,7 +311,7 @@ function SubmitContent() {
             </div>
             <div className="flex justify-between items-center h-[40px]">
               <span
-                className={`text-base ${videodetails.length < 5 ? 'text-red-700' : 'text-green-700'}`}
+                className={`text-base ${videodetails.length < 5 ? 'text-red-700' : (songParams === 'labor' ? (videodetails.length > 5 ? 'text-red-700' : 'text-cusblue-normal') : 'text-cusblue-normal')}`}
               >
                 {videodetails.length}/5
               </span>
