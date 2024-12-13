@@ -25,7 +25,11 @@ interface Youtbeinfo {
 const MobilePage = () => {
   const router = useRouter();
 
-  if(process.env.NEXTAUTH_URL == 'https://songchan.vercel.app'){router.push('/error?error=preparing')}
+  useEffect(() => {
+    if (process.env.NEXTAUTH_URL === 'https://songchan.vercel.app') {
+      router.push('/error?error=preparing');
+    }
+  }, [router]);
 
   const [wcalendarday, setwCalendar] = useState<Dayinfo[]>([]);
   const [nwcalendarday, setnwCalendar] = useState<Dayinfo[]>([]);
