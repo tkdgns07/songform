@@ -315,7 +315,7 @@ const DesktopPage = () => {
 
     const [firstPart, ...rest] = session?.user.birthday.split(' ');
     const secondPart = rest.join(' ');
-    if (parseInt(secondPart) === month + 1) {
+    if (parseInt(secondPart) === (month == 12 ? 1 : month + 1)) {
       birthday = true;
     }
   }
@@ -518,9 +518,9 @@ const DesktopPage = () => {
                     <div className="flex flex-row justify-between items-center p-[12px]">
                       <div className="flex flex-row items-center">
                         <span className="text-lighttext text-sm fontsemibold mr-[5px]">
-                          {year}
+                          {curruntMonth ? year : (month === 12 ? year + 1 : year)}
                         </span>
-                        <span className="text-text text-base font-bold">{`${curruntMonth ? month : month + 1}월`}</span>
+                        <span className="text-text text-base font-bold">{`${curruntMonth ? month : (month === 12 ? 1 : month + 1)}월`}</span>
                       </div>
                       <button
                         type="button"

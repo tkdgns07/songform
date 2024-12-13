@@ -40,6 +40,11 @@ async function createRecord(
   }
 }
 
+function isWeekend(start: number, date: number): boolean {
+  const dayIndex = (start + date - 1) % 7;
+  return dayIndex === 0 || dayIndex === 6;
+}
+
 async function makeCalendar(model: string, year: number, month: number) {
   const firstDay = new Date(year, month - 1, 1);
   const lastDay = new Date(year, month, 0);
@@ -55,7 +60,15 @@ async function makeCalendar(model: string, year: number, month: number) {
     await createRecord(model, year, month, 0, 'None', 'None');
   }
   for (let j = 1; j < daysInMonth + 1; j++) {
-    await createRecord(model, year, month, j, 'None', 'None');
+    if(model == 'labor'){
+      if(isWeekend(startWeekday, j)){
+        await createRecord(model, year, month, 0, 'None', 'None');
+      }else{
+        await createRecord(model, year, month, j, 'None', 'None');
+      }
+    }else if(model == 'wakeup'){
+      await createRecord(model, year, month, j, 'None', 'None');
+    }
   }
   for (let k = 1; k < loopLimit; k++) {
     await createRecord(model, year, month, 0, 'None', 'None');

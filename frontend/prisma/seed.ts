@@ -1,4 +1,3 @@
-// prisma/seed.ts
 import prisma from './client';
 
 const now = new Date();
@@ -39,6 +38,11 @@ async function createcalRecord(
   }
 }
 
+function isWeekend(start: number, date: number): boolean {
+  const dayIndex = (start + date - 1) % 7;
+  return dayIndex === 0 || dayIndex === 6;
+}
+
 async function makeCalendar(model: string, year: number, month: number) {
   const firstDay = new Date(year, month - 1, 1);
   const lastDay = new Date(year, month, 0);
@@ -53,7 +57,15 @@ async function makeCalendar(model: string, year: number, month: number) {
     await createcalRecord(model, year, month, 0, 'None', 'None');
   }
   for (let i = 1; i < daysInMonth + 1; i++) {
-    await createcalRecord(model, year, month, i, 'None', 'None');
+    if(model == 'labor'){
+      if(isWeekend(startWeekday, i)){
+        await createcalRecord(model, year, month, 0, 'None', 'None');
+      }else{
+        await createcalRecord(model, year, month, i, 'None', 'None');
+      }
+    }else if(model == 'wakeup'){
+      await createcalRecord(model, year, month, i, 'None', 'None');
+    }
   }
   for (let i = 1; i < loopLimit; i++) {
     await createcalRecord(model, year, month, 0, 'None', 'None');
