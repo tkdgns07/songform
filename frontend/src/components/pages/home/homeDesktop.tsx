@@ -321,7 +321,7 @@ const DesktopPage = () => {
   }
 
   return (
-    <main className="mt-[65px]">
+    <main className="my-[80px]">
       <div className="flex flex-row">
         <div>
           <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 overflow-hidden shadow-2xl shadow-shadowc">

@@ -265,7 +265,7 @@ function SubmitContent() {
   };
 
   return (
-    <main className="flex flex-col items-center w-full mt-[65px]">
+    <main className="flex flex-col items-center w-full my-[80px]">
       <div className="flex flex-row justify-center w-full">
         <div>
           <div className="w-[350px] md:w-[500px] h-[80px] calendarExp mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-col justify-center bg-body">

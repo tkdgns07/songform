@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Icon } from '@iconify/react';
 import { useRouter } from 'next/navigation';
@@ -22,12 +22,11 @@ interface Youtbeinfo {
   title: string;
   link: string;
 }
+const MobilePage = () => {
+  const router = useRouter();
 
-interface MobilePageProps {
-  width: number;
-}
+  if(process.env.NEXTAUTH_URL == 'https://songchan.vercel.app'){router.push('/error?error=preparing')}
 
-const MobilePage = ({ width }: MobilePageProps) => {
   const [wcalendarday, setwCalendar] = useState<Dayinfo[]>([]);
   const [nwcalendarday, setnwCalendar] = useState<Dayinfo[]>([]);
   const [lcalendarday, setlCalendar] = useState<Dayinfo[]>([]);
@@ -36,7 +35,6 @@ const MobilePage = ({ width }: MobilePageProps) => {
   const [clickedDay, setClickedDay] = useState<number>(-1);
   const { data: session, status } = useSession();
   const [choosemusic, setChoosemusic] = useState<boolean>(true);
-  const router = useRouter();
   const [videoIds, setVideoIds] = useState<string[]>();
   const [playlistId, setPlaylistId] = useState<string>('');
   const [submitstudent, setSubmitstudent] = useState<string>('');
@@ -44,18 +42,7 @@ const MobilePage = ({ width }: MobilePageProps) => {
   const [videoInfo, setVideoinfo] = useState<Youtbeinfo[]>([]);
   const [curruntMonth, setCurruntMonth] = useState<boolean>(true);
   const [clickedSub, setClickedSub] = useState<number>(-1);
-
-  const [windowWidth, setWindowWidth] = useState<number>(450);
-
-  router.push('error?error=preparing');
-
-  useEffect(() => {
-    console.log(width);
-    if (width !== 0) {
-      setWindowWidth(width);
-      console.log(windowWidth);
-    }
-  }, [width]);
+  const [canDrag, setCanDrag] = useState<boolean>(true);
 
   const now: Date = new Date();
   const year: number = now.getFullYear();
@@ -65,21 +52,6 @@ const MobilePage = ({ width }: MobilePageProps) => {
   const fetchCalendarData = async () => {
     setLoading('data');
     try {
-      const wresponse = await axios.get(`/api/data/wakeup/get`, {
-        headers: {
-          Authorization: `Bearer ${process.env.CRON_SECRET}`,
-        },
-      });
-      const wdata: Dayinfo[] = wresponse.data.data.sort(
-        (a: Dayinfo, b: Dayinfo) => a.id - b.id,
-      );
-
-      const currunt_wdays = wdata.filter((item) => item.month === month);
-      const next_wdays = wdata.filter((item) => item.month !== month);
-
-      setwCalendar(currunt_wdays);
-      setnwCalendar(next_wdays);
-
       const lresponse = await axios.get(`/api/data/labor/get`, {
         headers: {
           Authorization: `Bearer ${process.env.CRON_SECRET}`,
@@ -94,6 +66,21 @@ const MobilePage = ({ width }: MobilePageProps) => {
 
       setlCalendar(currunt_ldays);
       setnlCalendar(next_ldays);
+
+      const wresponse = await axios.get(`/api/data/wakeup/get`, {
+        headers: {
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
+        },
+      });
+      const wdata: Dayinfo[] = wresponse.data.data.sort(
+        (a: Dayinfo, b: Dayinfo) => a.id - b.id,
+      );
+
+      const currunt_wdays = wdata.filter((item) => item.month === month);
+      const next_wdays = wdata.filter((item) => item.month !== month);
+
+      setwCalendar(currunt_wdays);
+      setnwCalendar(next_wdays);
     } catch (error) {
       router.push('error?error=cant-cfetch-calendar');
     }
@@ -164,19 +151,16 @@ const MobilePage = ({ width }: MobilePageProps) => {
       if (id === clickedDay) {
         setClickedDay(-1);
       } else if (wcalendarday[id]['day'] >= date || !curruntMonth) {
-        setClickedDay(id);
-      }
-    } else if (day !== 0 && student !== 'None') {
-      if (id !== clickedSub) {
-        selectedclick(id);
-      } else {
         selectedclick(0);
+        setClickedDay(id);
       }
     }
   };
 
   const hasSelectedClass = (id: number) => {
-    return id === clickedDay ? '' : 'opacity-10';
+    if (id === clickedDay || id === clickedSub) {
+      return 'border-none !bg-cusblue-normal !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded';
+    }
   };
 
   const submitClicked = async () => {
@@ -232,7 +216,7 @@ const MobilePage = ({ width }: MobilePageProps) => {
   };
 
   const selectedclick = (id: number) => {
-    if (id !== 0) {
+    if (id !== clickedSub && id !== 0) {
       const { student, music_url } = choosemusic
         ? curruntMonth
           ? wcalendarday[id]
@@ -243,6 +227,7 @@ const MobilePage = ({ width }: MobilePageProps) => {
       setPlaylistId(music_url);
       setSubmitstudent(student);
       setClickedSub(id);
+      setClickedDay(-1);
     } else {
       setPlaylistId('');
       setSubmitstudent('');
@@ -328,6 +313,9 @@ const MobilePage = ({ width }: MobilePageProps) => {
   let birthday: boolean = false;
 
   if (session?.user.birthday) {
+    if (session?.user.birthday == 'NaN') {
+    }
+
     const [firstPart, ...rest] = session?.user.birthday.split(' ');
     const secondPart = rest.join(' ');
     if (parseInt(secondPart) === month + 1) {
@@ -335,38 +323,54 @@ const MobilePage = ({ width }: MobilePageProps) => {
     }
   }
 
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  function getMonthName(monthNumber: number): string {
+    if (monthNumber < 1 || monthNumber > 12) throw new Error("Invalid month number");
+    return monthNames[monthNumber - 1];
+  }
+
+  const elementRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    // ResizeObserver 생성
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setHeight(entry.contentRect.height); // 요소의 높이를 업데이트\
+        console.log(height)
+      }
+    });
+
+    // 요소 관찰 시작
+    resizeObserver.observe(element);
+
+    return () => {
+      // 관찰 중단
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   return (
-    <main className="">
-      <div className="flex flex-row mb-[40px] p-[10px]">
+    <main className="w-full h-screen">
+      <div className="mt-[50px] w-full flex flex-row mb-[40px] p-[10px]">
         <div
-          className="flex flex-col item-center"
-          style={{ width: `${windowWidth - 20}px` }}
+          className="w-full flex flex-col item-center"
         >
-          <div className="h-[80px] calendarExp mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center">
-            <div>
-              <p className="text-xl font-bold text-cusblue-deep">
-                노래 신청 시스템
-              </p>
-              <p className="text-sm text-text">
-                기상송과 노동요를 다운로드 없이 편하게 신청해보세요
-              </p>
-            </div>
-            <div
-              className={`flex flex-col justify-center items-end ${birthday ? '' : 'hidden'}`}
-            >
-              <p className="text-lg font-bold">🥳 다음달엔 내 생일~</p>
-              <p className="text-sm">
-                다음달 곡 신청을 예정보다 일주일 빨리 신청할 수 있습니다!
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-row items-center">
-            <div>
+          <div className="w-full flex flex-row items-center">
+            <div className='w-full flex flex-col justify-center'>
+              <div className='fixed w-full top-0 mt-[50px]'
+              ref={elementRef}>
               <div
-                className="flex justify-between"
-                style={{ width: `${windowWidth - 20}px` }}
+                className="w-full flex justify-between"
               >
-                <div className="flex flex-row justify-between w-[70px]">
+                {/* <div className="flex flex-row justify-between w-[70px]">
                   <button
                     className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
                     onClick={() => setMonth(true)}
@@ -379,7 +383,7 @@ const MobilePage = ({ width }: MobilePageProps) => {
                   >
                     <Icon icon="ep:arrow-down-bold" className="text-lg" />
                   </button>
-                </div>
+                </div> */}
                 <div className="w-full flex justify-end">
                   <button
                     type="button"
@@ -395,34 +399,92 @@ const MobilePage = ({ width }: MobilePageProps) => {
                       삭제
                     </p>
                   </button>
-                  <div className="w-[120px] h-[30px] bg-white flex justify-between items-center p-[8px] rounded-lg relative mb-[10px]">
-                    <button
-                      type="button"
-                      className={`text-xs z-10 ml-[8px] ${choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
-                      onClick={() => switchmusic(true)}
-                    >
-                      기상송
-                    </button>
-                    <button
-                      type="button"
-                      className={`text-xs z-10 mr-[8px] ${!choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
-                      onClick={() => switchmusic(false)}
-                    >
-                      노동요
-                    </button>
-                    <div
-                      className={`switcher ${choosemusic ? 'switchtrue' : 'switchfalse'}`}
-                    ></div>
+                  <div className="w-full h-[45px] bg-gray-200 flex justify-between items-center p-[2px] rounded-full mb-[10px]">
+                    <div className='flex w-full h-full relative'>
+                      <button
+                        type="button"
+                        className={`flex-1 text-base font-bold z-10 text-text trasnform duration-200`}
+                        onClick={() => switchmusic(true)}
+                      >
+                        기상송
+                      </button>
+                      <button
+                        type="button"
+                        className={`flex-1 text-base font-bold z-10 text-text trasnform duration-200`}
+                        onClick={() => switchmusic(false)}
+                      >
+                        노동요
+                      </button>
+                      <div
+                        className={`w-1/2 h-full bg-white shdow-xl rounded-full absolute transition-transform duration-300 ${choosemusic ? 'translate-x-0' : 'translate-x-full'}`}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div
+              <div className='w-full bg-white rounded-xl shadow-sm'>
+                <div className='flex items-center justify-between p-[15px] mb-[10px]'>
+                  <div>
+                    <p className='text-2xl text-text font-bold'>{getMonthName(month)}</p>
+                    <p className='text-lighttext text-sm'>{year}</p>
+                  </div>
+                  <div>
+                    <button
+                      className='flex justify-center items-center w-[30px] h-[30px] rounded-full bg-black'
+                      onClick={() => submitClicked()}
+                    >
+                      <Icon
+                        icon="uil:arrow-right"
+                        className="text-white text-2xl"
+                      ></Icon>
+                    </button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-7">
+                  <span className="day-name text-text text-xs">SUN</span>
+                  <span className="day-name text-xs">MON</span>
+                  <span className="day-name text-xs">TUE</span>
+                  <span className="day-name text-xs">WED</span>
+                  <span className="day-name text-xs">THU</span>
+                  <span className="day-name text-xs">FRI</span>
+                  <span className="day-name text-text text-xs">SAT</span>
+                </div>
+                <div className='w-full grid grid-cols-7'>
+                  {curruntMonth
+                    ? wcalendarday.map((item, index) => {
+                        return (
+                          <div
+                            id={item.day.toString()}
+                            className={`flex flex-col items-center justify-center aspect-[2/3]`}
+                            onClick={() => dayClicked(index)}
+                          >
+                            <div className={`flex justify-center items-center mb-[1px] w-[30px] h-[30px] rounded-full ${index == clickedDay ? 'bg-text text-white' : (index == clickedSub ? 'bg-text text-white' : '')} text-sm duration-300 ${item.day == 0 ? 'text-white' : ''} ${item.day < date ? 'text-lighttext' : ''}`}>
+                              {item.day}
+                            </div>
+                            <div className={`w-[20px] h-[3px] rounded-full bg-text ${item.day == date ? 'opacity-100' : 'opacity-0'}`}></div>
+                            <div className={`w-[5px] h-[5px] rounded-full bg-text ${item.student == 'None' ? 'opacity-0' : 'opacity-0'}`}></div>
+                          </div>
+                        )
+                      })
+                    : nwcalendarday.map((item, index) => {
+                        if (date >= 24 || (date >= 17 && birthday)) {
+                          return (
+                            <div></div>
+                          );
+                        } else {
+                          return (
+                            <div></div>
+                          );
+                        }
+                    })}
+                </div>
+              </div>
+              </div>
+              {/* <div
                 className="flex relative overflow-hidden"
-                style={{ width: `${windowWidth}px` }}
               >
                 <div
                   className={`absoulute duration-500 flex ${choosemusic ? 'goright' : 'goleft'}`}
-                  style={{ width: `${windowWidth * 2 + 50}px` }}
                 >
                   <div className="left-0 w-full overflow-hidden bg-body rounded-lg shadow-lg">
                     <div className="flex flex-row justify-between items-center p-[12px]">
@@ -453,7 +515,6 @@ const MobilePage = ({ width }: MobilePageProps) => {
                       </div>
                       <div
                         className={`grid grid-cols-7 ${loading === 'data' ? 'hidden' : ''}`}
-                        style={{ width: `${windowWidth - 20}px` }}
                       >
                         {curruntMonth
                           ? wcalendarday.map((item, index) => {
@@ -546,7 +607,6 @@ const MobilePage = ({ width }: MobilePageProps) => {
                       </div>
                       <div
                         className="grid grid-cols-7"
-                        style={{ width: `${windowWidth - 20}px` }}
                       >
                         {curruntMonth
                           ? lcalendarday.map((item, index) => {
@@ -618,6 +678,19 @@ const MobilePage = ({ width }: MobilePageProps) => {
                       </div>
                     </div>
                   </div>
+                </div>
+              </div> */}
+            <div className='w-1 bg-white'
+            style={{ height: `${height}px` }}></div>
+            <div className="flex flex-col items-center w-screen h-screen rounded-t-xl bg-white mt-[10px] pt-[10px] overflow-y-auto scroll-m-10 z-50">
+              <div className="w-[50px] h-[5px] rounded-full bg-lighttext cursor-pointer"></div>
+
+              <div className="w-full flex justify-start mt-[10px] px-[30px]">
+                <p className="text-xl font-bold">TODAY</p>
+              </div>
+
+                <div className="w-full px-[30px]">
+                  
                 </div>
               </div>
             </div>

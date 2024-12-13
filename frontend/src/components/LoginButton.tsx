@@ -1,4 +1,3 @@
-// components/LoginButton.tsx
 'use client';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Icon } from '@iconify/react';
@@ -20,27 +19,21 @@ const LoginButton: React.FC = () => {
           ></Icon>
         </button>
       ) : (
-        <div className="w-[35px] h-[35px] rounded-full">
-          <button
-            className="relative flex justify-center items-center"
-            onClick={() => signOut()}
-          >
-            {session.user?.image ? (
-              <img
-                src={session.user?.image}
-                alt="profile img"
-                className="w-[35px] rounded-full absolute opacity-100 hover:opacity-0 duration-200"
-              />
-            ) : (
-              <Skeleton className="w-[35px] h-[35px] rounded-full absolute bg-gray-200" />
-            )}
-            <div className="w-[35px] h-[35px] flex justify-center items-center rounded-full bg-gray-300 -z-10 opacity-50 duration-200">
-              <Icon
-                className="text-2xl text-black"
-                icon="material-symbols:logout"
-              />
+        <div className='rounded-full w-[35px] h-[35px] relative flex items-center justify-center'>
+          {session.user?.image ? (
+            <div className='profileImg w-[40px] h-[40px] flex justify-center items-center'>
+              <button className='border-none profileImg_ch' onClick={() => signOut()}>
+                <img
+                  src={session.user?.image}
+                  alt="profile img"
+                  className="w-[35px] rounded-full z-30"
+                />
+              </button>
+              <Icon icon="material-symbols:logout" className='text-frame text-xl absolute z-20'/>
             </div>
-          </button>
+          ) : (
+            <Skeleton className="w-[35px] h-[35px] rounded-full absolute bg-gray-200" />
+          )}
         </div>
       )}
     </div>
