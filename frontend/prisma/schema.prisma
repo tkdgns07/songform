@@ -23,6 +23,7 @@ model LaborCalendar {
   month   Int
   day     Int
   student String 
+  weekend Boolean?
   music_url    String  @default("None")
 }
 

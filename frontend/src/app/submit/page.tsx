@@ -338,7 +338,7 @@ function SubmitContent() {
           <div className="musicscontainer grid grid-cols-4 gap-5">
             {videodetails.map((items, index) => {
               return (
-                <div className="relative">
+                <div className="relative hover:scale-105 duration-150">
                   <a href={items.link}>
                     <div
                       className={`musiccontainer flex-col rounded-lg ${remove === index ? 'deleting' : ''}`}

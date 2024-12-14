@@ -29,7 +29,7 @@ const LoginButton: React.FC = () => {
                   className="w-[35px] rounded-full z-30"
                 />
               </button>
-              <Icon icon="material-symbols:logout" className='text-frame text-xl absolute z-20'/>
+              <Icon icon="material-symbols:logout" className='text-lighttext text-xl absolute z-20'/>
             </div>
           ) : (
             <Skeleton className="w-[35px] h-[35px] rounded-full absolute bg-gray-200" />

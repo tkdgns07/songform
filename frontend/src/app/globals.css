@@ -115,6 +115,7 @@
     background-color: #ffffff;
     background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f9f9fa' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
     cursor: not-allowed;
+    pointer-events: none;
   }
   .booked {
     box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
@@ -346,8 +347,8 @@
     left: -2.5px;
     z-index: 10;
     opacity: 0;
-    transition: opacity 0.2s ease-in;
-    @apply bg-cusblue-normal rounded-full;
+    transition: opacity 0.1s ease-in;
+    @apply bg-gray-200 rounded-full;
   }
   .profileImg:hover::before{
     opacity: 1;

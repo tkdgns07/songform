@@ -15,6 +15,7 @@ interface Dayinfo {
   day: number;
   student: string;
   music_url: string;
+  weekend?: boolean;
 }
 
 interface Youtbeinfo {
@@ -156,7 +157,7 @@ const DesktopPage = () => {
 
   const hasSelectedClass = (id: number) => {
     if (id === clickedDay || id === clickedSub) {
-      return 'border-none !bg-cusblue-normal !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded';
+      return 'border-none !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded bg-gradient-to-br from-cusblue-normal to-cusblue-light scale-105';
     }
   };
 
@@ -320,6 +321,11 @@ const DesktopPage = () => {
     }
   }
 
+  function isWeekend(start: number, date: number): boolean {
+    const dayIndex = (start + date - 1) % 7;
+    return dayIndex === 0 || dayIndex === 6;
+  }
+
   return (
     <main className="my-[80px]">
       <div className="flex flex-row">
@@ -362,7 +368,7 @@ const DesktopPage = () => {
                 <div className="w-full flex justify-end">
                   <button
                     type="button"
-                    className={`flex justify-center items-center pl-[5px] pr-[8px] h-[30px] bg-black rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} duration-150 shadow-2xl shadow-shadowc`}
+                    className={`flex justify-center items-center p-[10px] h-[30px] bg-black rounded-lg mr-[5px] pointer relative ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} duration-150 shadow-2xl shadow-shadowc`}
                     onClick={
                       loading !== 'deleting'
                         ? () => deletePlaylist()
@@ -374,7 +380,7 @@ const DesktopPage = () => {
                     ></span>
                     <Icon
                       icon="mdi:remove"
-                      className={`text-body mr-[2px m-0 p-0 ${loading !== 'deleting' ? '' : 'hidden'}`}
+                      className={`text-body m-0 p-0 ${loading !== 'deleting' ? '' : 'hidden'}`}
                     />
                     <p
                       className={`text-body text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
@@ -547,7 +553,7 @@ const DesktopPage = () => {
                               return (
                                 <div
                                   id={item.day.toString()}
-                                  className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''} ${hasSelectedClass(index)}`}
+                                  className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.weekend ? '!disable pointer-events-none' : (item.day === 0 ? '!disable' : '')} ${hasSelectedClass(index)}`}
                                   onClick={() => dayClicked(index)}
                                 >
                                   {item.day !== 0 ? (
@@ -576,7 +582,7 @@ const DesktopPage = () => {
                                 return (
                                   <div
                                     id={item.day.toString()}
-                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''} ${hasSelectedClass(index)}`}
+                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.weekend ? '!disable' : (item.day === 0 ? '!disable' : '')} ${hasSelectedClass(index)}`}
                                     onClick={() => dayClicked(index)}
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
@@ -631,7 +637,7 @@ const DesktopPage = () => {
                 </a>
                 <p className="text-lg font-bold text-text">노래 미리보기</p>
               </div>
-              <div className="w-full bg-gray-300 h-[1px]"></div>
+              <div className="w-full bg-gray-300 h-[1px] mb-[10px]"></div>
               <div className="w-full max-h-full overflow-y-auto">
                 {Array.isArray(videoInfo) &&
                   videoInfo.map((item) => {
