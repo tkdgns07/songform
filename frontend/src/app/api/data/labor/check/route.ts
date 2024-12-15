@@ -17,14 +17,22 @@ export async function POST(request: NextRequest) {
       where: {
         year: year,
         month: month,
-        student: student,
       },
     });
 
-    return NextResponse.json({
-      status: 200,
-      data: existingRecord ? true : false,
-    });
+    if(existingRecord?.weekend){
+      return NextResponse.json({
+        status: 500,
+        error : 'Can not submit in weekend'
+      });
+    }
+
+    if(existingRecord?.student !== 'None'){
+      return NextResponse.json({
+        status: 200,
+        error:  'Already submited'
+      });
+    }
   } catch (error) {
     return NextResponse.json({ status: 500, error: 'Internal Server Error' });
   } finally {

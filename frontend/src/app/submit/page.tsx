@@ -190,9 +190,7 @@ function SubmitContent() {
         },
       );
 
-      const serverMessage = response.data.data;
-
-      console.log(serverMessage)
+      const serverMessage = response.data.error;
 
       return serverMessage;
     } catch (error) {
@@ -204,8 +202,11 @@ function SubmitContent() {
   const submitmusic = async () => {
     setLoading(true);
     const check = await checkStudent();
-    if (check) {
+    if (check == 'Already submited') {
       router.push('/error?error=already-submit');
+      return null;
+    }else if(check == 'Can not submit in weekend'){
+      router.push('/error?error=weekend-submit');
       return null;
     }
     if (!check) {

@@ -1,5 +1,4 @@
 'use client';
-
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import errorimg from '@/img/error404.png';
@@ -25,6 +24,8 @@ function ErrorContent() {
     error = '구글 로그인 중 에러가 발생했습니다.';
   } else if (error === 'already-submit') {
     error = '이미 신청했습니다.';
+  } else if (error === 'weekend-submit'){
+    error = '노동요는 주말에 신철할 수 없습니다.'
   } else if (error === 'student-error') {
     error = '학생 정보 통신에 실패했습니다.';
   } else if (error === 'preparing') {
@@ -39,7 +40,7 @@ function ErrorContent() {
       <div className="flex items-center">
         <p className="text-xl mr-[5px] font-bold">404</p>
         <div className="w-[2px] h-full bg-text"></div>
-        <p className="text-xl text-center ml-[5px] font-semibold">{error}</p>
+        <p className="text-xl text-center ml-[5px]">{error}</p>
       </div>
     </main>
   );

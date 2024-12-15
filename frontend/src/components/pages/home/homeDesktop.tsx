@@ -157,7 +157,7 @@ const DesktopPage = () => {
 
   const hasSelectedClass = (id: number) => {
     if (id === clickedDay || id === clickedSub) {
-      return 'border-none !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded bg-gradient-to-br from-cusblue-normal to-cusblue-light scale-105';
+      return 'border-none !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded bg-gradient-to-br from-cusblue-normal to-cusblue-light scale-105 overflow-visible';
     }
   };
 
@@ -409,11 +409,11 @@ const DesktopPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex w-[800px] relative overflow-hidden shadow-2xl rounded-lg shadow-shadowc">
+              <div className="flex w-[800px] relative shadow-2xl rounded-lg shadow-shadowc overflow-x-hidden">
                 <div
                   className={`absoulute duration-500 flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
                 >
-                  <div className="left-0 w-[800px] overflow-hidden bg-white rounded-lg">
+                  <div className="left-0 w-[800px] bg-white rounded-lg">
                     <div className="flex flex-row justify-between items-center p-[12px]">
                       <div className="flex flex-row items-center">
                         <span className="text-lighttext text-sm fontsemibold mr-[5px]">
@@ -520,7 +520,7 @@ const DesktopPage = () => {
                       />
                     </div>
                   </div>
-                  <div className="right-0 ml-[50px] w-[800px] shadow-2xl overflow-hidden bg-white rounded-lg">
+                  <div className="right-0 ml-[50px] w-[800px] bg-white rounded-lg">
                     <div className="flex flex-row justify-between items-center p-[12px]">
                       <div className="flex flex-row items-center">
                         <span className="text-lighttext text-sm fontsemibold mr-[5px]">
@@ -601,7 +601,7 @@ const DesktopPage = () => {
                                 return (
                                   <div
                                     id={item.day.toString()}
-                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''}`}
+                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.weekend ? '!disable' : (item.day === 0 ? '!disable' : '')}`}
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
                                     {item.student !== 'None' ? (
@@ -644,7 +644,7 @@ const DesktopPage = () => {
                     return (
                       <a href={item.link} key={item.link} className="">
                         <div className="flex justify-start items-center w-full h-[60px] p-[5px] hover:bg-blue-50 mb-[5px] rounded-lg duration-100">
-                          <div className="w-[45px] h-[45px] overflow-hidden flex justify-center items-center rounded-lg z-10">
+                          <div className="w-[45px] h-[45px] flex justify-center overflow-hidden items-center rounded-lg z-10">
                             <img
                               src={item.thumbnail}
                               alt={`${item.title} thumbnail`}
