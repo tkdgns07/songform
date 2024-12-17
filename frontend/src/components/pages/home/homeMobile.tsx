@@ -23,14 +23,6 @@ interface Youtbeinfo {
   link: string;
 }
 const MobilePage = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (process.env.NEXTAUTH_URL !== 'http://localhost:3000') {
-      router.push('/error?error=preparing');
-    }
-  }, [router]);
-
   const [wcalendarday, setwCalendar] = useState<Dayinfo[]>([]);
   const [nwcalendarday, setnwCalendar] = useState<Dayinfo[]>([]);
   const [lcalendarday, setlCalendar] = useState<Dayinfo[]>([]);
@@ -47,6 +39,18 @@ const MobilePage = () => {
   const [curruntMonth, setCurruntMonth] = useState<boolean>(true);
   const [clickedSub, setClickedSub] = useState<number>(-1);
   const [canDrag, setCanDrag] = useState<boolean>(true);
+
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   if (process.env.NEXTAUTH_URL === 'http://localhost:3000') {
+  //     console.log(process.env.NEXTAUTH_URL)
+  //     console.error("erroroeeor")
+  //     router.push('/error?error=preparing');
+  //   }
+  // }, [router]);
+
+  router.push('/error?error=preparing');
 
   const now: Date = new Date();
   const year: number = now.getFullYear();
