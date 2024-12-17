@@ -137,7 +137,7 @@
   .alert-hidden {
     top: -100px; /* 알림 요소를 화면 밖으로 숨김 */
   }
-  .inputcontainer {
+ .inputcontainer {
     position: relative;
     overflow: hidden;
     transition:
