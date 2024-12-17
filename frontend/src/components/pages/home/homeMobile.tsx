@@ -26,7 +26,7 @@ const MobilePage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (process.env.NEXTAUTH_URL === 'http://localhost:3000') {
+    if (process.env.NEXTAUTH_URL !== 'http://localhost:3000') {
       router.push('/error?error=preparing');
     }
   }, [router]);
