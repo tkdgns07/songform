@@ -361,4 +361,17 @@
   .profileImg:hover .profileImg_ch{
     opacity: 0;
   }
+
+  .error-arow{
+    right: 15px;
+    transform: translateX(0);
+    transition: transform 0.1s ease-in;
+  }
+  .error-document div{
+    background-color: #f7faff;
+  }
+  .error-document:hover .error-arow{
+    transform: translateX(15px);
+    transition: transform 0.1s ease-out;
+  }
 }
