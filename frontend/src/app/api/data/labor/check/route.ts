@@ -20,10 +20,10 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    if(existingRecord?.weekend){
+    if(existingRecord?.disabled){
       return NextResponse.json({
         status: 500,
-        error : 'Can not submit in weekend'
+        error : 'Not Submitable date'
       });
     }
 

@@ -18,7 +18,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@pclient/*": ["./prisma/*"],
     },
     "typeRoots": ["./types", "./node_modules/@types"]
   },

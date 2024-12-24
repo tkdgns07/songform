@@ -15,7 +15,7 @@ interface Dayinfo {
   day: number;
   student: string;
   music_url: string;
-  weekend?: boolean;
+  disabled: boolean;
 }
 
 interface Youtbeinfo {
@@ -553,7 +553,7 @@ const DesktopPage = () => {
                               return (
                                 <div
                                   id={item.day.toString()}
-                                  className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.weekend ? '!disable pointer-events-none' : (item.day === 0 ? '!disable' : '')} ${hasSelectedClass(index)}`}
+                                  className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''} ${hasSelectedClass(index)}`}
                                   onClick={() => dayClicked(index)}
                                 >
                                   {item.day !== 0 ? (
@@ -582,7 +582,7 @@ const DesktopPage = () => {
                                 return (
                                   <div
                                     id={item.day.toString()}
-                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.weekend ? '!disable' : (item.day === 0 ? '!disable' : '')} ${hasSelectedClass(index)}`}
+                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''} ${hasSelectedClass(index)}`}
                                     onClick={() => dayClicked(index)}
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
@@ -601,7 +601,7 @@ const DesktopPage = () => {
                                 return (
                                   <div
                                     id={item.day.toString()}
-                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.weekend ? '!disable' : (item.day === 0 ? '!disable' : '')}`}
+                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''}`}
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
                                     {item.student !== 'None' ? (
@@ -642,7 +642,7 @@ const DesktopPage = () => {
                 {Array.isArray(videoInfo) &&
                   videoInfo.map((item) => {
                     return (
-                      <a href={item.link} key={item.link} className="">
+                      <a href={item.link} key={item.link}>
                         <div className="flex justify-start items-center w-full h-[60px] p-[5px] hover:bg-blue-50 mb-[5px] rounded-lg duration-100">
                           <div className="w-[45px] h-[45px] flex justify-center overflow-hidden items-center rounded-lg z-10">
                             <img

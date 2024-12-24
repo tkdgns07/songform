@@ -205,8 +205,8 @@ function SubmitContent() {
     if (check == 'Already submited') {
       router.push('/error?error=already-submit');
       return null;
-    }else if(check == 'Can not submit in weekend'){
-      router.push('/error?error=weekend-submit');
+    }else if(check == 'Not submitable date'){
+      router.push('/error?error=disabled-submit');
       return null;
     }
     if (!check) {

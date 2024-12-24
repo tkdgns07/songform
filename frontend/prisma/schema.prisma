@@ -14,6 +14,7 @@ model WakeupCalendar {
   month   Int
   day     Int
   student String 
+  disabled Boolean
   music_url    String  @default("None")
 }
 
@@ -23,7 +24,7 @@ model LaborCalendar {
   month   Int
   day     Int
   student String 
-  weekend Boolean?
+  disabled Boolean
   music_url    String  @default("None")
 }
 
@@ -32,4 +33,9 @@ model Students {
   name      String
   grade     Int
   birthday  String
+}
+
+model Admin{
+  id    String    @id
+  email String
 }

@@ -109,9 +109,9 @@ function ErrorContent() {
           </div>
           <div className='w-auto h-[1px] bg-text'></div>
           <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : weekend-submit</p>
+            <p className='text-text font-bold'>Error : disabled-submit</p>
             <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>노동요에서 강제적으로 주말에 신청하려 하면 발생합니다.</p>
+            <p className='text-text'>신청불가능한 날짜를 선택하면 발생합니다.</p>
           </div>
           <div className='w-auto h-[1px] bg-text'></div>
           <div className='flex flex-cols'>

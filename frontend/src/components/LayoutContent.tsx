@@ -52,7 +52,7 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
 
   let isBirthday = true;
 
-  if (session && (!session?.user?.birthday || session.user.birthday === 'NaN')) {
+  if (session && !session.user.admin && (!session?.user?.birthday || session.user.birthday === 'NaN')) {
     isBirthday = false;
   }
 

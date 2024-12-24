@@ -1,12 +1,22 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
+import prisma from '@pclient/client'
 
 interface StudentInfo {
   id: number;
   name: string;
   grade: number;
   birthday: string;
+}
+
+const isAdmin = async (email : string): Promise<boolean> =>{
+  const existingRecord = await prisma.admin.findFirst({
+    where: {
+      email: email
+    }
+  });
+  return existingRecord ? true : false
 }
 
 const idExtract = (email: string): string | null => {
@@ -29,8 +39,6 @@ const idExtract = (email: string): string | null => {
       return null;
     }
     return result;
-  } else if (email === 'jtfmkshs@gmail.com') {
-    return 'admin';
   }
   return null;
 };
@@ -54,13 +62,15 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       const email = user.email ?? '';
+      
+      const checkAdmin = await isAdmin(email)
+      if(checkAdmin){
+        return true
+      }
 
       const id = idExtract(email);
       if (!id) {
         return '/error?error=email-err';
-      }
-      if (id === 'admin') {
-        return true;
       }
       try {
         const data = { id: id };

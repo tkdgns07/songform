@@ -16,7 +16,7 @@ async function createRecord(
   day: number,
   student: string,
   song: string,
-  weekend?: boolean,
+  disabled: boolean,
 ) {
   if (model === 'wakeup') {
     await prisma.wakeupCalendar.create({
@@ -26,6 +26,7 @@ async function createRecord(
         day: day,
         student: student,
         music_url: song,
+        disabled: disabled,
       },
     });
   } else if (model === 'labor') {
@@ -36,7 +37,7 @@ async function createRecord(
         day: day,
         student: student,
         music_url: song,
-        weekend: weekend,
+        disabled: disabled,
       },
     });
   }
@@ -59,17 +60,17 @@ async function makeCalendar(model: string, year: number, month: number) {
   const loopLimit = (all_day <= 35 ? 36 : 43) - daysInMonth - startWeekday;
 
   for (let i = 1; i < startWeekday + 1; i++) {
-    await createRecord(model, year, month, 0, 'None', 'None');
+    await createRecord(model, year, month, 0, 'None', 'None', true);
   }
   for (let j = 1; j < daysInMonth + 1; j++) {
     if(model == 'labor'){
       await createRecord(model, year, month, 0, 'None', 'None', isWeekend(startWeekday, j) ? true : false)
     }else if(model == 'wakeup'){
-      await createRecord(model, year, month, j, 'None', 'None');
+      await createRecord(model, year, month, j, 'None', 'None', false);
     }
   }
   for (let k = 1; k < loopLimit; k++) {
-    await createRecord(model, year, month, 0, 'None', 'None');
+    await createRecord(model, year, month, 0, 'None', 'None', true);
   }
 }
 
