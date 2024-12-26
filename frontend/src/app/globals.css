@@ -376,4 +376,9 @@
     transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
     opacity: 1;
   }
+  .blurfillter {
+    background-color: rgba(247, 250, 255, 0);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
 }
