@@ -430,7 +430,7 @@ const DesktopPage = () => {
                       </button>
                     </div>
                     <div className="h-[1px] w-[100%] bg-frame"></div>
-                    <div className="p-[0] relative">
+                    <div className="p-[0]">
                       <div className="grid grid-cols-7">
                         <span className="day-name text-red-600">S</span>
                         <span className="day-name">M</span>
@@ -537,7 +537,7 @@ const DesktopPage = () => {
                       </button>
                     </div>
                     <div className="h-[1px] w-[100%] bg-frame"></div>
-                    <div className="p-[0]">
+                    <div className="p-[0] relative">
                       <span className='absolute w-[800px] h-full top-0 left-0 z-50 opacity-50 blurfillter flex justify-center items-center'>
                         <p className='font-bold text-black'>노동요 신청은 아직 신청 불가합니다.</p>
                       </span>
