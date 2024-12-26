@@ -365,13 +365,15 @@
   .error-arow{
     right: 15px;
     transform: translateX(0);
-    transition: transform 0.1s ease-in;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
   }
   .error-document div{
     background-color: #f7faff;
   }
   .error-document:hover .error-arow{
     transform: translateX(15px);
-    transition: transform 0.1s ease-out;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    opacity: 1;
   }
 }
