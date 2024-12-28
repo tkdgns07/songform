@@ -482,7 +482,11 @@ const DesktopPage = () => {
                                   <div
                                     id={item.day.toString()}
                                     className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''} ${hasSelectedClass(index)}`}
-                                    onClick={() => dayClicked(index)}
+                                    onClick={
+                                      item.student !== 'None'
+                                        ? () => selectedclick(index)
+                                        : () => dayClicked(index)
+                                    }
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
                                     {item.student !== 'None' ? (
@@ -557,7 +561,11 @@ const DesktopPage = () => {
                                 <div
                                   id={item.day.toString()}
                                   className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''} ${hasSelectedClass(index)}`}
-                                  onClick={() => dayClicked(index)}
+                                  onClick={
+                                    item.student !== 'None'
+                                      ? () => selectedclick(index)
+                                      : () => dayClicked(index)
+                                  }
                                 >
                                   {item.day !== 0 ? (
                                     item.day === date ? (
@@ -586,7 +594,11 @@ const DesktopPage = () => {
                                   <div
                                     id={item.day.toString()}
                                     className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''} ${hasSelectedClass(index)}`}
-                                    onClick={() => dayClicked(index)}
+                                    onClick={
+                                      item.student !== 'None'
+                                        ? () => selectedclick(index)
+                                        : () => dayClicked(index)
+                                    }
                                   >
                                     {item.day !== 0 ? <p>{item.day}</p> : null}
                                     {item.student !== 'None' ? (
