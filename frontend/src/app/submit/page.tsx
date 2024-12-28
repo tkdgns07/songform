@@ -208,6 +208,9 @@ function SubmitContent() {
     }else if(check == 'Not submitable date'){
       router.push('/error?error=disabled-submit');
       return null;
+    }else if(check == 'Not allowed date'){
+      router.push('/error?error=disabled-submit');
+      return null;
     }
     if (!check) {
       if (videodetails.length >= 5 && songtype == 'wakeup') {
