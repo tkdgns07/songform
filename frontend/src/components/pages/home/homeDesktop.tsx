@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import { FloatUp } from '@/components/content/FloatUp';
 
 interface Dayinfo {
   id: number;
@@ -330,154 +331,126 @@ const DesktopPage = () => {
     <main className="my-[80px]">
       <div className="flex flex-row">
         <div>
-          <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 overflow-hidden shadow-2xl shadow-shadowc">
-            <div>
-              <p className="text-xl font-bold text-cusblue-deep">
-                노래 신청 시스템
-              </p>
-              <p className="text-sm text-cusblue-deep">
-                기상송과 노동요를 다운로드 없이 편하게 신청해보세요
-              </p>
+          <FloatUp>
+            <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 overflow-hidden shadow-2xl shadow-shadowc">
+              <div>
+                <p className="text-xl font-bold text-cusblue-deep">
+                  노래 신청 시스템
+                </p>
+                <p className="text-sm text-cusblue-deep">
+                  기상송과 노동요를 다운로드 없이 편하게 신청해보세요
+                </p>
+              </div>
+              <div
+                className={`flex flex-col justify-center items-end ${birthday ? '' : 'hidden'}`}
+              >
+                <p className="text-lg font-bold">🥳 다음달엔 내 생일~</p>
+                <p className="text-sm">
+                  다음달 곡 신청을 예정보다 일주일 빨리 신청할 수 있습니다!
+                </p>
+              </div>
             </div>
-            <div
-              className={`flex flex-col justify-center items-end ${birthday ? '' : 'hidden'}`}
-            >
-              <p className="text-lg font-bold">🥳 다음달엔 내 생일~</p>
-              <p className="text-sm">
-                다음달 곡 신청을 예정보다 일주일 빨리 신청할 수 있습니다!
-              </p>
-            </div>
-          </div>
+          </FloatUp>
           <div className="flex flex-row">
             <div>
-              <div className="flex justify-between">
-                <div className="flex flex-row justify-between w-[70px]">
-                  <button
-                    className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
-                    onClick={() => setMonth(true)}
-                  >
-                    <Icon icon="ep:arrow-up-bold" className="text-lg" />
-                  </button>
-                  <button
-                    className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
-                    onClick={() => setMonth(false)}
-                  >
-                    <Icon icon="ep:arrow-down-bold" className="text-lg" />
-                  </button>
-                </div>
-                <div className="w-full flex justify-end">
-                  <button
-                    type="button"
-                    className={`flex justify-center items-center p-[10px] h-[30px] bg-black rounded-lg mr-[5px] pointer relative ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} duration-150 shadow-2xl shadow-shadowc`}
-                    onClick={
-                      loading !== 'deleting'
-                        ? () => deletePlaylist()
-                        : undefined
-                    }
-                  >
-                    <span
-                      className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}
-                    ></span>
-                    <Icon
-                      icon="mdi:remove"
-                      className={`text-body m-0 p-0 ${loading !== 'deleting' ? '' : 'hidden'}`}
-                    />
-                    <p
-                      className={`text-body text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
-                    >
-                      삭제
-                    </p>
-                  </button>
-                  <div className="w-[120px] h-[30px] bg-white flex justify-between items-center p-[8px] rounded-lg relative mb-[10px] shadow-2xl shadow-shadowc">
+              <FloatUp>
+                <div className="flex justify-between">
+                  <div className="flex flex-row justify-between w-[70px]">
                     <button
-                      type="button"
-                      className={`text-xs z-10 ml-[8px] ${choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
-                      onClick={() => switchmusic(true)}
+                      className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
+                      onClick={() => setMonth(true)}
                     >
-                      기상송
+                      <Icon icon="ep:arrow-up-bold" className="text-lg" />
                     </button>
                     <button
-                      type="button"
-                      className={`text-xs z-10 mr-[8px] ${!choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
-                      onClick={() => switchmusic(false)}
+                      className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
+                      onClick={() => setMonth(false)}
                     >
-                      노동요
+                      <Icon icon="ep:arrow-down-bold" className="text-lg" />
                     </button>
-                    <div
-                      className={`switcher ${choosemusic ? 'switchtrue' : 'switchfalse'}`}
-                    ></div>
                   </div>
-                </div>
-              </div>
-              <div className="flex w-[800px] relative shadow-2xl rounded-lg shadow-shadowc overflow-x-hidden">
-                <div
-                  className={`absoulute duration-500 flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
-                >
-                  <div className="left-0 w-[800px] bg-white rounded-lg">
-                    <div className="flex flex-row justify-between items-center p-[12px]">
-                      <div className="flex flex-row items-center">
-                        <span className="text-lighttext text-sm fontsemibold mr-[5px]">
-                          {curruntMonth ? year : (month === 12 ? year + 1 : year)}
-                        </span>
-                        <span className="text-text text-base font-bold">{`${curruntMonth ? month : (month === 12 ? 1 : month + 1)}월`}</span>
-                      </div>
+                  <div className="w-full flex justify-end">
+                    <button
+                      type="button"
+                      className={`flex justify-center items-center p-[10px] h-[30px] bg-black rounded-lg mr-[5px] pointer relative ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} duration-150 shadow-2xl shadow-shadowc`}
+                      onClick={
+                        loading !== 'deleting'
+                          ? () => deletePlaylist()
+                          : undefined
+                      }
+                    >
+                      <span
+                        className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}
+                      ></span>
+                      <Icon
+                        icon="mdi:remove"
+                        className={`text-body m-0 p-0 ${loading !== 'deleting' ? '' : 'hidden'}`}
+                      />
+                      <p
+                        className={`text-body text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
+                      >
+                        삭제
+                      </p>
+                    </button>
+                    <div className="w-[120px] h-[30px] bg-white flex justify-between items-center p-[8px] rounded-lg relative mb-[10px] shadow-2xl shadow-shadowc">
                       <button
                         type="button"
-                        className="bg-cusblue-normal text-white px-3 py-1.5 rounded hover:bg-cusblue-deep transition duration-200 text-xs font-semibold !m-[0]"
-                        onClick={() => submitClicked()}
+                        className={`text-xs z-10 ml-[8px] ${choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
+                        onClick={() => switchmusic(true)}
                       >
-                        신청하기
+                        기상송
                       </button>
-                    </div>
-                    <div className="h-[1px] w-[100%] bg-frame"></div>
-                    <div className="p-[0]">
-                      <div className="grid grid-cols-7">
-                        <span className="day-name text-red-600">S</span>
-                        <span className="day-name">M</span>
-                        <span className="day-name">T</span>
-                        <span className="day-name">W</span>
-                        <span className="day-name">T</span>
-                        <span className="day-name">F</span>
-                        <span className="day-name text-blue-600">S</span>
-                      </div>
-                      <div
-                        className={`grid grid-cols-7 ${loading === 'data' ? 'hidden' : ''}`}
+                      <button
+                        type="button"
+                        className={`text-xs z-10 mr-[8px] ${!choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
+                        onClick={() => switchmusic(false)}
                       >
-                        {curruntMonth
-                          ? wcalendarday.map((item, index) => {
-                              return (
-                                <div
-                                  id={item.day.toString()}
-                                  className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''} ${hasSelectedClass(index)}`}
-                                  onClick={
-                                    item.student !== 'None'
-                                      ? () => selectedclick(index)
-                                      : () => dayClicked(index)
-                                  }
-                                >
-                                  {item.day !== 0 ? (
-                                    item.day === date ? (
-                                      <p className="text-text font-bold">
-                                        {item.day}
-                                      </p>
-                                    ) : (
-                                      <p>{item.day}</p>
-                                    )
-                                  ) : null}
-                                  {item.student !== 'None' ? (
-                                    <div
-                                      className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
-                                    >
-                                      {item.student}
-                                    </div>
-                                  ) : (
-                                    ''
-                                  )}
-                                </div>
-                              );
-                            })
-                          : nwcalendarday.map((item, index) => {
-                              if (date >= 24 || (date >= 17 && birthday)) {
+                        노동요
+                      </button>
+                      <div
+                        className={`switcher ${choosemusic ? 'switchtrue' : 'switchfalse'}`}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </FloatUp>
+              <FloatUp>
+                <div className="flex w-[800px] relative shadow-2xl rounded-lg shadow-shadowc overflow-x-hidden">
+                  <div
+                    className={`absoulute duration-500 flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
+                  >
+                    <div className="left-0 w-[800px] bg-white rounded-lg">
+                      <div className="flex flex-row justify-between items-center p-[12px]">
+                        <div className="flex flex-row items-center">
+                          <span className="text-lighttext text-sm fontsemibold mr-[5px]">
+                            {curruntMonth ? year : (month === 12 ? year + 1 : year)}
+                          </span>
+                          <span className="text-text text-base font-bold">{`${curruntMonth ? month : (month === 12 ? 1 : month + 1)}월`}</span>
+                        </div>
+                        <button
+                          type="button"
+                          className="bg-cusblue-normal text-white px-3 py-1.5 rounded hover:bg-cusblue-deep transition duration-200 text-xs font-semibold !m-[0]"
+                          onClick={() => submitClicked()}
+                        >
+                          신청하기
+                        </button>
+                      </div>
+                      <div className="h-[1px] w-[100%] bg-frame"></div>
+                      <div className="p-[0]">
+                        <div className="grid grid-cols-7">
+                          <span className="day-name text-red-600">S</span>
+                          <span className="day-name">M</span>
+                          <span className="day-name">T</span>
+                          <span className="day-name">W</span>
+                          <span className="day-name">T</span>
+                          <span className="day-name">F</span>
+                          <span className="day-name text-blue-600">S</span>
+                        </div>
+                        <div
+                          className={`grid grid-cols-7 ${loading === 'data' ? 'hidden' : ''}`}
+                        >
+                          {curruntMonth
+                            ? wcalendarday.map((item, index) => {
                                 return (
                                   <div
                                     id={item.day.toString()}
@@ -488,7 +461,15 @@ const DesktopPage = () => {
                                         : () => dayClicked(index)
                                     }
                                   >
-                                    {item.day !== 0 ? <p>{item.day}</p> : null}
+                                    {item.day !== 0 ? (
+                                      item.day === date ? (
+                                        <p className="text-text font-bold">
+                                          {item.day}
+                                        </p>
+                                      ) : (
+                                        <p>{item.day}</p>
+                                      )
+                                    ) : null}
                                     {item.student !== 'None' ? (
                                       <div
                                         className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
@@ -500,96 +481,88 @@ const DesktopPage = () => {
                                     )}
                                   </div>
                                 );
-                              } else {
-                                return (
-                                  <div
-                                    id={item.day.toString()}
-                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''}`}
-                                  >
-                                    {item.day !== 0 ? <p>{item.day}</p> : null}
-                                    {item.student !== 'None' ? (
-                                      <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
-                                        {item.student}
-                                      </div>
-                                    ) : (
-                                      ''
-                                    )}
-                                  </div>
-                                );
-                              }
-                            })}
-                      </div>
-                      <Skeleton
-                        className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}
-                      />
-                    </div>
-                  </div>
-                  <div className="right-0 ml-[50px] w-[800px] bg-white rounded-lg">
-                    <div className="flex flex-row justify-between items-center p-[12px]">
-                      <div className="flex flex-row items-center">
-                        <span className="text-lighttext text-sm fontsemibold mr-[5px]">
-                          {curruntMonth ? year : (month === 12 ? year + 1 : year)}
-                        </span>
-                        <span className="text-text text-base font-bold">{`${curruntMonth ? month : (month === 12 ? 1 : month + 1)}월`}</span>
-                      </div>
-                      <button
-                        type="button"
-                        className="bg-cusblue-normal text-white px-3 py-1.5 rounded hover:bg-cusblue-deep transition duration-200 text-xs font-semibold !m-[0]"
-                        onClick={() => submitClicked()}
-                      >
-                        신청하기
-                      </button>
-                    </div>
-                    <div className="h-[1px] w-[100%] bg-frame"></div>
-                    <div className="p-[0] relative">
-                      <span className='absolute w-[800px] h-full top-0 left-0 z-50 opacity-50 blurfillter flex justify-center items-center'>
-                        <p className='font-bold text-black'>노동요 신청은 아직 신청 불가합니다.</p>
-                      </span>
-                      <div className="grid grid-cols-7">
-                        <span className="day-name text-red-600">S</span>
-                        <span className="day-name">M</span>
-                        <span className="day-name">T</span>
-                        <span className="day-name">W</span>
-                        <span className="day-name">T</span>
-                        <span className="day-name">F</span>
-                        <span className="day-name text-blue-600">S</span>
-                      </div>
-                      <div className="grid grid-cols-7">
-                        {curruntMonth
-                          ? lcalendarday.map((item, index) => {
-                              return (
-                                <div
-                                  id={item.day.toString()}
-                                  className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''} ${hasSelectedClass(index)}`}
-                                  onClick={
-                                    item.student !== 'None'
-                                      ? () => selectedclick(index)
-                                      : () => dayClicked(index)
-                                  }
-                                >
-                                  {item.day !== 0 ? (
-                                    item.day === date ? (
-                                      <p className="text-text font-bold">
-                                        {item.day}
-                                      </p>
-                                    ) : (
-                                      <p>{item.day}</p>
-                                    )
-                                  ) : null}
-                                  {item.student !== 'None' ? (
+                              })
+                            : nwcalendarday.map((item, index) => {
+                                if (date >= 24 || (date >= 17 && birthday)) {
+                                  return (
                                     <div
-                                      className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
+                                      id={item.day.toString()}
+                                      className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''} ${hasSelectedClass(index)}`}
+                                      onClick={
+                                        item.student !== 'None'
+                                          ? () => selectedclick(index)
+                                          : () => dayClicked(index)
+                                      }
                                     >
-                                      {item.student}
+                                      {item.day !== 0 ? <p>{item.day}</p> : null}
+                                      {item.student !== 'None' ? (
+                                        <div
+                                          className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
+                                        >
+                                          {item.student}
+                                        </div>
+                                      ) : (
+                                        ''
+                                      )}
                                     </div>
-                                  ) : (
-                                    ''
-                                  )}
-                                </div>
-                              );
-                            })
-                          : nlcalendarday.map((item, index) => {
-                              if (date >= 24 || (date >= 17 && birthday)) {
+                                  );
+                                } else {
+                                  return (
+                                    <div
+                                      id={item.day.toString()}
+                                      className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''}`}
+                                    >
+                                      {item.day !== 0 ? <p>{item.day}</p> : null}
+                                      {item.student !== 'None' ? (
+                                        <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
+                                          {item.student}
+                                        </div>
+                                      ) : (
+                                        ''
+                                      )}
+                                    </div>
+                                  );
+                                }
+                              })}
+                        </div>
+                        <Skeleton
+                          className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}
+                        />
+                      </div>
+                    </div>
+                    <div className="right-0 ml-[50px] w-[800px] bg-white rounded-lg">
+                      <div className="flex flex-row justify-between items-center p-[12px]">
+                        <div className="flex flex-row items-center">
+                          <span className="text-lighttext text-sm fontsemibold mr-[5px]">
+                            {curruntMonth ? year : (month === 12 ? year + 1 : year)}
+                          </span>
+                          <span className="text-text text-base font-bold">{`${curruntMonth ? month : (month === 12 ? 1 : month + 1)}월`}</span>
+                        </div>
+                        <button
+                          type="button"
+                          className="bg-cusblue-normal text-white px-3 py-1.5 rounded hover:bg-cusblue-deep transition duration-200 text-xs font-semibold !m-[0]"
+                          onClick={() => submitClicked()}
+                        >
+                          신청하기
+                        </button>
+                      </div>
+                      <div className="h-[1px] w-[100%] bg-frame"></div>
+                      <div className="p-[0] relative">
+                        <span className='absolute w-[800px] h-full top-0 left-0 z-50 opacity-50 blurfillter flex justify-center items-center'>
+                          <p className='font-bold text-black'>노동요 신청은 아직 신청 불가합니다.</p>
+                        </span>
+                        <div className="grid grid-cols-7">
+                          <span className="day-name text-red-600">S</span>
+                          <span className="day-name">M</span>
+                          <span className="day-name">T</span>
+                          <span className="day-name">W</span>
+                          <span className="day-name">T</span>
+                          <span className="day-name">F</span>
+                          <span className="day-name text-blue-600">S</span>
+                        </div>
+                        <div className="grid grid-cols-7">
+                          {curruntMonth
+                            ? lcalendarday.map((item, index) => {
                                 return (
                                   <div
                                     id={item.day.toString()}
@@ -600,7 +573,15 @@ const DesktopPage = () => {
                                         : () => dayClicked(index)
                                     }
                                   >
-                                    {item.day !== 0 ? <p>{item.day}</p> : null}
+                                    {item.day !== 0 ? (
+                                      item.day === date ? (
+                                        <p className="text-text font-bold">
+                                          {item.day}
+                                        </p>
+                                      ) : (
+                                        <p>{item.day}</p>
+                                      )
+                                    ) : null}
                                     {item.student !== 'None' ? (
                                       <div
                                         className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
@@ -612,81 +593,109 @@ const DesktopPage = () => {
                                     )}
                                   </div>
                                 );
-                              } else {
-                                return (
-                                  <div
-                                    id={item.day.toString()}
-                                    className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''}`}
-                                  >
-                                    {item.day !== 0 ? <p>{item.day}</p> : null}
-                                    {item.student !== 'None' ? (
-                                      <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
-                                        {item.student}
-                                      </div>
-                                    ) : (
-                                      ''
-                                    )}
-                                  </div>
-                                );
-                              }
-                            })}
+                              })
+                            : nlcalendarday.map((item, index) => {
+                                if (date >= 24 || (date >= 17 && birthday)) {
+                                  return (
+                                    <div
+                                      id={item.day.toString()}
+                                      className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame md:hover:text-cusblue-normal trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''} ${hasSelectedClass(index)}`}
+                                      onClick={
+                                        item.student !== 'None'
+                                          ? () => selectedclick(index)
+                                          : () => dayClicked(index)
+                                      }
+                                    >
+                                      {item.day !== 0 ? <p>{item.day}</p> : null}
+                                      {item.student !== 'None' ? (
+                                        <div
+                                          className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
+                                        >
+                                          {item.student}
+                                        </div>
+                                      ) : (
+                                        ''
+                                      )}
+                                    </div>
+                                  );
+                                } else {
+                                  return (
+                                    <div
+                                      id={item.day.toString()}
+                                      className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''}`}
+                                    >
+                                      {item.day !== 0 ? <p>{item.day}</p> : null}
+                                      {item.student !== 'None' ? (
+                                        <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
+                                          {item.student}
+                                        </div>
+                                      ) : (
+                                        ''
+                                      )}
+                                    </div>
+                                  );
+                                }
+                              })}
+                        </div>
+                        <Skeleton
+                          className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}
+                        />
                       </div>
-                      <Skeleton
-                        className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}
-                      />
                     </div>
                   </div>
                 </div>
-              </div>
+              </FloatUp>
             </div>
-            <div className="w-[250px] h-[620px] bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc">
-              <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
-                <a
-                  href={`https://www.youtube.com/playlist?list=${playlistId}`}
-                  className={`mr-[5px] ${playlistId ? '' : 'pointer-events-none'}`}
+            <FloatUp>
+              <div className="w-[250px] h-[620px] bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc">
+                <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
+                  <a
+                    href={`https://www.youtube.com/playlist?list=${playlistId}`}
+                    className={`mr-[5px] ${playlistId ? '' : 'pointer-events-none'}`}
+                  >
+                    <Icon
+                      icon="mdi:youtube"
+                      className={`text-3xl ${playlistId ? 'text-red-600' : 'text-text'} duration-150`}
+                    />
+                  </a>
+                  <p className="text-lg font-bold text-text">노래 미리보기</p>
+                </div>
+                <div className="w-full bg-gray-300 h-[1px] mb-[10px]"></div>
+                <div className="w-full max-h-full overflow-y-auto">
+                  {Array.isArray(videoInfo) &&
+                    videoInfo.map((item) => {
+                      return (
+                        <a href={item.link} key={item.link}>
+                          <div className="flex justify-start items-center w-full h-[60px] p-[5px] hover:bg-blue-50 mb-[5px] rounded-lg duration-100">
+                            <div className="w-[45px] h-[45px] flex justify-center overflow-hidden items-center rounded-lg z-10">
+                              <img
+                                src={item.thumbnail}
+                                alt={`${item.title} thumbnail`}
+                                className="thumbnailimg"
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0 ml-3">
+                              <p className="text-text text-sm whitespace-nowrap overflow-hidden text-ellipsis">
+                                {item.title}
+                              </p>
+                            </div>
+                          </div>
+                        </a>
+                      );
+                    })}
+                </div>
+                <div
+                  className={`h-full w-full flex items-center justify-center p-[5px] ${submitstudent !== '' ? 'hidden' : ''}`}
                 >
-                  <Icon
-                    icon="mdi:youtube"
-                    className={`text-3xl ${playlistId ? 'text-red-600' : 'text-text'} duration-150`}
-                  />
-                </a>
-                <p className="text-lg font-bold text-text">노래 미리보기</p>
+                  <p className="text-text">신청된 날짜를 클릭해보세요</p>
+                </div>
+                <div
+                  className={`w-full h-full flex items-center justify-center ${loading == 'listloading' ? '' : 'hidden'} absolute loadcontain`}
+                >
+                  <span className="loader w-[48px] aspect-square !border-4"></span>
+                </div>
               </div>
-              <div className="w-full bg-gray-300 h-[1px] mb-[10px]"></div>
-              <div className="w-full max-h-full overflow-y-auto">
-                {Array.isArray(videoInfo) &&
-                  videoInfo.map((item) => {
-                    return (
-                      <a href={item.link} key={item.link}>
-                        <div className="flex justify-start items-center w-full h-[60px] p-[5px] hover:bg-blue-50 mb-[5px] rounded-lg duration-100">
-                          <div className="w-[45px] h-[45px] flex justify-center overflow-hidden items-center rounded-lg z-10">
-                            <img
-                              src={item.thumbnail}
-                              alt={`${item.title} thumbnail`}
-                              className="thumbnailimg"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0 ml-3">
-                            <p className="text-text text-sm whitespace-nowrap overflow-hidden text-ellipsis">
-                              {item.title}
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    );
-                  })}
-              </div>
-              <div
-                className={`h-full w-full flex items-center justify-center p-[5px] ${submitstudent !== '' ? 'hidden' : ''}`}
-              >
-                <p className="text-text">신청된 날짜를 클릭해보세요</p>
-              </div>
-              <div
-                className={`w-full h-full flex items-center justify-center ${loading == 'listloading' ? '' : 'hidden'} absolute loadcontain`}
-              >
-                <span className="loader w-[48px] aspect-square !border-4"></span>
-              </div>
-            </div>
+            </FloatUp>
           </div>
         </div>
       </div>

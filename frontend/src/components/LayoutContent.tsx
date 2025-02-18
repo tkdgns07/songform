@@ -12,6 +12,7 @@ import { Toaster } from '@/components/ui/sonner';
 import Link from 'next/link';
 import LoginButton from '@/components/LoginButton';
 import Footbar from './content/Footbar';
+import { FloatDown } from '@/components/content/FloatUp';
 
 import Image from 'next/image';
 import schoollogo from '@/img/schoollogo.png';
@@ -217,18 +218,18 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
                 </div>
               </div>
             </div>
-            <div className="p-[20px] w-[100%] h-[70px] flex items-center justify-between mb-[10px] menubar">
-              <Link
-                href={{ pathname: "/" }}
-                className="ml-[0px] h-[90%] flex direction-col items-center"
-              >
-                <Image src={schoollogo} alt="KSHS_logo" className="w-[35px]" />
-                <p className="menutext text-base ml-[5px]">강원과학고등학교</p>
-                <div className="w-[1.5px] h-[1.3em] bar m-[5px]"></div>
-                <p className="menutext text-base">KSHS</p>
-              </Link>
-              <LoginButton />
-            </div>
+              <div className="p-[20px] w-[100%] h-[70px] flex items-center justify-between mb-[10px] menubar">
+                <Link
+                  href={{ pathname: "/" }}
+                  className="ml-[0px] h-[90%] flex direction-col items-center"
+                >
+                  <Image src={schoollogo} alt="KSHS_logo" className="w-[35px]" />
+                  <p className="menutext text-base ml-[5px]">강원과학고등학교</p>
+                  <div className="w-[1.5px] h-[1.3em] bar m-[5px]"></div>
+                  <p className="menutext text-base">KSHS</p>
+                </Link>
+                <LoginButton />
+              </div>
             <div className="w-full flex justify-center">
               {children}
               <Analytics />
