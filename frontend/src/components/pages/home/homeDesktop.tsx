@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FloatUp } from '@/components/content/FloatUp';
+import PlaylistPreview from '../playlistPreview/PlaylistPreview';
 
 interface Dayinfo {
   id: number;
@@ -328,11 +329,11 @@ const DesktopPage = () => {
   }
 
   return (
-    <main className="my-[80px]">
+    <main className="flex justify-center my-[80px]">
       <div className="flex flex-row">
         <div>
           <FloatUp>
-            <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 overflow-hidden shadow-2xl shadow-shadowc">
+            <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 shadow-2xl shadow-shadowc">
               <div>
                 <p className="text-xl font-bold text-cusblue-deep">
                   노래 신청 시스템
@@ -415,7 +416,7 @@ const DesktopPage = () => {
                 </div>
               </FloatUp>
               <FloatUp>
-                <div className="flex w-[800px] relative shadow-2xl rounded-lg shadow-shadowc overflow-x-hidden">
+                <div className="flex w-[800px] relative shadow-2xl rounded-lg shadow-shadowc overflow-hidden">
                   <div
                     className={`absoulute duration-500 flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
                   >

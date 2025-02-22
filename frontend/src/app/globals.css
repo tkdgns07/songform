@@ -381,4 +381,14 @@
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
   }
+
+  .gradient-circle {
+    width: 1500px; /* 원의 너비 */
+    height: 1500px; /* 원의 높이 */
+    border-radius: 50%; /* 원 형태로 만들기 */
+    background: radial-gradient(circle, rgba(53, 114, 239, 1) 0%, rgba(53, 114, 239, 0) 70%);
+  }
+  .playlist{
+    backdrop-filter: blur(10px);
+  }
 }

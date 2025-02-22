@@ -230,7 +230,7 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
                 </Link>
                 <LoginButton />
               </div>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex-cols justify-center">
               {children}
               <Analytics />
               <SpeedInsights />

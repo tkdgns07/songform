@@ -27,6 +27,7 @@
     "cookies-next": "^4.2.1",
     "csv-parser": "^3.0.0",
     "date-fns": "^3.6.0",
+    "dayjs": "^1.11.13",
     "google-auth-library": "^9.14.0",
     "googleapis": "^143.0.0",
     "lucide-react": "^0.408.0",
