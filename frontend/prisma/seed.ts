@@ -1,4 +1,6 @@
 import prisma from './client';
+import axios from 'axios';
+import { NextResponse } from 'next/server';
 
 const now = new Date();
 const currentYear = now.getFullYear();
@@ -46,7 +48,36 @@ function isWeekend(start: number, date: number): boolean {
   return dayIndex === 0 || dayIndex === 6;
 }
 
+async function deletePlaylists () {
+  const playlists = await prisma.laborCalendar.findMany({
+    where : {
+      month : currentMonth -1,
+    },
+    select : {
+      music_url : true,
+    },
+  })
+  try {
+    (async () => {
+      for (const item of playlists) {
+        const response = await axios.delete(`${process.env.NEXTAUTH_URL}/api/deletelist`, {
+          data: {
+            playlistId: item.music_url,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.CRON_SECRET}`,
+          },
+        });
+      }
+    })();
+  }catch(error){
+    return NextResponse.json({status : 500, error : 'Youtube API error on deleting PlayList'})
+  }
+}
+
 async function makeCalendar(model: string, year: number, month: number) {
+  console.log(month)
   const firstDay = new Date(year, month - 1, 1);
   const lastDay = new Date(year, month, 0);
 
@@ -72,6 +103,8 @@ async function makeCalendar(model: string, year: number, month: number) {
 }
 
 async function main() {
+  await deletePlaylists()
+
   await prisma.wakeupCalendar.deleteMany({});
   await prisma.laborCalendar.deleteMany({});
 

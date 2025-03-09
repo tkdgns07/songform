@@ -3,7 +3,7 @@ import prisma from '@/../prisma/client';
 
 export async function POST(request: NextRequest) {
   try {
-    const { id, birthday } = await request.json();
+    const { id, birthday, name } = await request.json();
 
     const existingRecord = await prisma.students.findFirst({
       where: {
@@ -17,7 +17,8 @@ export async function POST(request: NextRequest) {
     const updatedRecord = await prisma.students.update({
       where: { id: id },
       data: {
-        birthday : birthday
+        birthday : birthday,
+        name : name
       },
     });
     return NextResponse.json({

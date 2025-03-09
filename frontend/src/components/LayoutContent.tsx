@@ -1,7 +1,7 @@
 'use client';
 import { ReactNode } from 'react';
 import { useSession, signOut } from 'next-auth/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { format } from "date-fns";
@@ -12,7 +12,6 @@ import { Toaster } from '@/components/ui/sonner';
 import Link from 'next/link';
 import LoginButton from '@/components/LoginButton';
 import Footbar from './content/Footbar';
-import { FloatDown } from '@/components/content/FloatUp';
 
 import Image from 'next/image';
 import schoollogo from '@/img/schoollogo.png';
@@ -28,6 +27,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { toast } from 'sonner';
 
 const LayoutContent = ({ children }: { children: ReactNode }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -58,8 +58,8 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
   }
 
   async function updateNewBirthday() {
-    if (!date) {
-      console.error("Date is not defined");
+    if (!date || !inputRef.current?.value) {
+      toast.warning("이름 또는 생일을 모두 입력해주세요.")
       return;
     }
 
@@ -71,6 +71,7 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
       const response = await axios.post("api/data/student/add", {
         id: session?.user.id,
         birthday: newDate,
+        name: inputRef.current.value
       });
 
       signOut()
@@ -80,6 +81,12 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
       router.push("/error?error=student-add-error");
     }
   }
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFocus = () => {
+    inputRef.current?.focus();
+  };
 
   if (windowWidth !== 0) {
     return (
@@ -163,14 +170,30 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
                 isBirthday ? "hidden" : ""
               }`}
             >
-              <div className="flex flex-col justify-center bg-white border border-gray-300 w-[400px] h-[250px] rounded-lg p-[30px]">
+              <div className="flex flex-col justify-center bg-white border border-gray-300 w-[400px] rounded-lg p-[30px]">
                 <div>
-                  <p className="text-2xl font-bold">생일을 입력해주세요</p>
+                  <p className="text-2xl font-bold">사용자 정보를 입력해주세요</p>
                   <p className="text-xs text-gray-600 mt-[5px]">
-                    생일 날짜가 입력되지 않아 원활한 서비스가 제공되지 않을 수 있습니다.
+                    이름과 생일 날짜를 입력해주세요.
                   </p>
                 </div>
                 <div className="w-full mt-[20px]">
+                  <span className='text font-bold'>학번 & 이름</span>
+                  <Button
+                    variant={"outline"}
+                    className="w-full justify-start text-left font-normal mb-[10px] flex"
+                    onClick={handleFocus}
+                  >
+                    <span>{session?.user.id} </span>
+                    <input
+                      ref = {inputRef}
+                      type="text"
+                      className='bg-transparent outline-none'
+                      defaultValue={session?.user.id ?? ""}
+                    />
+                  </Button>
+      
+                  <span className='text font-bold'>생일</span>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button

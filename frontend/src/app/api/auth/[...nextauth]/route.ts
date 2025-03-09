@@ -19,8 +19,11 @@ const isAdmin = async (email : string): Promise<boolean> =>{
   return existingRecord ? true : false
 }
 
+const year = new Date().getFullYear();
+const shortYear = year % 100;
+
 const idExtract = (email: string): string | null => {
-  const regex = /h012s24(\d)(\d{2})/;
+  const regex = new RegExp(`h012s${shortYear}(\\d)(\\d{2})`);
   const match = email.match(regex);
 
   if (match && match[1]) {
@@ -90,7 +93,7 @@ const authOptions: NextAuthOptions = {
         return '/error?error=server-email';
       }
 
-      return true;
+      return '/';
     },
     async jwt({ token, account }) {
       if (account) {

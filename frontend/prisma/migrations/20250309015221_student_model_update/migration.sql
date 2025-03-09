@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Students" ALTER COLUMN "name" DROP NOT NULL,
+ALTER COLUMN "grade" DROP NOT NULL,
+ALTER COLUMN "birthday" DROP NOT NULL;

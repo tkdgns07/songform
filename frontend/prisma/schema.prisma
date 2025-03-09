@@ -30,9 +30,9 @@ model LaborCalendar {
 
 model Students {
   id        Int    @id @unique
-  name      String
-  grade     Int
-  birthday  String
+  name      String?
+  grade     Int?
+  birthday  String?
 }
 
 model Admin{

@@ -10,7 +10,12 @@ export async function POST(request: NextRequest) {
     });
 
     if (!student) {
-      return NextResponse.json({ status: 404, error: 'Record not found' });
+      await prisma.students.create({
+        data : {
+          id : id
+        }
+      })
+      return NextResponse.json({ status: 200, message: 'Record not found' });
     }
 
     return NextResponse.json({ status: 200, data: student });

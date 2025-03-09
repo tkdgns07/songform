@@ -648,7 +648,7 @@ const DesktopPage = () => {
               </FloatUp>
             </div>
             <FloatUp>
-              <div className="w-[250px] h-[620px] bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc">
+              <div className="w-[250px] h-full bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc">
                 <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
                   <a
                     href={`https://www.youtube.com/playlist?list=${playlistId}`}
