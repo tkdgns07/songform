@@ -77,7 +77,6 @@ async function deletePlaylists () {
 }
 
 async function makeCalendar(model: string, year: number, month: number) {
-  console.log(month)
   const firstDay = new Date(year, month - 1, 1);
   const lastDay = new Date(year, month, 0);
 

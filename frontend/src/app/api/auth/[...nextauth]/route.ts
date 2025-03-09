@@ -93,7 +93,7 @@ const authOptions: NextAuthOptions = {
         return '/error?error=server-email';
       }
 
-      return '/';
+      return true;
     },
     async jwt({ token, account }) {
       if (account) {

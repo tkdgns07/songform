@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '../../../../../../prisma/client';
+import prisma from '@pclient/client';
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,17 +10,17 @@ export async function POST(request: NextRequest) {
     });
 
     if (!student) {
-      await prisma.students.create({
+      const newStudent = await prisma.students.create({
         data : {
-          id : id
+          id : parseInt(id)
         }
       })
-      return NextResponse.json({ status: 200, message: 'Record not found' });
+      return NextResponse.json({ status: 200, data: newStudent });
     }
 
     return NextResponse.json({ status: 200, data: student });
   } catch (error) {
-    return NextResponse.json({ status: 500, error: 'Internal Server Error' });
+    return NextResponse.json({ status: 500, error });
   } finally {
     await prisma.$disconnect();
   }

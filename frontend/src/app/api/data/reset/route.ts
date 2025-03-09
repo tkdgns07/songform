@@ -127,9 +127,6 @@ async function deletePlaylists() {
 export async function GET() {
   await deletePlaylists()
 
-  await prisma.wakeupCalendar.deleteMany({});
-  await prisma.laborCalendar.deleteMany({});
-
   try {
     const wakeupdeleteResult = await prisma.wakeupCalendar.deleteMany({
       where: {
