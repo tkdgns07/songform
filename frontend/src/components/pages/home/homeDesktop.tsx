@@ -64,8 +64,7 @@ const DesktopPage = () => {
       const currunt_ldays = ldata.filter((item) => item.month === month);
       const next_ldays = ldata.filter((item) => item.month !== month);
 
-      setlCalendar(currunt_ldays);
-      setnlCalendar(next_ldays);
+      
 
       const wresponse = await axios.get(`/api/data/wakeup/get`, {
         headers: {
@@ -79,6 +78,8 @@ const DesktopPage = () => {
       const currunt_wdays = wdata.filter((item) => item.month === month);
       const next_wdays = wdata.filter((item) => item.month !== month);
 
+      setlCalendar(currunt_ldays);
+      setnlCalendar(next_ldays);
       setwCalendar(currunt_wdays);
       setnwCalendar(next_wdays);
     } catch (error) {
@@ -119,6 +120,7 @@ const DesktopPage = () => {
   useEffect(() => {
     if (!videoIds) return;
     const fetchVideoinfo = async () => {
+      setVideoinfo([])
       try {
         const response = await axios.get(`/api/youtubeinfo`, {
           params: {
@@ -159,7 +161,7 @@ const DesktopPage = () => {
 
   const hasSelectedClass = (id: number) => {
     if (id === clickedDay || id === clickedSub) {
-      return 'border-none !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded bg-gradient-to-br from-cusblue-normal to-cusblue-light scale-105 overflow-visible';
+      return 'border-none !text-frame shadow-2xl shadow-cusblue-normal z-50 rounded bg-gradient-to-br from-cusblue-normal to-cusblue-light scale-105 overflow-visible';
     }
   };
 
@@ -333,7 +335,7 @@ const DesktopPage = () => {
       <div className="flex flex-row">
         <div>
           <FloatUp>
-            <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 shadow-2xl shadow-shadowc">
+            <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[100px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 shadow-2xl shadow-shadowc">
               <div>
                 <p className="text-xl font-bold text-cusblue-deep">
                   노래 신청 시스템
@@ -353,70 +355,9 @@ const DesktopPage = () => {
             </div>
           </FloatUp>
           <div className="flex flex-row">
-            <div>
-              <FloatUp>
-                <div className="flex justify-between">
-                  <div className="flex flex-row justify-between w-[70px]">
-                    <button
-                      className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
-                      onClick={() => setMonth(true)}
-                    >
-                      <Icon icon="ep:arrow-up-bold" className="text-lg" />
-                    </button>
-                    <button
-                      className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
-                      onClick={() => setMonth(false)}
-                    >
-                      <Icon icon="ep:arrow-down-bold" className="text-lg" />
-                    </button>
-                  </div>
-                  <div className="w-full flex justify-end">
-                    <button
-                      type="button"
-                      className={`flex justify-center items-center p-[10px] h-[30px] bg-black rounded-lg mr-[5px] pointer relative ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} duration-150 shadow-2xl shadow-shadowc`}
-                      onClick={
-                        loading !== 'deleting'
-                          ? () => deletePlaylist()
-                          : undefined
-                      }
-                    >
-                      <span
-                        className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}
-                      ></span>
-                      <Icon
-                        icon="mdi:remove"
-                        className={`text-body m-0 p-0 ${loading !== 'deleting' ? '' : 'hidden'}`}
-                      />
-                      <p
-                        className={`text-body text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
-                      >
-                        삭제
-                      </p>
-                    </button>
-                    <div className="w-[120px] h-[30px] bg-white flex justify-between items-center p-[8px] rounded-lg relative mb-[10px] shadow-2xl shadow-shadowc">
-                      <button
-                        type="button"
-                        className={`text-xs z-10 ml-[8px] ${choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
-                        onClick={() => switchmusic(true)}
-                      >
-                        기상송
-                      </button>
-                      <button
-                        type="button"
-                        className={`text-xs z-10 mr-[8px] ${!choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
-                        onClick={() => switchmusic(false)}
-                      >
-                        노동요
-                      </button>
-                      <div
-                        className={`switcher ${choosemusic ? 'switchtrue' : 'switchfalse'}`}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </FloatUp>
-              <FloatUp>
-                <div className="flex w-[800px] relative shadow-2xl rounded-lg shadow-shadowc overflow-hidden">
+            <div className="grid grid-cols-auto grid-rows-auto w-full h-[400px] bg-gray-100">
+            <FloatUp>
+                <div className="flex w-[800px] relative shadow-2xl border rounded-lg shadow-shadowc overflow-hidden">
                   <div
                     className={`absoulute duration-500 flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
                   >
@@ -638,17 +579,15 @@ const DesktopPage = () => {
                                 }
                               })}
                         </div>
-                        <Skeleton
-                          className={`w-full h-[500px] ${loading === 'data' ? '' : 'hidden'}`}
-                        />
                       </div>
                     </div>
                   </div>
                 </div>
               </FloatUp>
-            </div>
-            <FloatUp>
-              <div className="w-[250px] h-full bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc">
+              
+              <div className="col-span-1 row-span-2">
+              <FloatUp>
+              <div className="w-[250px] h-full bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc border">
                 <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
                   <a
                     href={`https://www.youtube.com/playlist?list=${playlistId}`}
@@ -662,7 +601,7 @@ const DesktopPage = () => {
                   <p className="text-lg font-bold text-text">노래 미리보기</p>
                 </div>
                 <div className="w-full bg-gray-300 h-[1px] mb-[10px]"></div>
-                <div className="w-full max-h-full overflow-y-auto">
+                <div className="w-full h-auto overflow-y-auto ">
                   {Array.isArray(videoInfo) &&
                     videoInfo.map((item) => {
                       return (
@@ -697,6 +636,77 @@ const DesktopPage = () => {
                 </div>
               </div>
             </FloatUp>
+
+              </div>
+
+              <div className="col-span-1">
+
+              <FloatUp>
+                <div className="flex justify-between">
+                  <div className="flex flex-row justify-between w-[70px]">
+                    <button
+                      className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
+                      onClick={() => setMonth(true)}
+                    >
+                      <Icon icon="ep:arrow-up-bold" className="text-lg" />
+                    </button>
+                    <button
+                      className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
+                      onClick={() => setMonth(false)}
+                    >
+                      <Icon icon="ep:arrow-down-bold" className="text-lg" />
+                    </button>
+                  </div>
+                  <div className="w-full flex justify-end">
+                    <button
+                      type="button"
+                      className={`flex justify-center items-center p-[10px] h-[30px] bg-black rounded-lg mr-[5px] pointer relative ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} duration-150 shadow-2xl shadow-shadowc`}
+                      onClick={
+                        loading !== 'deleting'
+                          ? () => deletePlaylist()
+                          : undefined
+                      }
+                    >
+                      <span
+                        className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}
+                      ></span>
+                      <Icon
+                        icon="mdi:remove"
+                        className={`text-body m-0 p-0 ${loading !== 'deleting' ? '' : 'hidden'}`}
+                      />
+                      <p
+                        className={`text-body text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
+                      >
+                        삭제
+                      </p>
+                    </button>
+                    <div className="w-[120px] h-[30px] bg-white flex justify-between items-center p-[8px] rounded-lg relative mb-[10px] shadow-2xl shadow-shadowc">
+                      <button
+                        type="button"
+                        className={`text-xs z-10 ml-[8px] ${choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
+                        onClick={() => switchmusic(true)}
+                      >
+                        기상송
+                      </button>
+                      <button
+                        type="button"
+                        className={`text-xs z-10 mr-[8px] ${!choosemusic ? 'text-frame' : 'text-cusblue-normal'} trasnform duration-200`}
+                        onClick={() => switchmusic(false)}
+                      >
+                        노동요
+                      </button>
+                      <div
+                        className={`switcher ${choosemusic ? 'switchtrue' : 'switchfalse'}`}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </FloatUp>
+              </div>
+
+            </div>
+            <div>
+            </div>
           </div>
         </div>
       </div>
