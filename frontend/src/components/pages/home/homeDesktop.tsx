@@ -64,9 +64,6 @@ const DesktopPage = () => {
       const currunt_ldays = ldata.filter((item) => item.month === month);
       const next_ldays = ldata.filter((item) => item.month !== month);
 
-      setlCalendar(currunt_ldays);
-      setnlCalendar(next_ldays);
-
       const wresponse = await axios.get(`/api/data/wakeup/get`, {
         headers: {
           Authorization: `Bearer ${process.env.CRON_SECRET}`,
@@ -79,6 +76,8 @@ const DesktopPage = () => {
       const currunt_wdays = wdata.filter((item) => item.month === month);
       const next_wdays = wdata.filter((item) => item.month !== month);
 
+      setlCalendar(currunt_ldays);
+      setnlCalendar(next_ldays);
       setwCalendar(currunt_wdays);
       setnwCalendar(next_wdays);
     } catch (error) {
@@ -119,6 +118,7 @@ const DesktopPage = () => {
   useEffect(() => {
     if (!videoIds) return;
     const fetchVideoinfo = async () => {
+      setVideoinfo([])
       try {
         const response = await axios.get(`/api/youtubeinfo`, {
           params: {
@@ -159,7 +159,7 @@ const DesktopPage = () => {
 
   const hasSelectedClass = (id: number) => {
     if (id === clickedDay || id === clickedSub) {
-      return 'border-none !text-frame shadow-2xl shadow-cusblue-normal z-10 rounded bg-gradient-to-br from-cusblue-normal to-cusblue-light scale-105 overflow-visible';
+      return 'border-none !text-frame shadow-2xl shadow-cusblue-normal z-50 rounded bg-gradient-to-br from-cusblue-normal to-cusblue-light scale-105 overflow-visible';
     }
   };
 
@@ -333,7 +333,7 @@ const DesktopPage = () => {
       <div className="flex flex-row">
         <div>
           <FloatUp>
-            <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[80px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 shadow-2xl shadow-shadowc">
+            <div className="border-2 border-cusblue-normal bg-body w-[1060px] h-[100px] mb-[10px] rounded-xl py-[15px] px-[20px] flex flex-row justify-between items-center relative -z-10 shadow-2xl shadow-shadowc">
               <div>
                 <p className="text-xl font-bold text-cusblue-deep">
                   노래 신청 시스템
@@ -648,7 +648,7 @@ const DesktopPage = () => {
               </FloatUp>
             </div>
             <FloatUp>
-              <div className="w-[250px] h-full bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc">
+              <div className="w-[250px] h-full bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc max-h-[719px]">
                 <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
                   <a
                     href={`https://www.youtube.com/playlist?list=${playlistId}`}

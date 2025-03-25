@@ -15,6 +15,10 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const today = new Date()
+  const currentYear = today.getFullYear()
+  const [currentMonth, setCurrentMonth] = React.useState(today)
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -54,8 +58,8 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
-        IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        IconLeft: currentMonth.getMonth() === 0 ? undefined : () => <ChevronLeft className="h-4 w-4" />,
+        IconRight: currentMonth.getMonth() === 11 ? undefined : () => <ChevronRight className="h-4 w-4" />,
       }}
       {...props}
     />

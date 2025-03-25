@@ -47,7 +47,7 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const today = new Date();
-  const year = today.getFullYear() - 17;
+  const year = today.getFullYear();
   const month = today.getMonth() + 1;
   const ndate = today.getDate();
 
@@ -188,8 +188,8 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
                     <input
                       ref = {inputRef}
                       type="text"
-                      className='bg-transparent outline-none'
-                      defaultValue={session?.user.id ?? ""}
+                      className='bg-transparent outline-none cursor-pointer'
+                      defaultValue={session?.user.name ?? ""}
                     />
                   </Button>
       

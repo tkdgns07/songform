@@ -201,70 +201,51 @@ function SubmitContent() {
 
   const submitmusic = async () => {
     setLoading(true);
-    const check = await checkStudent();
-    if (check == 'Already submited') {
-      router.push('/error?error=already-submit');
-      return null;
-    }else if(check == 'Not submitable date'){
-      router.push('/error?error=disabled-submit');
-      return null;
-    }else if(check == 'Not allowed date'){
-      router.push('/error?error=disabled-submit');
-      return null;
-    }
-    if (!check) {
-      if (videodetails.length >= 5 && songtype == 'wakeup') {
-        const responese = await handleCreatePlaylist(true);
-        if (responese == 'error'){
-          return null
-        }
-        try {
-          const data = {
-            year: date.year,
-            month: date.month,
-            day: date.day,
-            student: `${session?.user.id} ${session?.user.name}`,
-            music_url: playlistId,
-          };
-          const response = await axios.post(`api/data/wakeup/add`, data, {
-            headers: {
-              Authorization: `Bearer ${process.env.CRON_SECRET}`,
-            },
-          });
-          toast.success('신청에 성공했습니다');
-          router.push('/');
-        } catch (error) {
-          router.push('/error?error=wplaylist-error');
-        }
-      } else if (videodetails.length < 5 && songtype == 'wakeup') {
+    try {
+      if (videodetails.length < 5 && songtype == 'wakeup'){
         toast.warning('기상송은 최소 5곡 이상 신청해야 합니다.');
-      } else if (videodetails.length == 5 && songtype == 'labor') {
-        await handleCreatePlaylist(false);
-        try {
-          const data = {
-            year: date.year,
-            month: date.month,
-            day: date.day,
-            student: `${session?.user.id} ${session?.user.name}`,
-            music_url: playlistId,
-          };
-          setLoading(true);
-          const response = await axios.post(`api/data/labor/add`, data, {
-            headers: {
-              Authorization: `Bearer ${process.env.CRON_SECRET}`,
-            },
-          });
-          toast.success('신청에 성공했습니다');
-          router.push('/');
-        } catch (error) {
-          router.push('/error?error=lplaylist-error');
-        }
-      } else if (
-        (videodetails.length < 5 || videodetails.length > 5) &&
-        songtype == 'labor'
-      ) {
-        toast.warning('노동요는 5곡을 신청해야 합니다.');
+        return
+      }else if(videodetails.length !== 5 && songtype == 'labor'){
+        toast.warning("노동요는 5곡만 신천할 수 있습니다.")
+        return
       }
+      const check = await checkStudent();
+      if (check == 'Already submited') {
+        router.push('/error?error=already-submit');
+        return null;
+      }else if(check == 'Not submitable date'){
+        router.push('/error?error=disabled-submit');
+        return null;
+      }else if(check == 'Not allowed date'){
+        router.push('/error?error=disabled-submit');
+        return null;
+      }
+      if (!check) {
+          const responese = await handleCreatePlaylist(true);
+          if (responese == 'error'){
+            return null
+          }
+          try {
+            const data = {
+              year: date.year,
+              month: date.month,
+              day: date.day,
+              student: `${session?.user.id} ${session?.user.name}`,
+              music_url: playlistId,
+            };
+            const response = await axios.post(`api/data/${songtype}/add`, data, {
+              headers: {
+                Authorization: `Bearer ${process.env.CRON_SECRET}`,
+              },
+            });
+            toast.success('신청에 성공했습니다');
+            router.push('/');
+          } catch (error) {
+            router.push(`/error?error=${songtype[0]}playlist-error`);
+          }
+      }
+    } finally {
+      setLoading(false)
     }
   };
 
