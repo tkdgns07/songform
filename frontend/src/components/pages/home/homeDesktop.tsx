@@ -416,7 +416,7 @@ const DesktopPage = () => {
                 </div>
               </FloatUp>
               <FloatUp>
-                <div className="flex w-[800px] relative shadow-2xl rounded-lg shadow-shadowc overflow-hidden">
+                <div className="flex w-[800px] relative shadow-2xl rounded-lg shadow-shadowc overflow-hidden border">
                   <div
                     className={`absoulute duration-500 flex w-[1650px] ${choosemusic ? 'goright' : 'goleft'}`}
                   >
@@ -648,7 +648,7 @@ const DesktopPage = () => {
               </FloatUp>
             </div>
             <FloatUp>
-              <div className="w-[250px] h-full bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc max-h-[719px]">
+              <div className="w-[250px] border h-full bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc max-h-[719px]">
                 <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
                   <a
                     href={`https://www.youtube.com/playlist?list=${playlistId}`}
