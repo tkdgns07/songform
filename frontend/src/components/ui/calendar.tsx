@@ -61,6 +61,7 @@ function Calendar({
         IconLeft: currentMonth.getMonth() === 0 ? undefined : () => <ChevronLeft className="h-4 w-4" />,
         IconRight: currentMonth.getMonth() === 11 ? undefined : () => <ChevronRight className="h-4 w-4" />,
       }}
+      onMonthChange={setCurrentMonth}
       {...props}
     />
   )
@@ -68,3 +69,4 @@ function Calendar({
 Calendar.displayName = "Calendar"
 
 export { Calendar }
+
