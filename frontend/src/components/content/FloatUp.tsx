@@ -29,7 +29,7 @@ const FloatUp: React.FC<FloatProps> = ({ children }) => {
   return (
     <div
         ref={ref}
-        className={`w-fit h-fit ${hasAppeared ? styles.visible : styles.invisible }`}
+        className={`box ${hasAppeared ? styles.visible : styles.invisible }`}
     >
         {children}
     </div>
