@@ -328,6 +328,15 @@ const DesktopPage = () => {
     return dayIndex === 0 || dayIndex === 6;
   }
 
+  const [playlistLength, setPlaylistLength] = useState<boolean>(false)
+  useEffect(() => {
+    if (curruntMonth) {
+      setPlaylistLength(wcalendarday.length / 7 > 5 ? true : false)
+    } else {
+      setPlaylistLength(nwcalendarday.length / 7 > 5 ? true : false)
+    }
+  }, [curruntMonth, wcalendarday])
+
   return (
     <main className="flex justify-center my-[80px]">
       <div className="flex flex-row">
@@ -648,7 +657,7 @@ const DesktopPage = () => {
               </FloatUp>
             </div>
             <FloatUp>
-              <div className="w-[250px] border h-full bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc max-h-[719px]">
+              <div className={`w-[250px] border bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc ${playlistLength ? 'h-[719px]' : 'h-[619px]'}`}>
                 <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
                   <a
                     href={`https://www.youtube.com/playlist?list=${playlistId}`}

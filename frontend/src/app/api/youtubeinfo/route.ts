@@ -66,6 +66,7 @@ const fetchVideoDetails = async (
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
+  console.log(YOUTUBE_API_KEY)
   try {
     const { searchParams } = new URL(req.url);
 
@@ -102,7 +103,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(videoDetailsList); // 배열 반환
   } catch (error) {
     return NextResponse.json(
-      { message: 'Failed to fetch video details' },
+      { message: 'Failed to fetch video details' , error },
       { status: 500 },
     );
   }

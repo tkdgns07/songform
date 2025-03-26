@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const baseUrl = process.env.NEXTAUTH_URL as string;
-
 export async function GET() {
   try {
     await axios.get(`${process.env.NEXTAUTH_URL}/api/data/reset`, {

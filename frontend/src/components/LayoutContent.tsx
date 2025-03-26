@@ -47,9 +47,20 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const today = new Date();
-  const year = today.getFullYear();
+  let year = today.getFullYear()
   const month = today.getMonth() + 1;
   const ndate = today.getDate();
+
+  if (session?.user.id) {
+    const grade = session.user.id.toString()[0]
+    if (grade === '3') {
+      year = today.getFullYear() - 18;
+    } else if (grade === '2') {
+      year = today.getFullYear() - 17;
+    } else if (grade === '1') {
+      year = today.getFullYear() - 16;
+    }
+  }
 
   let isBirthday = true;
 
@@ -127,7 +138,7 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
                           if (day) setDate(day);
                         }}
                         initialFocus
-                        defaultMonth={new Date(year, month - 1, ndate)}
+                        defaultMonth={new Date(year, month, ndate)}
                       />
                     </PopoverContent>
                   </Popover>

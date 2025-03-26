@@ -1,6 +1,5 @@
-import prisma from './client';
+import prisma from '@pclient/client';
 import axios from 'axios';
-import { NextResponse } from 'next/server';
 
 const now = new Date();
 const currentYear = now.getFullYear();
@@ -11,26 +10,6 @@ const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
 
 type ModelType = 'wakeup' | 'labor';
 
-async function createcalRecord(
-  model: ModelType,
-  year: number,
-  month: number,
-  day: number,
-  student: string,
-  song: string,
-  disabled: boolean,
-) {
-  if (model === 'wakeup') {
-    await prisma.wakeupCalendar.create({
-      data: { year, month, day, student, music_url: song, disabled },
-    });
-  } else {
-    await prisma.laborCalendar.create({
-      data: { year, month, day, student, music_url: song, disabled },
-    });
-  }
-}
-
 function isWeekend(start: number, date: number): boolean {
   const dayIndex = (start + date - 1) % 7;
   return dayIndex === 0 || dayIndex === 6;
@@ -40,19 +19,17 @@ async function deletePlaylists() {
   try {
     const [laborPlaylists, wakeupPlaylists] = await Promise.all([
       prisma.laborCalendar.findMany({
-        where: { month: currentMonth - 1, year: currentYear },
         select: { music_url: true },
       }),
       prisma.wakeupCalendar.findMany({
-        where: { month: currentMonth - 1, year: currentYear },
         select: { music_url: true },
       }),
     ]);
 
     const allPlaylists = [...laborPlaylists, ...wakeupPlaylists]
-      .map((item) => item.music_url)
-      .filter((url) => url); // 빈 값 제거
-
+        .map((item) => item.music_url)
+        .filter((url) => url && url !== 'None');
+  
     if (allPlaylists.length === 0) return;
 
     await Promise.allSettled(
@@ -102,7 +79,7 @@ async function makeCalendar(model: ModelType, year: number, month: number) {
   }
 }
 
-async function main() {
+export async function GET() {
   await deletePlaylists();
 
   await Promise.all([
@@ -118,11 +95,8 @@ async function main() {
       makeCalendar('labor', nextYear, nextMonth),
     ]);
   } catch (error) {
-    console.error(error);
     process.exit(1);
   } finally {
     await prisma.$disconnect();
   }
 }
-
-main();

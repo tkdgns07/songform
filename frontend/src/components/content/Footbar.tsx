@@ -29,7 +29,7 @@ const Footbar = () => {
 		// 	</div>
         // </>
 		<>
-			<div className="flex w-full pt-7 pb-14 justify-center bottom-0 border-t border-gray-100 bg-white">
+			<div className="flex w-full pt-7 pb-14 justify-center bottom-0 border-t border-gray-100 bg-white mt-[60px]">
 				<div className="w-[1060px] flex items-center justify-start">
 					<Image src={schoollogo} alt="KSHS_logo" className="w-[20px] mr-[5px]" />
 					<p className="text-xs text-black font-bold mr-[3px]">

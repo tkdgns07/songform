@@ -5,6 +5,66 @@ import errorimg from '@/img/error404.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
+import {
+  Card,
+  CardContent
+} from "@/components/ui/card"
+
+const errors = [
+  {
+    code: "cant-cfetch-calendar",
+    description:
+      "주로 와이파이가 너무 느릴 때 발생합니다. API상 데이터베이스 연결 후 5초 이상의 지연이 생길 경우 이 에러를 강행합니다.",
+  },
+  {
+    code: "lplaylist-error & wplaylist-error",
+    description:
+      "노래 신청 후 데이터베이스에 값들을 추가하는 과정에서 발생하는 에러입니다. 연결 오류나 올바르지 않은 날짜 등을 요청할 때 발생합니다.",
+  },
+  {
+    code: "playlist-make-error",
+    description:
+      "유튜브 API 요청 시 발생하는 에러입니다. 노래 신청을 잘못했거나, 주로 Youtube API 토큰 만료시 발생합니다. 해당 에러가 지속될 시 개발자에게 문의해주세요.",
+  },
+  {
+    code: "no-data-rended",
+    description: "/submit 페이지에서 발생합니다. URL param 중 date에 대한 값이 전달 받지 못했을 때 발생합니다.",
+  },
+  {
+    code: "email-err",
+    description:
+      "개인 구글 계정으로 로그인 할 시 발생합니다. 기상찬은 무조건 학교 구글 계정(h012s~@gw1.kr)를 받습니다.",
+  },
+  {
+    code: "server-email",
+    description: "기본적인 데이터베이스 에러입니다.",
+  },
+  {
+    code: "login",
+    description: "구글 로그인에서 발생하는 에러로, 발생 시 개발자에게 문의해주세요.",
+  },
+  {
+    code: "already-submit",
+    description: "기상송이나 노동요 신청에서, 이미 신청한 상태에서 강제적으로 신청하려 할 시 발생합니다.",
+  },
+  {
+    code: "disabled-submit",
+    description: "신청불가능한 날짜를 선택하면 발생합니다.",
+  },
+  {
+    code: "student-error",
+    description:
+      "로그인 후 jwt 토큰의 에러로 학생 정보를 불러오지 못했을 때 발생합니다. 다시 로그인 해 보시고, 지속적으로 발생한다면 개발자에게 문의해주세요.",
+  },
+  {
+    code: "preparing",
+    description: "모바일 레이아웃을 접근하려 할 때 발생합니다. 아직 모바일 레이아웃은 준비중입니다.",
+  },
+  {
+    code: "student-add-error",
+    description: "학생 정보 업데이트에서 발생하는 문제입니다. 다시 시도해도 발생한다면 개발자에게 문의해주세요.",
+  },
+]
 
 function ErrorContent() {
   const searchParams = useSearchParams();
@@ -37,9 +97,9 @@ function ErrorContent() {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center h-screen">
+    <main className='w-full h-full'>
       {error? (
-        <div className='flex flex-col items-center'>
+        <div className='flex flex-col items-center h-screen justify-center'>
             <Image src={errorimg} alt="KSHS_logo" className="w-[300px]" />
             <div className="flex items-center">
               <p className="text-xl mr-[5px] font-bold">404</p>
@@ -59,80 +119,20 @@ function ErrorContent() {
             </div>
         </div>
       ) : (
-        <div className='flex flex-col h-[500px] justify-evenly'>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : cant-cfetch-calendar</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>주로 와이파이가 너무 느릴 때 발생합니다. API상 데이터베이스 연결 후 5초 이상의 지연이 생길 경우 이 에러를 강행합니다.</p>
+        <main className='w-full px-[60px] mt-[75px]'>
+          <h1 className="text-2xl font-bold mb-8">에러 문서</h1>
+
+          <div className="grid gap-6">
+            {errors.map((error, index) => (
+              <Card key={index} className="overflow-hidden">
+                <CardContent className="p-6">
+                  <h2 className="text-xl font-bold text-primary mb-3">Error: {error.code}</h2>
+                  <p className="text-muted-foreground">{error.description}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : lplaylist-error & wplaylist-error</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>노래 신청 후 데이터베이스에 값들을 추가하는 과정에서 발생하는 에러입니다. 연결 오류나 올바르지 않은 날짜 등을 요청할 때 발생합니다.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : playlist-make-error</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>유튜브 API 요청 시 발생하는 에러입니다. 노래 신청을 잘못했거나, 주로 Youtube API 토큰 만료시 발생합니다. 해당 에러가 지속될 시 개발자에게 문의해주세요.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : no-data-rended</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>/submit 페이지에서 발생합니다. URL param 중 date에 대한 값이 전달 받지 못했을 때 발생합니다.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : email-err</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>개인 구글 계정으로 로그인 할 시 발생합니다. 기상찬은 무조건 학교 구글 계정(h012s~@gw1.kr)를 받습니다.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : server-email</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>기본적인 데이터베이스 에러입니다.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : login</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>구글 로그인에서 발생하는 에러로, 발생 시 개발자에게 문의해주세요.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : already-submit</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>기상송이나 노동요 신청에서, 이미 신청한 상태에서 강제적으로 신청하려 할 시 발생합니다.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : disabled-submit</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>신청불가능한 날짜를 선택하면 발생합니다.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : student-error</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>로그인 후 jwt 토큰의 에러로 학생 정보를 불러오지 못했을 때 발생합니다. 다시 로그인 해 보시고, 지속적으로 발생한다면 개발자에게 문의해주세요.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : preparing</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>모바일 레이아웃을 접근하려 할 때 발생합니다. 아직 모바일 레이아웃은 준비중입니다.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-          <div className='flex flex-cols'>
-            <p className='text-text font-bold'>Error : student-add-error</p>
-            <div className='h-auto w-[1px] bg-text mx-[5px]'></div>
-            <p className='text-text'>학생 정보 업데이트에서 발생하는 문제입니다. 다시 시도해도 발생한다면 개발자에게 문의해주세요.</p>
-          </div>
-          <div className='w-auto h-[1px] bg-text'></div>
-        </div>
+        </main>
       )
     }
     </main>

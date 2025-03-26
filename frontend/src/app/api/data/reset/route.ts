@@ -9,6 +9,9 @@ const currentMonth = now.getMonth() + 1;
 const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear;
 const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
 
+const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+
 async function createRecord(
   model: string,
   year: number,
@@ -76,49 +79,51 @@ async function makeCalendar(model: string, year: number, month: number) {
 
 async function deletePlaylists() {
   try {
-    // 지난달 laborCalendar 및 wakeupCalendar 데이터 조회
+    // playlists를 받아옴 (laborCalendar)
     const playlists = await prisma.laborCalendar.findMany({
-      where: { month: previousMonth, year: previousYear },
-      select: { music_url: true },
+      where: {
+        month: currentMonth - 1, // 한 달 전의 데이터를 찾음
+      },
+      select: {
+        music_url: true, // music_url 필드만 선택
+      },
     });
 
+    // wakeupCalendars를 받아옴 (wakeupCalendar)
     const wakeupCalendars = await prisma.wakeupCalendar.findMany({
-      where: { month: previousMonth, year: previousYear },
-      select: { music_url: true },
+      where: {
+        month: currentMonth - 1, // 한 달 전의 데이터를 찾음
+      },
+      select: {
+        music_url: true, // music_url 필드만 선택
+      },
     });
 
-    const allPlaylists = [...playlists, ...wakeupCalendars]
-      .map((item) => item.music_url)
-      .filter((url) => url); // 빈 URL 제거
+    // playlists와 wakeupCalendars 리스트를 합침
+    const allPlaylists = [...playlists, ...wakeupCalendars];
 
+    // 합쳐진 playlists가 비어있으면 종료
     if (allPlaylists.length === 0) {
-      return NextResponse.json({ status: 200, message: 'No playlists to delete' });
+      return NextResponse.json({ status: 404, error: 'No playlists found to delete' });
     }
 
-    // 모든 삭제 요청을 병렬로 실행
-    const deleteResults = await Promise.allSettled(
-      allPlaylists.map((playlistId) =>
-        axios.delete(`${process.env.NEXTAUTH_URL}/api/deletelist`, {
-          data: { playlistId },
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${process.env.CRON_SECRET}`,
-          },
-        }),
-      ),
-    );
+    // axios.delete 호출을 async로 순차적으로 처리
+    for (const item of allPlaylists) {
+      await axios.delete(`${process.env.NEXTAUTH_URL}/api/deletelist`, {
+        data: {
+          playlistId: item.music_url, // playlistId를 music_url로 설정
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
+        },
+      });
+    }
 
-    // 성공 / 실패 개수 확인
-    const successCount = deleteResults.filter((res) => res.status === 'fulfilled').length;
-    const failureCount = deleteResults.length - successCount;
-
-    return NextResponse.json({
-      status: failureCount === 0 ? 200 : 500,
-      message: `Deleted ${successCount} playlists, failed ${failureCount}`,
-    });
+    return NextResponse.json({ status: 200, message: 'Playlists deleted successfully' });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, error: 'YouTube API error on deleting PlayList' });
+    return NextResponse.json({ status: 500, error: 'Youtube API error on deleting PlayList' });
   }
 }
 
@@ -148,8 +153,8 @@ export async function GET() {
       });
     }
 
-    await makeCalendar('wakeup', currentYear, currentMonth);
-    await makeCalendar('labor', currentYear, currentMonth);
+    await makeCalendar('wakeup', nextYear, nextMonth);
+    await makeCalendar('labor', nextYear, nextMonth);
 
     return NextResponse.json({ status: 200, message: 'cron handled' });
   } catch (error) {
