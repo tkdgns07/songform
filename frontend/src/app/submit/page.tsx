@@ -233,7 +233,7 @@ function SubmitContent() {
               student: `${session?.user.id} ${session?.user.name}`,
               music_url: playlistId,
             };
-            const response = await axios.post(`api/data/${songtype}/add`, data, {
+            await axios.post(`api/data/${songtype}/add`, data, {
               headers: {
                 Authorization: `Bearer ${process.env.CRON_SECRET}`,
               },
