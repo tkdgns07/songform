@@ -1,4 +1,4 @@
-import prisma from '@pclient/client';
+import prisma from './client';
 import axios from 'axios';
 
 const now = new Date();
