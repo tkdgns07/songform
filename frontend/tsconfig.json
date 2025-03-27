@@ -19,7 +19,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@pclient/*": ["./prisma/*"],
+      "@pclient/*": ["./prisma/*"]
     },
     "typeRoots": ["./types", "./node_modules/@types"]
   },

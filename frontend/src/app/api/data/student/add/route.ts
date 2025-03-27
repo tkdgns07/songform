@@ -7,18 +7,21 @@ export async function POST(request: NextRequest) {
 
     const existingRecord = await prisma.students.findFirst({
       where: {
-        id : id,
+        id: id,
       },
     });
     if (!existingRecord) {
-      return NextResponse.json({ status: 404, error: 'Student is not exist on DB' });
+      return NextResponse.json({
+        status: 404,
+        error: 'Student is not exist on DB',
+      });
     }
 
     const updatedRecord = await prisma.students.update({
       where: { id: id },
       data: {
-        birthday : birthday,
-        name : name
+        birthday: birthday,
+        name: name,
       },
     });
     return NextResponse.json({

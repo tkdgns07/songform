@@ -168,7 +168,7 @@ function SubmitContent() {
       }
     } catch (error) {
       router.push('/error?error=playlist-make-error');
-      return 'error'
+      return 'error';
     }
     setLoading(false);
   };
@@ -202,50 +202,50 @@ function SubmitContent() {
   const submitmusic = async () => {
     setLoading(true);
     try {
-      if (videodetails.length < 5 && songtype == 'wakeup'){
+      if (videodetails.length < 5 && songtype == 'wakeup') {
         toast.warning('기상송은 최소 5곡 이상 신청해야 합니다.');
-        return
-      }else if(videodetails.length !== 5 && songtype == 'labor'){
-        toast.warning("노동요는 5곡만 신천할 수 있습니다.")
-        return
+        return;
+      } else if (videodetails.length !== 5 && songtype == 'labor') {
+        toast.warning('노동요는 5곡만 신천할 수 있습니다.');
+        return;
       }
       const check = await checkStudent();
       if (check == 'Already submited') {
         router.push('/error?error=already-submit');
         return null;
-      }else if(check == 'Not submitable date'){
+      } else if (check == 'Not submitable date') {
         router.push('/error?error=disabled-submit');
         return null;
-      }else if(check == 'Not allowed date'){
+      } else if (check == 'Not allowed date') {
         router.push('/error?error=disabled-submit');
         return null;
       }
       if (!check) {
-          const responese = await handleCreatePlaylist(true);
-          if (responese == 'error'){
-            return null
-          }
-          try {
-            const data = {
-              year: date.year,
-              month: date.month,
-              day: date.day,
-              student: `${session?.user.id} ${session?.user.name}`,
-              music_url: playlistId,
-            };
-            await axios.post(`api/data/${songtype}/add`, data, {
-              headers: {
-                Authorization: `Bearer ${process.env.CRON_SECRET}`,
-              },
-            });
-            toast.success('신청에 성공했습니다');
-            router.push('/');
-          } catch (error) {
-            router.push(`/error?error=${songtype[0]}playlist-error`);
-          }
+        const responese = await handleCreatePlaylist(true);
+        if (responese == 'error') {
+          return null;
+        }
+        try {
+          const data = {
+            year: date.year,
+            month: date.month,
+            day: date.day,
+            student: `${session?.user.id} ${session?.user.name}`,
+            music_url: playlistId,
+          };
+          await axios.post(`api/data/${songtype}/add`, data, {
+            headers: {
+              Authorization: `Bearer ${process.env.CRON_SECRET}`,
+            },
+          });
+          toast.success('신청에 성공했습니다');
+          router.push('/');
+        } catch (error) {
+          router.push(`/error?error=${songtype[0]}playlist-error`);
+        }
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -296,7 +296,7 @@ function SubmitContent() {
             </div>
             <div className="flex justify-between items-center h-[40px]">
               <span
-                className={`text-base ${videodetails.length < 5 ? 'text-red-700' : (songParams === 'labor' ? (videodetails.length > 5 ? 'text-red-700' : 'text-cusblue-normal') : 'text-cusblue-normal')}`}
+                className={`text-base ${videodetails.length < 5 ? 'text-red-700' : songParams === 'labor' ? (videodetails.length > 5 ? 'text-red-700' : 'text-cusblue-normal') : 'text-cusblue-normal'}`}
               >
                 {videodetails.length}/5
               </span>

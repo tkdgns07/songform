@@ -118,7 +118,7 @@ const DesktopPage = () => {
   useEffect(() => {
     if (!videoIds) return;
     const fetchVideoinfo = async () => {
-      setVideoinfo([])
+      setVideoinfo([]);
       try {
         const response = await axios.get(`/api/youtubeinfo`, {
           params: {
@@ -328,14 +328,14 @@ const DesktopPage = () => {
     return dayIndex === 0 || dayIndex === 6;
   }
 
-  const [playlistLength, setPlaylistLength] = useState<boolean>(false)
+  const [playlistLength, setPlaylistLength] = useState<boolean>(false);
   useEffect(() => {
     if (curruntMonth) {
-      setPlaylistLength(wcalendarday.length / 7 > 5 ? true : false)
+      setPlaylistLength(wcalendarday.length / 7 > 5 ? true : false);
     } else {
-      setPlaylistLength(nwcalendarday.length / 7 > 5 ? true : false)
+      setPlaylistLength(nwcalendarday.length / 7 > 5 ? true : false);
     }
-  }, [curruntMonth, wcalendarday])
+  }, [curruntMonth, wcalendarday]);
 
   return (
     <main className="flex justify-center my-[80px]">
@@ -433,9 +433,13 @@ const DesktopPage = () => {
                       <div className="flex flex-row justify-between items-center p-[12px]">
                         <div className="flex flex-row items-center">
                           <span className="text-lighttext text-sm fontsemibold mr-[5px]">
-                            {curruntMonth ? year : (month === 12 ? year + 1 : year)}
+                            {curruntMonth
+                              ? year
+                              : month === 12
+                                ? year + 1
+                                : year}
                           </span>
-                          <span className="text-text text-base font-bold">{`${curruntMonth ? month : (month === 12 ? 1 : month + 1)}월`}</span>
+                          <span className="text-text text-base font-bold">{`${curruntMonth ? month : month === 12 ? 1 : month + 1}월`}</span>
                         </div>
                         <button
                           type="button"
@@ -504,7 +508,9 @@ const DesktopPage = () => {
                                           : () => dayClicked(index)
                                       }
                                     >
-                                      {item.day !== 0 ? <p>{item.day}</p> : null}
+                                      {item.day !== 0 ? (
+                                        <p>{item.day}</p>
+                                      ) : null}
                                       {item.student !== 'None' ? (
                                         <div
                                           className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
@@ -522,7 +528,9 @@ const DesktopPage = () => {
                                       id={item.day.toString()}
                                       className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.day === 0 ? '!disable' : ''}`}
                                     >
-                                      {item.day !== 0 ? <p>{item.day}</p> : null}
+                                      {item.day !== 0 ? (
+                                        <p>{item.day}</p>
+                                      ) : null}
                                       {item.student !== 'None' ? (
                                         <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
                                           {item.student}
@@ -544,9 +552,13 @@ const DesktopPage = () => {
                       <div className="flex flex-row justify-between items-center p-[12px]">
                         <div className="flex flex-row items-center">
                           <span className="text-lighttext text-sm fontsemibold mr-[5px]">
-                            {curruntMonth ? year : (month === 12 ? year + 1 : year)}
+                            {curruntMonth
+                              ? year
+                              : month === 12
+                                ? year + 1
+                                : year}
                           </span>
-                          <span className="text-text text-base font-bold">{`${curruntMonth ? month : (month === 12 ? 1 : month + 1)}월`}</span>
+                          <span className="text-text text-base font-bold">{`${curruntMonth ? month : month === 12 ? 1 : month + 1}월`}</span>
                         </div>
                         <button
                           type="button"
@@ -558,8 +570,10 @@ const DesktopPage = () => {
                       </div>
                       <div className="h-[1px] w-[100%] bg-frame"></div>
                       <div className="p-[0] relative">
-                        <span className='absolute w-[800px] h-full top-0 left-0 z-50 opacity-50 blurfillter flex justify-center items-center'>
-                          <p className='font-bold text-black'>노동요 신청은 아직 신청 불가합니다.</p>
+                        <span className="absolute w-[800px] h-full top-0 left-0 z-50 opacity-50 blurfillter flex justify-center items-center">
+                          <p className="font-bold text-black">
+                            노동요 신청은 아직 신청 불가합니다.
+                          </p>
                         </span>
                         <div className="grid grid-cols-7">
                           <span className="day-name text-red-600">S</span>
@@ -616,7 +630,9 @@ const DesktopPage = () => {
                                           : () => dayClicked(index)
                                       }
                                     >
-                                      {item.day !== 0 ? <p>{item.day}</p> : null}
+                                      {item.day !== 0 ? (
+                                        <p>{item.day}</p>
+                                      ) : null}
                                       {item.student !== 'None' ? (
                                         <div
                                           className={`flex justify-center item-center rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs ${clickedSub === index ? 'bg-white text-cusblue-normal' : 'bg-cusblue-normal text-white'}`}
@@ -634,7 +650,9 @@ const DesktopPage = () => {
                                       id={item.day.toString()}
                                       className={`day flex flex-col md:flex-row text-xs md:hover:bg-frame trasition duration-200 cursor-pointer ${item.disabled ? '!disable pointer-events-none' : ''}`}
                                     >
-                                      {item.day !== 0 ? <p>{item.day}</p> : null}
+                                      {item.day !== 0 ? (
+                                        <p>{item.day}</p>
+                                      ) : null}
                                       {item.student !== 'None' ? (
                                         <div className="flex justify-center item-center bg-cusblue-normal rounded-xl w-[62px] h-[15px] ml-[2px] mt-[1px] text-2xs text-frame">
                                           {item.student}
@@ -657,7 +675,9 @@ const DesktopPage = () => {
               </FloatUp>
             </div>
             <FloatUp>
-              <div className={`w-[250px] border bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc ${playlistLength ? 'h-[719px]' : 'h-[619px]'}`}>
+              <div
+                className={`w-[250px] border bg-white rounded-xl py-[15px] px-[20px] flex flex-col justify-start ml-[10px] relative shadow-2xl shadow-shadowc ${playlistLength ? 'h-[719px]' : 'h-[619px]'}`}
+              >
                 <div className="flex flex-row justify-start items-center mb-[10px] ml-[5px]">
                   <a
                     href={`https://www.youtube.com/playlist?list=${playlistId}`}

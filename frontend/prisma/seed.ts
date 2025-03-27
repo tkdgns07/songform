@@ -27,9 +27,9 @@ async function deletePlaylists() {
     ]);
 
     const allPlaylists = [...laborPlaylists, ...wakeupPlaylists]
-        .map((item) => item.music_url)
-        .filter((url) => url && url !== 'None');
-  
+      .map((item) => item.music_url)
+      .filter((url) => url && url !== 'None');
+
     if (allPlaylists.length === 0) return;
 
     await Promise.allSettled(
@@ -40,8 +40,8 @@ async function deletePlaylists() {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${process.env.CRON_SECRET}`,
           },
-        })
-      )
+        }),
+      ),
     );
   } catch (error) {
     console.error('YouTube API error on deleting PlayList:', error);
@@ -60,16 +60,37 @@ async function makeCalendar(model: ModelType, year: number, month: number) {
   const records = [];
 
   for (let i = 1; i <= startWeekday; i++) {
-    records.push({ year, month, day: 0, student: 'None', music_url: 'None', disabled: true });
+    records.push({
+      year,
+      month,
+      day: 0,
+      student: 'None',
+      music_url: 'None',
+      disabled: true,
+    });
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
     const isDisabled = model === 'labor' ? isWeekend(startWeekday, i) : false;
-    records.push({ year, month, day: i, student: 'None', music_url: 'None', disabled: isDisabled });
+    records.push({
+      year,
+      month,
+      day: i,
+      student: 'None',
+      music_url: 'None',
+      disabled: isDisabled,
+    });
   }
 
   for (let i = 1; i < loopLimit; i++) {
-    records.push({ year, month, day: 0, student: 'None', music_url: 'None', disabled: true });
+    records.push({
+      year,
+      month,
+      day: 0,
+      student: 'None',
+      music_url: 'None',
+      disabled: true,
+    });
   }
 
   if (model === 'wakeup') {

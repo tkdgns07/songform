@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import axios from 'axios';
-import prisma from '@pclient/client'
+import prisma from '@pclient/client';
 
 interface StudentInfo {
   id: number;
@@ -10,14 +10,14 @@ interface StudentInfo {
   birthday: string;
 }
 
-const isAdmin = async (email : string): Promise<boolean> =>{
+const isAdmin = async (email: string): Promise<boolean> => {
   const existingRecord = await prisma.admin.findFirst({
     where: {
-      email: email
-    }
+      email: email,
+    },
   });
-  return existingRecord ? true : false
-}
+  return existingRecord ? true : false;
+};
 
 const year = new Date().getFullYear();
 const shortYear = year % 100;
@@ -65,10 +65,10 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       const email = user.email ?? '';
-      
-      const checkAdmin = await isAdmin(email)
-      if(checkAdmin){
-        return true
+
+      const checkAdmin = await isAdmin(email);
+      if (checkAdmin) {
+        return true;
       }
 
       const id = idExtract(email);

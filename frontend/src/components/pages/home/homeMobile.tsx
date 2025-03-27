@@ -332,12 +332,23 @@ const MobilePage = () => {
   }
 
   const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
-  
+
   function getMonthName(monthNumber: number): string {
-    if (monthNumber < 1 || monthNumber > 12) throw new Error("Invalid month number");
+    if (monthNumber < 1 || monthNumber > 12)
+      throw new Error('Invalid month number');
     return monthNames[monthNumber - 1];
   }
 
@@ -352,7 +363,7 @@ const MobilePage = () => {
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
         setHeight(entry.contentRect.height); // 요소의 높이를 업데이트\
-        console.log(height)
+        console.log(height);
       }
     });
 
@@ -368,17 +379,12 @@ const MobilePage = () => {
   return (
     <main className="w-full h-screen">
       <div className="mt-[50px] w-full flex flex-row mb-[40px] p-[10px]">
-        <div
-          className="w-full flex flex-col item-center"
-        >
+        <div className="w-full flex flex-col item-center">
           <div className="w-full flex flex-row items-center">
-            <div className='w-full flex flex-col justify-center'>
-              <div className='fixed w-full top-0 mt-[50px]'
-              ref={elementRef}>
-              <div
-                className="w-full flex justify-between"
-              >
-                {/* <div className="flex flex-row justify-between w-[70px]">
+            <div className="w-full flex flex-col justify-center">
+              <div className="fixed w-full top-0 mt-[50px]" ref={elementRef}>
+                <div className="w-full flex justify-between">
+                  {/* <div className="flex flex-row justify-between w-[70px]">
                   <button
                     className="w-[30px] h-[30px] bg-slate-300 rounded-lg flex justify-center items-center active:bg-slate-400 duration-150"
                     onClick={() => setMonth(true)}
@@ -392,101 +398,105 @@ const MobilePage = () => {
                     <Icon icon="ep:arrow-down-bold" className="text-lg" />
                   </button>
                 </div> */}
-                <div className="w-full flex justify-end">
-                  <button
-                    type="button"
-                    className={`flex justify-center items-center w-[50px] h-[30px] bg-red-500 rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} hover:bg-red-700 duration-150`}
-                    onClick={() => deletePlaylist()}
-                  >
-                    <span
-                      className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}
-                    ></span>
-                    <p
-                      className={`text-white text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
+                  <div className="w-full flex justify-end">
+                    <button
+                      type="button"
+                      className={`flex justify-center items-center w-[50px] h-[30px] bg-red-500 rounded-lg mr-[5px] pointer ${clickedSub == -1 ? 'hidden' : session ? (`${session?.user.id} ${session?.user.name}` === (choosemusic ? (curruntMonth ? wcalendarday[clickedSub]['student'] : nwcalendarday[clickedSub]['student']) : curruntMonth ? lcalendarday[clickedSub]['student'] : nlcalendarday[clickedSub]['student']) ? '' : session.user.admin ? '' : 'hidden') : 'hidden'} hover:bg-red-700 duration-150`}
+                      onClick={() => deletePlaylist()}
                     >
-                      삭제
-                    </p>
-                  </button>
-                  <div className="w-full h-[45px] bg-gray-200 flex justify-between items-center p-[2px] rounded-full mb-[10px]">
-                    <div className='flex w-full h-full relative'>
-                      <button
-                        type="button"
-                        className={`flex-1 text-base font-bold z-10 text-text trasnform duration-200`}
-                        onClick={() => switchmusic(true)}
+                      <span
+                        className={`loader w-[17px] aspect-square border-1 ${loading == 'deleting' ? '' : 'hidden'}`}
+                      ></span>
+                      <p
+                        className={`text-white text-sm ${loading !== 'deleting' ? '' : 'hidden'}`}
                       >
-                        기상송
-                      </button>
-                      <button
-                        type="button"
-                        className={`flex-1 text-base font-bold z-10 text-text trasnform duration-200`}
-                        onClick={() => switchmusic(false)}
-                      >
-                        노동요
-                      </button>
-                      <div
-                        className={`w-1/2 h-full bg-white shdow-xl rounded-full absolute transition-transform duration-300 ${choosemusic ? 'translate-x-0' : 'translate-x-full'}`}
-                      ></div>
+                        삭제
+                      </p>
+                    </button>
+                    <div className="w-full h-[45px] bg-gray-200 flex justify-between items-center p-[2px] rounded-full mb-[10px]">
+                      <div className="flex w-full h-full relative">
+                        <button
+                          type="button"
+                          className={`flex-1 text-base font-bold z-10 text-text trasnform duration-200`}
+                          onClick={() => switchmusic(true)}
+                        >
+                          기상송
+                        </button>
+                        <button
+                          type="button"
+                          className={`flex-1 text-base font-bold z-10 text-text trasnform duration-200`}
+                          onClick={() => switchmusic(false)}
+                        >
+                          노동요
+                        </button>
+                        <div
+                          className={`w-1/2 h-full bg-white shdow-xl rounded-full absolute transition-transform duration-300 ${choosemusic ? 'translate-x-0' : 'translate-x-full'}`}
+                        ></div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className='w-full bg-white rounded-xl shadow-sm'>
-                <div className='flex items-center justify-between p-[15px] mb-[10px]'>
-                  <div>
-                    <p className='text-2xl text-text font-bold'>{getMonthName(month)}</p>
-                    <p className='text-lighttext text-sm'>{year}</p>
+                <div className="w-full bg-white rounded-xl shadow-sm">
+                  <div className="flex items-center justify-between p-[15px] mb-[10px]">
+                    <div>
+                      <p className="text-2xl text-text font-bold">
+                        {getMonthName(month)}
+                      </p>
+                      <p className="text-lighttext text-sm">{year}</p>
+                    </div>
+                    <div>
+                      <button
+                        className="flex justify-center items-center w-[30px] h-[30px] rounded-full bg-black"
+                        onClick={() => submitClicked()}
+                      >
+                        <Icon
+                          icon="uil:arrow-right"
+                          className="text-white text-2xl"
+                        ></Icon>
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <button
-                      className='flex justify-center items-center w-[30px] h-[30px] rounded-full bg-black'
-                      onClick={() => submitClicked()}
-                    >
-                      <Icon
-                        icon="uil:arrow-right"
-                        className="text-white text-2xl"
-                      ></Icon>
-                    </button>
+                  <div className="grid grid-cols-7">
+                    <span className="day-name text-text text-xs">SUN</span>
+                    <span className="day-name text-xs">MON</span>
+                    <span className="day-name text-xs">TUE</span>
+                    <span className="day-name text-xs">WED</span>
+                    <span className="day-name text-xs">THU</span>
+                    <span className="day-name text-xs">FRI</span>
+                    <span className="day-name text-text text-xs">SAT</span>
                   </div>
-                </div>
-                <div className="grid grid-cols-7">
-                  <span className="day-name text-text text-xs">SUN</span>
-                  <span className="day-name text-xs">MON</span>
-                  <span className="day-name text-xs">TUE</span>
-                  <span className="day-name text-xs">WED</span>
-                  <span className="day-name text-xs">THU</span>
-                  <span className="day-name text-xs">FRI</span>
-                  <span className="day-name text-text text-xs">SAT</span>
-                </div>
-                <div className='w-full grid grid-cols-7'>
-                  {curruntMonth
-                    ? wcalendarday.map((item, index) => {
-                        return (
-                          <div
-                            id={item.day.toString()}
-                            className={`flex flex-col items-center justify-center aspect-[2/3]`}
-                            onClick={() => dayClicked(index)}
-                          >
-                            <div className={`flex justify-center items-center mb-[1px] w-[30px] h-[30px] rounded-full ${index == clickedDay ? 'bg-text text-white' : (index == clickedSub ? 'bg-text text-white' : '')} text-sm duration-300 ${item.day == 0 ? 'text-white' : ''} ${item.day < date ? 'text-lighttext' : ''}`}>
-                              {item.day}
+                  <div className="w-full grid grid-cols-7">
+                    {curruntMonth
+                      ? wcalendarday.map((item, index) => {
+                          return (
+                            <div
+                              id={item.day.toString()}
+                              className={`flex flex-col items-center justify-center aspect-[2/3]`}
+                              onClick={() => dayClicked(index)}
+                            >
+                              <div
+                                className={`flex justify-center items-center mb-[1px] w-[30px] h-[30px] rounded-full ${index == clickedDay ? 'bg-text text-white' : index == clickedSub ? 'bg-text text-white' : ''} text-sm duration-300 ${item.day == 0 ? 'text-white' : ''} ${item.day < date ? 'text-lighttext' : ''}`}
+                              >
+                                {item.day}
+                              </div>
+                              <div
+                                className={`w-[20px] h-[3px] rounded-full bg-text ${item.day == date ? 'opacity-100' : 'opacity-0'}`}
+                              ></div>
+                              <div
+                                className={`w-[5px] h-[5px] rounded-full bg-text ${item.student == 'None' ? 'opacity-0' : 'opacity-0'}`}
+                              ></div>
                             </div>
-                            <div className={`w-[20px] h-[3px] rounded-full bg-text ${item.day == date ? 'opacity-100' : 'opacity-0'}`}></div>
-                            <div className={`w-[5px] h-[5px] rounded-full bg-text ${item.student == 'None' ? 'opacity-0' : 'opacity-0'}`}></div>
-                          </div>
-                        )
-                      })
-                    : nwcalendarday.map((item, index) => {
-                        if (date >= 24 || (date >= 17 && birthday)) {
-                          return (
-                            <div></div>
                           );
-                        } else {
-                          return (
-                            <div></div>
-                          );
-                        }
-                    })}
+                        })
+                      : nwcalendarday.map((item, index) => {
+                          if (date >= 24 || (date >= 17 && birthday)) {
+                            return <div></div>;
+                          } else {
+                            return <div></div>;
+                          }
+                        })}
+                  </div>
                 </div>
-              </div>
               </div>
               {/* <div
                 className="flex relative overflow-hidden"
@@ -688,18 +698,18 @@ const MobilePage = () => {
                   </div>
                 </div>
               </div> */}
-            <div className='w-1 bg-white'
-            style={{ height: `${height}px` }}></div>
-            <div className="flex flex-col items-center w-screen h-screen rounded-t-xl bg-white mt-[10px] pt-[10px] overflow-y-auto scroll-m-10 z-50">
-              <div className="w-[50px] h-[5px] rounded-full bg-lighttext cursor-pointer"></div>
+              <div
+                className="w-1 bg-white"
+                style={{ height: `${height}px` }}
+              ></div>
+              <div className="flex flex-col items-center w-screen h-screen rounded-t-xl bg-white mt-[10px] pt-[10px] overflow-y-auto scroll-m-10 z-50">
+                <div className="w-[50px] h-[5px] rounded-full bg-lighttext cursor-pointer"></div>
 
-              <div className="w-full flex justify-start mt-[10px] px-[30px]">
-                <p className="text-xl font-bold">TODAY</p>
-              </div>
-
-                <div className="w-full px-[30px]">
-                  
+                <div className="w-full flex justify-start mt-[10px] px-[30px]">
+                  <p className="text-xl font-bold">TODAY</p>
                 </div>
+
+                <div className="w-full px-[30px]"></div>
               </div>
             </div>
           </div>

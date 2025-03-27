@@ -11,10 +11,10 @@ export async function POST(request: NextRequest) {
 
     if (!student) {
       const newStudent = await prisma.students.create({
-        data : {
-          id : parseInt(id)
-        }
-      })
+        data: {
+          id: parseInt(id),
+        },
+      });
       return NextResponse.json({ status: 200, data: newStudent });
     }
 

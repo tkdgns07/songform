@@ -66,9 +66,17 @@ async function makeCalendar(model: string, year: number, month: number) {
     await createRecord(model, year, month, 0, 'None', 'None', true);
   }
   for (let j = 1; j < daysInMonth + 1; j++) {
-    if(model == 'labor'){
-      await createRecord(model, year, month, 0, 'None', 'None', isWeekend(startWeekday, j) ? true : false)
-    }else if(model == 'wakeup'){
+    if (model == 'labor') {
+      await createRecord(
+        model,
+        year,
+        month,
+        0,
+        'None',
+        'None',
+        isWeekend(startWeekday, j) ? true : false,
+      );
+    } else if (model == 'wakeup') {
       await createRecord(model, year, month, j, 'None', 'None', false);
     }
   }
@@ -104,7 +112,10 @@ async function deletePlaylists() {
 
     // 합쳐진 playlists가 비어있으면 종료
     if (allPlaylists.length === 0) {
-      return NextResponse.json({ status: 404, error: 'No playlists found to delete' });
+      return NextResponse.json({
+        status: 404,
+        error: 'No playlists found to delete',
+      });
     }
 
     // axios.delete 호출을 async로 순차적으로 처리
@@ -120,16 +131,21 @@ async function deletePlaylists() {
       });
     }
 
-    return NextResponse.json({ status: 200, message: 'Playlists deleted successfully' });
+    return NextResponse.json({
+      status: 200,
+      message: 'Playlists deleted successfully',
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, error: 'Youtube API error on deleting PlayList' });
+    return NextResponse.json({
+      status: 500,
+      error: 'Youtube API error on deleting PlayList',
+    });
   }
 }
 
-
 export async function GET() {
-  await deletePlaylists()
+  await deletePlaylists();
 
   try {
     const wakeupdeleteResult = await prisma.wakeupCalendar.deleteMany({

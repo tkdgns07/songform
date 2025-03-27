@@ -137,7 +137,7 @@
   .alert-hidden {
     top: -100px; /* 알림 요소를 화면 밖으로 숨김 */
   }
- .inputcontainer {
+  .inputcontainer {
     position: relative;
     overflow: hidden;
     transition:
@@ -296,7 +296,9 @@
     display: flex;
     align-items: center;
     transition: transform 0.3s;
-    box-shadow: inset 0.4rem 0.4rem 0.7rem var(--greyLight-2), inset -0.4rem -0.4rem 0.7rem var(--white);
+    box-shadow:
+      inset 0.4rem 0.4rem 0.7rem var(--greyLight-2),
+      inset -0.4rem -0.4rem 0.7rem var(--white);
     @apply rounded-lg bg-cusblue-normal;
   }
   .switchtrue {
@@ -335,11 +337,11 @@
   .mainpage {
     height: calc(100vh - 55px);
   }
-  .gradation{
+  .gradation {
     background: linear-gradient(to top, #f2f7ff, #ffffff);
   }
-  .profileImg::before{
-    content: "";
+  .profileImg::before {
+    content: '';
     position: absolute;
     width: 40px;
     height: 40px;
@@ -350,30 +352,32 @@
     transition: opacity 0.1s ease-in;
     @apply bg-gray-200 rounded-full;
   }
-  .profileImg:hover::before{
+  .profileImg:hover::before {
     opacity: 1;
   }
-  .profileImg_ch{
+  .profileImg_ch {
     z-index: 30;
     opacity: 1;
     transition: opacity 0.2s ease-in;
   }
-  .profileImg:hover .profileImg_ch{
+  .profileImg:hover .profileImg_ch {
     opacity: 0;
   }
 
-  .error-arow{
+  .error-arow {
     right: 15px;
     transform: translateX(0);
     opacity: 0;
     transition: all 0.2s ease-in-out;
   }
-  .error-document div{
+  .error-document div {
     background-color: #f7faff;
   }
-  .error-document:hover .error-arow{
+  .error-document:hover .error-arow {
     transform: translateX(15px);
-    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    transition:
+      transform 0.2s ease-in-out,
+      opacity 0.2s ease-in-out;
     opacity: 1;
   }
   .blurfillter {
@@ -386,9 +390,13 @@
     width: 1500px; /* 원의 너비 */
     height: 1500px; /* 원의 높이 */
     border-radius: 50%; /* 원 형태로 만들기 */
-    background: radial-gradient(circle, rgba(53, 114, 239, 1) 0%, rgba(53, 114, 239, 0) 70%);
+    background: radial-gradient(
+      circle,
+      rgba(53, 114, 239, 1) 0%,
+      rgba(53, 114, 239, 0) 70%
+    );
   }
-  .playlist{
+  .playlist {
     backdrop-filter: blur(10px);
   }
 }

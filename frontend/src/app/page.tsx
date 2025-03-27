@@ -17,8 +17,6 @@ export default function Home() {
   }, [windowWidth]);
 
   if (windowWidth !== 0) {
-    return (
-      <>{isMobile ? <MobilePage /> : <DesktopPage />}</>
-    );
+    return <>{isMobile ? <MobilePage /> : <DesktopPage />}</>;
   }
 }

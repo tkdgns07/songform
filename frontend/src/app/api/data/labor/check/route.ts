@@ -20,17 +20,17 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    if(existingRecord?.disabled){
+    if (existingRecord?.disabled) {
       return NextResponse.json({
         status: 500,
-        error : 'Not Submitable date'
+        error: 'Not Submitable date',
       });
     }
 
-    if(existingRecord?.student !== 'None'){
+    if (existingRecord?.student !== 'None') {
       return NextResponse.json({
         status: 200,
-        error:  'Already submited'
+        error: 'Already submited',
       });
     }
   } catch (error) {
