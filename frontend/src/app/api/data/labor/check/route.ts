@@ -17,22 +17,15 @@ export async function POST(request: NextRequest) {
       where: {
         year: year,
         month: month,
+        student : student,
       },
     });
 
-    if (existingRecord?.disabled) {
-      return NextResponse.json({
-        status: 500,
-        error: 'Not Submitable date',
-      });
-    }
-
-    if (existingRecord?.student !== 'None') {
-      return NextResponse.json({
-        status: 200,
-        error: 'Already submited',
-      });
-    }
+    return NextResponse.json({
+      status: 200,
+      message: '',
+      data: existingRecord ? true : false,
+    });
   } catch (error) {
     return NextResponse.json({ status: 500, error: 'Internal Server Error' });
   } finally {
