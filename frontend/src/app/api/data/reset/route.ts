@@ -47,7 +47,7 @@ async function createRecord(
 }
 
 function isWeekend(start: number, date: number): boolean {
-  const dayIndex = (start + date - 1) % 7;
+  const dayIndex = (start + date) % 7;
   return dayIndex === 0 || dayIndex === 6;
 }
 
