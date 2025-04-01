@@ -47,8 +47,8 @@ async function createRecord(
 }
 
 function isWeekend(start: number, date: number): boolean {
-  const dayIndex = (start + date) % 7;
-  return dayIndex === 0 || dayIndex === 6;
+  const dayIndex = (start + date - 1) % 7;
+  return dayIndex === 0 || dayIndex === 6 ? true : false;
 }
 
 async function makeCalendar(model: string, year: number, month: number) {
@@ -71,7 +71,7 @@ async function makeCalendar(model: string, year: number, month: number) {
         model,
         year,
         month,
-        0,
+        j,
         'None',
         'None',
         isWeekend(startWeekday, j) ? true : false,
@@ -168,7 +168,6 @@ export async function GET() {
         error: 'No records found to delete',
       });
     }
-
     await makeCalendar('wakeup', nextYear, nextMonth);
     await makeCalendar('labor', nextYear, nextMonth);
 
