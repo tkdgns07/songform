@@ -13,11 +13,6 @@ const MobilePage = () => {
   const [focusedDay, setFocusedDay] = useState<Dayinfo | null>(null)
   const [switchMusic, setSwitchMusic] = useState(true)
 
-  const router = useRouter()
-  useEffect(() => {
-    router.push("/error?error=prepare")
-  }, [])
-
   if (calendarDatas) {
     return (
       <main className="w-full h-full px-2 py-2 overflow-hidden">
