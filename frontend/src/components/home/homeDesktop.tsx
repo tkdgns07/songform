@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FloatUp } from '@/components/content/FloatUp';
-import PlaylistPreview from '../playlistPreview/PlaylistPreview';
+import PlaylistPreview from '../PlaylistPreview';
 
 interface Dayinfo {
   id: number;
@@ -174,7 +174,7 @@ const DesktopPage = () => {
         : nlcalendarday;
     const found = calendar.some(
       (student) =>
-        student.student === `${session?.user.id} ${session?.user.name}`,
+        student.student === `${session?.user.id} ${session?.user.name}` && !session?.user.admin,
     );
     if (clickedDay !== -1 && !found) {
       if (curruntMonth) {
