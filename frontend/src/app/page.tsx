@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import DesktopPage from '@/components/pages/home/homeDesktop';
-import MobilePage from '@/components/pages/home/homeMobile';
+import DesktopPage from '@/components/home/homeDesktop';
+import MobilePage from '@/components/home/homeMobile';
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);

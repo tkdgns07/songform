@@ -9,16 +9,7 @@ export async function GET() {
       const data = await prisma.wakeupCalendar.findMany();
 
       if (data && data.length > 0) {
-        const response = NextResponse.json({
-          status: 200,
-          message: 'Render success',
-          data: data,
-        });
-        response.headers.set(
-          'Cache-Control',
-          'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0, stale-while-revalidate=0',
-        );
-        return response;
+        return NextResponse.json({ data }, { status: 200 });
       }
       // 데이터가 없을 경우 1초 대기 후 재시도
       await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -7,21 +7,9 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import MobilePlaylist from '@/components/home/components/mobilePlaylist';
+import { Youtubeinfo, Dayinfo } from '../../../types/types';
 
-interface Dayinfo {
-  id: number;
-  year: number;
-  month: number;
-  day: number;
-  student: string;
-  music_url: string;
-}
-
-interface Youtbeinfo {
-  thumbnail: string;
-  title: string;
-  link: string;
-}
 const MobilePage = () => {
   const [wcalendarday, setwCalendar] = useState<Dayinfo[]>([]);
   const [nwcalendarday, setnwCalendar] = useState<Dayinfo[]>([]);
@@ -35,22 +23,12 @@ const MobilePage = () => {
   const [playlistId, setPlaylistId] = useState<string>('');
   const [submitstudent, setSubmitstudent] = useState<string>('');
   const [loading, setLoading] = useState<string>('');
-  const [videoInfo, setVideoinfo] = useState<Youtbeinfo[]>([]);
+  const [videoInfo, setVideoinfo] = useState<Youtubeinfo[]>([]);
   const [curruntMonth, setCurruntMonth] = useState<boolean>(true);
   const [clickedSub, setClickedSub] = useState<number>(-1);
   const [canDrag, setCanDrag] = useState<boolean>(true);
 
   const router = useRouter();
-
-  // useEffect(() => {
-  //   if (process.env.NEXTAUTH_URL === 'http://localhost:3000') {
-  //     console.log(process.env.NEXTAUTH_URL)
-  //     console.error("erroroeeor")
-  //     router.push('/error?error=preparing');
-  //   }
-  // }, [router]);
-
-  router.push('/error?error=preparing');
 
   const now: Date = new Date();
   const year: number = now.getFullYear();
@@ -702,15 +680,7 @@ const MobilePage = () => {
                 className="w-1 bg-white"
                 style={{ height: `${height}px` }}
               ></div>
-              <div className="flex flex-col items-center w-screen h-screen rounded-t-xl bg-white mt-[10px] pt-[10px] overflow-y-auto scroll-m-10 z-50">
-                <div className="w-[50px] h-[5px] rounded-full bg-lighttext cursor-pointer"></div>
-
-                <div className="w-full flex justify-start mt-[10px] px-[30px]">
-                  <p className="text-xl font-bold">TODAY</p>
-                </div>
-
-                <div className="w-full px-[30px]"></div>
-              </div>
+              <MobilePlaylist playlistInfo={videoInfo} Dayinfo={wcalendarday[clickedDay]}></MobilePlaylist>
             </div>
           </div>
         </div>

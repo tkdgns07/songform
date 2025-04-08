@@ -9,16 +9,7 @@ export async function GET() {
       const data = await prisma.laborCalendar.findMany();
 
       if (data && data.length > 0) {
-        const response = NextResponse.json({
-          status: 200,
-          message: 'Render success',
-          data: data,
-        });
-        response.headers.set(
-          'Cache-Control',
-          'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0, stale-while-revalidate=0',
-        );
-        return response;
+        return NextResponse.json({ data }, { status: 200 });
       }
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }

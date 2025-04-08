@@ -173,10 +173,10 @@ const LayoutContent = ({ children }: { children: ReactNode }) => {
                 </div>
               </div>
             </div>
-            <div className="p-[10px] w-[100%] h-[40px] flex items-center justify-between menubar">
+            <div className="p-[10px] w-[100%] h-[50px] flex items-center justify-between menubar">
               <LoginButton />
             </div>
-            <div className="w-full flex justify-center">
+            <div className="w-full h-screen flex justify-center overflow-hidden">
               {children}
               <Analytics />
               <SpeedInsights />
