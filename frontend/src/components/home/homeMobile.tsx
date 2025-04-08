@@ -6,11 +6,17 @@ import { Youtubeinfo, CalendarDatasProps, Dayinfo } from "../../../types/types"
 
 import MusicCalendar from "./components/MusicCalendar"
 import MobilePlaylist from "@/components/home/components/mobilePlaylist"
+import { useRouter } from "next/navigation"
 
 const MobilePage = () => {
   const { calendarDatas, loading, error } = useCalendar()
   const [focusedDay, setFocusedDay] = useState<Dayinfo | null>(null)
   const [switchMusic, setSwitchMusic] = useState(true)
+
+  const router = useRouter()
+  useEffect(() => {
+    router.push("/error?error=prepare")
+  }, [])
 
   if (calendarDatas) {
     return (
