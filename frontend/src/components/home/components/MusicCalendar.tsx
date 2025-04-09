@@ -5,15 +5,16 @@ import { useState } from "react"
 import { Music } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-import { Plus } from "lucide-react"
+import SubmitButton from "./submitButton"
 
 interface MusicCalendarProps {
     CalendarData : Dayinfo[]
     loading : boolean
     returnClickedDay: (clickedDayInfo: Dayinfo | null) => void
+    musicType : boolean
 }
 
-const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, returnClickedDay }) => {
+const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, returnClickedDay, musicType }) => {
     const now: Date = new Date();
     const year: number = now.getFullYear();
     const monthName = now.toLocaleString("en-US", { month: "long" }) // "April"
@@ -38,9 +39,7 @@ const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, ret
                     <p className="text-sm font-bold">{year}</p>
                     <p className="text-2xl font-bold">{monthName}</p>
                 </div>
-                <button className="h-[30px] w-[30px] rounded-full bg-text shadow-lg shadow-text flex justify-center items-center mr-[10px] cursor-pointer">
-                    <Plus className="text-white" />
-                </button>
+                <SubmitButton Dayinfo={clickedDay ? CalendarData[clickedDay] : null} musicType></SubmitButton>
             </div>
             <div className="grid grid-cols-7">
                 <span className="day-name text-text text-xs">SUN</span>
@@ -57,7 +56,7 @@ const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, ret
                         return (
                             <button
                                 id={item.day.toString()}
-                                className={`flex flex-col items-center justify-center aspect-[2/3]`}
+                                className={`flex flex-col items-center justify-center h-min-[46px]`}
                                 onClick={item.day ? () => handleClickedDay(index) : undefined}
                             >
                                 <div

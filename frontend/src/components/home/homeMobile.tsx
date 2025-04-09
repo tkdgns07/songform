@@ -6,12 +6,11 @@ import { Youtubeinfo, CalendarDatasProps, Dayinfo } from "../../../types/types"
 
 import MusicCalendar from "./components/MusicCalendar"
 import MobilePlaylist from "@/components/home/components/mobilePlaylist"
-import { useRouter } from "next/navigation"
 
 const MobilePage = () => {
   const { calendarDatas, loading, error } = useCalendar()
   const [focusedDay, setFocusedDay] = useState<Dayinfo | null>(null)
-  const [switchMusic, setSwitchMusic] = useState(true)
+  const [musicType, setMusicType] = useState(true)
 
   if (calendarDatas) {
     return (
@@ -22,19 +21,19 @@ const MobilePage = () => {
               <button
                 type="button"
                 className={`flex-1 text-base font-bold z-10 text-text trasnform duration-200`}
-                onClick={() => setSwitchMusic(true)}
+                onClick={() => setMusicType(true)}
               >
                 기상송
               </button>
               <button
                 type="button"
                 className={`flex-1 text-base font-bold z-10 text-text trasnform duration-200`}
-                onClick={() => setSwitchMusic(false)}
+                onClick={() => setMusicType(false)}
               >
                 노동요
               </button>
               <div
-                className={`w-1/2 h-full bg-white shdow-xl rounded-full absolute transition-transform duration-300 ${switchMusic ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`w-1/2 h-full bg-white shdow-xl rounded-full absolute transition-transform duration-300 ${musicType ? 'translate-x-0' : 'translate-x-full'}`}
               ></div>
             </div>
           </div>
@@ -44,6 +43,7 @@ const MobilePage = () => {
             CalendarData={calendarDatas?.morningMusic.curruntMonth}
             loading
             returnClickedDay={setFocusedDay}
+            musicType
           ></MusicCalendar>
         </div>
 
