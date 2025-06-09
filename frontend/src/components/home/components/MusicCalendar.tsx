@@ -33,7 +33,8 @@ const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, ret
     }
 
     return (
-        <div className="w-full h-auto">
+        <div
+            className="w-full h-full">
             <div className="flex justify-between items-center">
                 <div className="flex flex-col justify-end p-2">
                     <p className="text-sm font-bold">{year}</p>
@@ -50,13 +51,18 @@ const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, ret
                 <span className="day-name text-xs">FRI</span>
                 <span className="day-name text-text text-xs">SAT</span>
             </div>
-            <div className="w-full grid grid-cols-7">
+            <div
+                className="w-full grid grid-cols-7"
+                style={{
+                    height : "calc(100% - 91px)"
+                }}
+            >
                 {loading ? 
                     (CalendarData.map((item, index) => {
                         return (
                             <button
                                 id={item.day.toString()}
-                                className={`flex flex-col items-center justify-center h-min-[46px]`}
+                                className={`flex flex-col items-center justify-center h-auto h-min-[46px]`}
                                 onClick={item.day ? () => handleClickedDay(index) : undefined}
                             >
                                 <div

@@ -38,7 +38,12 @@ const MobilePage = () => {
             </div>
           </div>
         </div>
-        <div className="w-full h-auto overflow-hidden">
+        <div
+          className="w-full h-fit overflow-hidden"
+          style={{
+            height : "calc(100% - 223px)"
+          }}
+        >
           <MusicCalendar
             CalendarData={calendarDatas?.morningMusic.curruntMonth}
             loading

@@ -2,7 +2,7 @@
 import { Dayinfo } from "@customtypes/types"
 import { Plus } from "lucide-react"
 import { toast } from "sonner"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 
