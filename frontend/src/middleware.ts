@@ -1,18 +1,21 @@
-// import { NextResponse } from 'next/server';
-// import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-// export function middleware(request: NextRequest) {
-//   if (request.nextUrl.pathname.startsWith('/api/')) {
-//     const authHeader = request.headers.get('Authorization');
+export function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith('/api/')) {
+    const authHeader = request.headers.get('Authorization');
 
-//     if (!authHeader || authHeader !== `Bearer ${process.env.MIDDLEWARE_SECRET}`) {
-//       return new NextResponse('Unauthorized', { status: 401 });
-//     }
-//   }
+    if (!authHeader || authHeader !== `Bearer ${process.env.MIDDLEWARE_SECRET}`) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+  }
 
-//   return NextResponse.next();
-// }
+  return NextResponse.next();
+}
 
-// export const config = {
-//   matcher: ['/api/:path*'],  // /api/ 이하 모든 경로에만 middleware 적용
-// };
+export const config = {
+  matcher: [
+    '/api/(?!cron).*',
+    '/dashboard/:path*',
+  ],
+};
