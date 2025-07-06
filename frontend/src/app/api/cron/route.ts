@@ -150,26 +150,20 @@ async function main() {
   await deletePlaylists();
 
   try {
-    const wakeupdeleteResult = await prisma.wakeupCalendar.deleteMany({
+    await prisma.wakeupCalendar.deleteMany({
       where: {
         year: previousYear,
         month: previousMonth,
       },
     });
 
-    const laborupdeleteResult = await prisma.laborCalendar.deleteMany({
+    await prisma.laborCalendar.deleteMany({
       where: {
         year: previousYear,
         month: previousMonth,
       },
     });
 
-    if (wakeupdeleteResult.count === 0 || laborupdeleteResult.count === 0) {
-      return NextResponse.json({
-        status: 404,
-        error: 'No records found to delete',
-      });
-    }
     await makeCalendar('wakeup', nextYear, nextMonth);
     await makeCalendar('labor', nextYear, nextMonth);
 
@@ -183,7 +177,7 @@ async function main() {
 
 export async function GET(request : NextRequest) {
   const authHeader = request.headers.get('authorization');
-  if (authHeader == process.env.CRON_SECRET) { 
+  if (authHeader == `Bearer ${process.env.CRON_SECRET}`) { 
     try {
         main()
 
