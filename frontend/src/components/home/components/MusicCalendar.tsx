@@ -5,15 +5,16 @@ import { useState } from "react"
 import { Music } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-import { Plus } from "lucide-react"
+import SubmitButton from "./submitButton"
 
 interface MusicCalendarProps {
     CalendarData : Dayinfo[]
     loading : boolean
     returnClickedDay: (clickedDayInfo: Dayinfo | null) => void
+    musicType : boolean
 }
 
-const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, returnClickedDay }) => {
+const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, returnClickedDay, musicType }) => {
     const now: Date = new Date();
     const year: number = now.getFullYear();
     const monthName = now.toLocaleString("en-US", { month: "long" }) // "April"
@@ -32,15 +33,14 @@ const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, ret
     }
 
     return (
-        <div className="w-full h-auto">
+        <div
+            className="w-full h-full">
             <div className="flex justify-between items-center">
                 <div className="flex flex-col justify-end p-2">
                     <p className="text-sm font-bold">{year}</p>
                     <p className="text-2xl font-bold">{monthName}</p>
                 </div>
-                <button className="h-[30px] w-[30px] rounded-full bg-text shadow-lg shadow-text flex justify-center items-center mr-[10px] cursor-pointer">
-                    <Plus className="text-white" />
-                </button>
+                <SubmitButton Dayinfo={clickedDay ? CalendarData[clickedDay] : null} musicType></SubmitButton>
             </div>
             <div className="grid grid-cols-7">
                 <span className="day-name text-text text-xs">SUN</span>
@@ -51,13 +51,18 @@ const MusicCalendar:React.FC<MusicCalendarProps> = ({ CalendarData, loading, ret
                 <span className="day-name text-xs">FRI</span>
                 <span className="day-name text-text text-xs">SAT</span>
             </div>
-            <div className="w-full grid grid-cols-7">
+            <div
+                className="w-full grid grid-cols-7"
+                style={{
+                    height : "calc(100% - 91px)"
+                }}
+            >
                 {loading ? 
                     (CalendarData.map((item, index) => {
                         return (
                             <button
                                 id={item.day.toString()}
-                                className={`flex flex-col items-center justify-center aspect-[2/3]`}
+                                className={`flex flex-col items-center justify-center h-auto h-min-[46px]`}
                                 onClick={item.day ? () => handleClickedDay(index) : undefined}
                             >
                                 <div

@@ -153,7 +153,7 @@ const MobilePlaylist:React.FC<MobilePlaylistProps> = ({ Dayinfo }) => {
             )}
         </div>
 
-        <div className="px-6 pb-8 overflow-auto" style={{ height: "calc(100% - 110px)" }}>
+        <div className="px-6 pb-8 overflow-y-scroll" style={{ height: "calc(100% - 110px)" }}>
           {loading ? (
               Array.from({ length: 3 }).map((_, idx) => (
                 <div key={idx} className="flex items-center space-x-4 mb-4">
