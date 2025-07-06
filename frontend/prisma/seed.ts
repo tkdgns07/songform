@@ -1,14 +1,11 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/../prisma/client';
+import prisma from './client';
 import axios from 'axios';
 
 const now = new Date();
 const currentYear = now.getFullYear();
 const currentMonth = now.getMonth() + 1;
 
-const previousYear = currentYear
-const previousMonth = currentMonth
-
+// Handle year rollover (e.g. December → January of next year)
 const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
 const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
 
@@ -88,34 +85,26 @@ async function makeCalendar(model: string, year: number, month: number) {
 async function deletePlaylists() {
   try {
     // playlists를 받아옴 (laborCalendar)
-    const playlists = await prisma.laborCalendar.findMany({
-      where: {
-        month: currentMonth - 1, // 한 달 전의 데이터를 찾음
-      },
+    const laborPlaylists = await prisma.laborCalendar.findMany({
       select: {
         music_url: true, // music_url 필드만 선택
       },
     });
 
     // wakeupCalendars를 받아옴 (wakeupCalendar)
-    const wakeupCalendars = await prisma.wakeupCalendar.findMany({
-      where: {
-        month: currentMonth - 1, // 한 달 전의 데이터를 찾음
-      },
+    const wakeupPlaylist = await prisma.wakeupCalendar.findMany({
       select: {
         music_url: true, // music_url 필드만 선택
       },
     });
 
     // playlists와 wakeupCalendars 리스트를 합침
-    const allPlaylists = [...playlists, ...wakeupCalendars];
+    const allPlaylists = [...laborPlaylists, ...wakeupPlaylist];
 
     // 합쳐진 playlists가 비어있으면 종료
     if (allPlaylists.length === 0) {
-      return NextResponse.json({
-        status: 404,
-        error: 'No playlists found to delete',
-      });
+      console.log('No playlists found to delete');
+      return;
     }
 
     // axios.delete 호출을 async로 순차적으로 처리
@@ -131,56 +120,37 @@ async function deletePlaylists() {
       });
     }
 
-    return NextResponse.json({
-      status: 200,
-      message: 'Playlists deleted successfully',
-    });
+    console.log('Playlists deleted successfully');
+    return;
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      error: 'Youtube API error on deleting PlayList',
-    });
+    throw error;
   }
 }
 
-export async function GET() {
-  await deletePlaylists();
-
+async function main() {
   try {
-    // const wakeupdeleteResult = await prisma.wakeupCalendar.deleteMany({
-    //   where: {
-    //     year: previousYear,
-    //     month: previousMonth,
-    //   },
-    // });
+    // await deletePlaylists();
 
-    // const laborupdeleteResult = await prisma.laborCalendar.deleteMany({
-    //   where: {
-    //     year: previousYear,
-    //     month: previousMonth,
-    //   },
-    // });
+    // purge existing calendar records
+    await prisma.wakeupCalendar.deleteMany();
+    await prisma.laborCalendar.deleteMany();
 
-    // if (wakeupdeleteResult.count === 0 || laborupdeleteResult.count === 0) {
-    //   return NextResponse.json({
-    //     status: 404,
-    //     error: 'No records found to delete',
-    //   });
-    // }
-    await prisma.wakeupCalendar.deleteMany()
-    await prisma.laborCalendar.deleteMany()
+    // seed current month
+    await makeCalendar('wakeup', currentYear, currentMonth);
+    await makeCalendar('labor',  currentYear, currentMonth);
 
-    await makeCalendar('wakeup', previousYear, previousMonth);
-    await makeCalendar('labor', previousYear, previousMonth);
+    // seed next month
+    await makeCalendar('wakeup', nextYear,  nextMonth);
+    await makeCalendar('labor',  nextYear,  nextMonth);
 
-    await makeCalendar('wakeup', nextYear, nextMonth);
-    await makeCalendar('labor', nextYear, nextMonth);
-
-    return NextResponse.json({ status: 200, message: 'cron handled' });
-  } catch (error) {
-    return NextResponse.json({ status: 500, error: 'Internal Server Error' });
+    console.log('🌱  Seeding completed successfully');
+  } catch (err) {
+    console.error('❌  Seeding failed', err);
+    process.exit(1);
   } finally {
     await prisma.$disconnect();
   }
 }
+
+main();
